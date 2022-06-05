@@ -16,14 +16,14 @@ export default function Document() {
                     gtag('config', 'GA_MEASUREMENT_ID');
                     `}
                 </Script>
-                <Script id='afly' strategy='afterInteractive'>
+                <script id='afly'>
                     {`
                     var adfly_id = 23309985;
                     var popunder_frequency_delay = 0;
                     var adfly_google_compliant = false;
                     `}
-                </Script>
-                <Script src="https://cdn.adf.ly/js/display.js" strategy='afterInteractive' />
+                </script>
+                <script async src="https://cdn.adf.ly/js/display.js" />
             </Head>
             <body>
                 <Main />
