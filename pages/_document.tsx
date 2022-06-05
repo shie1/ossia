@@ -16,14 +16,6 @@ export default function Document() {
                     gtag('config', 'GA_MEASUREMENT_ID');
                     `}
                 </script>
-                <script id='afly'>
-                    {`
-                    var adfly_id = 23309985;
-                    var popunder_frequency_delay = 0;
-                    var adfly_google_compliant = false;
-                    `}
-                </script>
-                <script async src="https://cdn.adf.ly/js/display.js" />
             </Head>
             <body>
                 <Main />
