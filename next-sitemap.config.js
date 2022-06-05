@@ -3,6 +3,6 @@ const config = {
     siteUrl: process.env.SITE_URL || 'https://ossia.ml',
     generateRobotsTxt: true, // (optional)
     // ...other options
-  }
-  
-  export default config
+}
+
+export default config
