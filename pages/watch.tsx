@@ -86,7 +86,7 @@ const Player: NextPage = () => {
     return (
         <Container p='sm'>
             <LoadingOverlay visible={loading} />
-            <Title mb='sm' align='center'><Link href='/'>Ossia</Link></Title>
+            <Title sx={{fontFamily: 'Comfortaa, sans-serif'}} mb='sm' align='center'><Link href='/'>Ossia</Link></Title>
             <audio onLoadedData={() => { setLoading(false) }} style={{ 'display': 'none' }} />
             <Player />
             <div style={{ margin: '0 10vw' }}>

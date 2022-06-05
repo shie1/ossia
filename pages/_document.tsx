@@ -5,8 +5,8 @@ export default function Document() {
     return (
         <Html>
             <Head >
-                <script src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3057716180157458" crossOrigin='anonymous' async/>
-                <script src="https://www.googletagmanager.com/gtag/js?id=G-6RV1HQYTBK" async/>
+                <script src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3057716180157458" crossOrigin='anonymous' async />
+                <script src="https://www.googletagmanager.com/gtag/js?id=G-6RV1HQYTBK" async />
                 <script async>
                     {`
                     window.dataLayer = window.dataLayer || [];
@@ -16,6 +16,9 @@ export default function Document() {
                     gtag('config', 'GA_MEASUREMENT_ID');
                     `}
                 </script>
+                <link rel="preconnect" href="https://fonts.googleapis.com" />
+                <link rel="preconnect" href="https://fonts.gstatic.com" />
+                <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400&display=swap" rel="stylesheet"></link>
             </Head>
             <body>
                 <Main />

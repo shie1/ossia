@@ -77,7 +77,7 @@ const Home: NextPage = () => {
 
   return (
     <Container p='sm'>
-      <Title mb='sm' align='center'><Link href='/'>Ossia</Link></Title>
+      <Title sx={{fontFamily: 'Comfortaa, sans-serif'}} mb='sm' align='center'><Link href='/'>Ossia</Link></Title>
       <TextInput mb='lg' id='searchInput' onSubmit={(event: any) => { setQuery(event.target.value) }} onChange={(event: any) => { setQuery(event.target.value) }} size='md' placeholder="Search for a song" icon={<Search size={14} />} rightSection={<ConditionalLoader />} />
       <SearchResults />
     </Container>
