@@ -5,8 +5,7 @@ export default function Document() {
     return (
         <Html>
             <Head >
-                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3057716180157458"
-                    crossOrigin="anonymous"></script>
+                <Script src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3057716180157458" crossOrigin='anonymous' strategy='afterInteractive' />
                 <Script src="https://www.googletagmanager.com/gtag/js?id=G-6RV1HQYTBK" strategy='afterInteractive' />
                 <Script id="google-analytics" strategy="afterInteractive">
                     {`
