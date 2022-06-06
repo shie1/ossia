@@ -6,7 +6,8 @@ export default function Document() {
     return (
         <Html>
             <Head >
-                <script src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3057716180157458" crossOrigin='anonymous' async />
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3057716180157458"
+                    crossOrigin="anonymous"></script>
                 <script src="https://www.googletagmanager.com/gtag/js?id=G-6RV1HQYTBK" async />
                 <script async>
                     {`
