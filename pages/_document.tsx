@@ -11,7 +11,7 @@ export default function Document() {
                     crossOrigin="anonymous"></script>
                 <script async src="https://www.googletagmanager.com/gtag/js?id=G-6RV1HQYTBK"></script>
                 <script>
-                {`
+                    {`
                     window.dataLayer = window.dataLayer || [];
                     function gtag(){dataLayer.push(arguments);}
                     gtag('js', new Date());
@@ -22,9 +22,9 @@ export default function Document() {
                 <link rel="preconnect" href="https://fonts.googleapis.com" />
                 <link rel="preconnect" href="https://fonts.gstatic.com" />
                 <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400&display=swap" rel="stylesheet"></link>
-                <title>Ossia</title>
             </Head>
             <body>
+                <title>Ossia</title>
                 <Main />
                 <NextScript />
             </body>

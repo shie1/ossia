@@ -37,16 +37,31 @@ const Player: NextPage = () => {
             setVolume(0)
         }
     }],
-    ['space', () => { setPaused(!paused) }],])
+    ['space', () => { setPaused(!paused) }],
+    ['ctrl+L', ()=>{setLoading(false)}]])
 
     useEffect(() => {
-        if (typeof window !== 'undefined') {
+        if (typeof window !== 'undefined' && id !== 'dev') {
             if (document.getElementsByTagName('audio')[0].src) { return }
             document.getElementsByTagName('audio')[0].src = `${document.location.origin}/api/stream?v=${id}`
         }
 
         if (typeof window !== 'undefined' && !details) {
-            fetch(`${document.location.origin}/api/details?v=${id}`).then(async resp => { setDetails(await resp.json()) })
+            if (id == 'dev') {
+                setDetails({
+                    'videoDetails': {
+                        'title': 'placeholderTitle',
+                        'author': {
+                            'name': 'placeholderAuthor'
+                        },
+                        'thumbnails': [
+                            {'url': 'placeholder-1280x720.gif'}
+                        ]
+                    }
+                })
+            } else {
+                fetch(`${document.location.origin}/api/details?v=${id}`).then(async resp => { setDetails(await resp.json()) })
+            }
         }
     }, [id, details])
 
