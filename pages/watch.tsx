@@ -62,7 +62,7 @@ const Player: NextPage = () => {
     }, [paused])
     
     useEffect(() => {
-        if((details) && (typeof window !== 'undefined')){
+        if(details){
             document.title = details.videoDetails?.title + ' | ' document.title
         }
     }, [details])
