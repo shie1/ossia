@@ -60,6 +60,12 @@ const Player: NextPage = () => {
             }
         }
     }, [paused])
+    
+    useEffect(() => {
+        if(details && typeof window !== 'undefined'){
+            document.title = details.videoDetails?.title + ' | ' document.title
+        }
+    }, [details])
 
     const Player = () => {
         if (!details) { return <></> }
