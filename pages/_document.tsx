@@ -9,15 +9,15 @@ export default function Document() {
             <Head >
                 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3057716180157458"
                     crossOrigin="anonymous"></script>
-                <script src="https://www.googletagmanager.com/gtag/js?id=G-6RV1HQYTBK" async />
-                <script async>
-                    {`
+                <script async src="https://www.googletagmanager.com/gtag/js?id=G-6RV1HQYTBK"></script>
+                <script>
+                {`
                     window.dataLayer = window.dataLayer || [];
-                    function gtag(){window.dataLayer.push(arguments);}
+                    function gtag(){dataLayer.push(arguments);}
                     gtag('js', new Date());
 
-                    gtag('config', 'GA_MEASUREMENT_ID');
-                    `}
+                    gtag('config', 'G-6RV1HQYTBK');
+                `}
                 </script>
                 <link rel="preconnect" href="https://fonts.googleapis.com" />
                 <link rel="preconnect" href="https://fonts.gstatic.com" />
