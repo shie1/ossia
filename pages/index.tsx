@@ -1,4 +1,4 @@
-import { Card, Container, Divider, Group, Loader, Text, TextInput, Title, Button, Image, Badge, SimpleGrid } from '@mantine/core'
+import { Card, Container, Divider, Group, Loader, Text, TextInput, Title, Button, Image, Badge, SimpleGrid, Space } from '@mantine/core'
 import { useHotkeys } from '@mantine/hooks'
 import type { NextPage } from 'next'
 import Link from 'next/link';
@@ -7,9 +7,13 @@ import { Search } from 'tabler-icons-react'
 
 const Home: NextPage = () => {
   const [searchQuery, setQuery] = useState("");
-  const [results, setResults]: any = useState(0)
+  const [results, setResults] = useState<any>(0)
 
   useHotkeys([['ctrl+K', () => { setResults(0) }],])
+
+  if(typeof window !== 'undefined'){
+    document.title = "Ossia"
+  }
 
   useEffect(() => {
     const search = (query: string) => {
@@ -76,11 +80,15 @@ const Home: NextPage = () => {
   }
 
   return (
-    <Container p='sm'>
-      <Title sx={{fontFamily: 'Comfortaa, sans-serif'}} mb='sm' align='center'><Link href='/'>Ossia</Link></Title>
+    <>
       <TextInput mb='lg' id='searchInput' onSubmit={(event: any) => { setQuery(event.target.value) }} onChange={(event: any) => { setQuery(event.target.value) }} size='md' placeholder="Search for a song" icon={<Search size={14} />} rightSection={<ConditionalLoader />} />
       <SearchResults />
-    </Container>
+      <Divider my='lg' />
+      <Title sx={{ fontFamily: 'Comfortaa, sans-serif', fontSize: '1.5em' }}>About Osssia</Title>
+      <Text>Ossia is a free to use YouTube client designed for listening to music.
+        This indie project is being made and maintained by Shie1 in its early access stage since 2022-06-05.
+      </Text>
+    </>
   )
 }
 

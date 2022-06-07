@@ -1,15 +1,15 @@
-import { ActionIcon, Box, Container, Divider, Group, Image, InputWrapper, LoadingOverlay, Progress, SimpleGrid, Slider, Text, Title } from '@mantine/core';
+import { ActionIcon, Box, Container, Divider, Group, Image, InputWrapper, LoadingOverlay, Progress, SimpleGrid, Slider, Text, Title, Button, Space } from '@mantine/core';
 import { useHotkeys } from '@mantine/hooks';
 import { showNotification } from '@mantine/notifications';
 import type { NextPage } from 'next'
 import Link from 'next/link';
 import { createElement, useEffect, useRef, useState } from 'react';
-import { PlayerPause, PlayerPlay, VolumeOff, Volume } from 'tabler-icons-react';
+import { PlayerPause, PlayerPlay, VolumeOff, Volume, Download } from 'tabler-icons-react';
 
 const Player: NextPage = () => {
     const [id, setID]: any = useState("")
     const [paused, setPaused] = useState(true)
-    const [details, setDetails]: any = useState(false)
+    const [details, setDetails] = useState<any>(false)
     const [loading, setLoading] = useState(true)
     const [volume, setVolume] = useState(100)
     const [prevVol, setPrevVol] = useState(100)
@@ -17,7 +17,7 @@ const Player: NextPage = () => {
         setID((new URLSearchParams(window.location.search).get('v')))
     }
 
-    useHotkeys([["ctrl+M", () => {
+    const mute = () => {
         if (volume == 0) {
             showNotification({
                 'icon': <Volume />,
@@ -36,14 +36,17 @@ const Player: NextPage = () => {
             setPrevVol(volume)
             setVolume(0)
         }
-    }],
+    }
+
+    useHotkeys([["ctrl+M", () => { mute() }],
     ['space', () => { setPaused(!paused) }],
-    ['ctrl+L', ()=>{setLoading(false)}]])
+    ['ctrl+L', () => { setLoading(false) }]])
 
     useEffect(() => {
         if (typeof window !== 'undefined' && id !== 'dev') {
             if (document.getElementsByTagName('audio')[0].src) { return }
             document.getElementsByTagName('audio')[0].src = `${document.location.origin}/api/stream?v=${id}`
+            document.querySelector("#download")!.href = `${document.location.origin}/api/stream?v=${id}`
         }
 
         if (typeof window !== 'undefined' && !details) {
@@ -55,7 +58,7 @@ const Player: NextPage = () => {
                             'name': 'placeholderAuthor'
                         },
                         'thumbnails': [
-                            {'url': 'placeholder-1280x720.gif'}
+                            { 'url': 'placeholder-1280x720.gif' }
                         ]
                     }
                 })
@@ -87,7 +90,7 @@ const Player: NextPage = () => {
         return (
             <Group direction='column' position='center'>
                 <Box sx={{ marginTop: '-3%', position: 'relative', borderRadius: '25%', clipPath: 'circle(30%)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <Image draggable='false' sx={{ filter: 'brightness(0.7)' }} mx='md' alt={details.videoDetails?.title} src={details.videoDetails?.thumbnails[details.videoDetails.thumbnails.length - 1].url} />
+                    <Image draggable='false' sx={{ filter: 'brightness(0.7)', width: '45vw' }} mx='md' alt={details.videoDetails?.title} src={details.videoDetails?.thumbnails[details.videoDetails.thumbnails.length - 1].url} />
                     <Box sx={{ position: 'absolute', zIndex: 99, justifyContent: 'center' }}>
                         <ActionIcon variant='outline' size='xl' onClick={() => { setPaused(!paused) }}>
                             {paused ? <PlayerPlay /> : <PlayerPause />}
@@ -105,15 +108,31 @@ const Player: NextPage = () => {
     }, [volume])
 
     return (
-        <Container p='sm'>
+        <>
             <LoadingOverlay visible={loading} />
-            <Title sx={{ fontFamily: 'Comfortaa, sans-serif' }} mb='sm' align='center'><Link href='/'>Ossia</Link></Title>
             <audio onLoadedData={() => { setLoading(false) }} style={{ 'display': 'none' }} />
             <Player />
             <div style={{ margin: '0 10vw' }}>
                 <Text mb={5} size='xl'>{details.videoDetails?.title}</Text>
                 <Text size='sm'>{details.videoDetails?.author.name}</Text>
                 <Divider my='md' />
+                <Group mb='sm' position='center'>
+                    <ActionIcon onClick={mute}>
+                        {volume === 0 ? <Volume /> : <VolumeOff />}
+                    </ActionIcon>
+                    <a id='download' onClick={(e)=>{
+                        showNotification({
+                            'title': 'Downloading',
+                            'message': 'The download has started, please wait!',
+                            'icon': <Download />,
+                            'id': 'Download'
+                        })
+                    }} download={id}>
+                        <ActionIcon>
+                            <Download />
+                        </ActionIcon>
+                    </a>
+                </Group>
                 <InputWrapper label="Volume">
                     <Slider value={volume} onChange={setVolume} marks={[
                         { value: 0, label: '0%' },
@@ -121,8 +140,9 @@ const Player: NextPage = () => {
                         { value: 100, label: '100%' },
                     ]} />
                 </InputWrapper>
+                <Space h='xl' />
             </div>
-        </Container>
+        </>
     )
 }
 
