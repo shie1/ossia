@@ -60,9 +60,9 @@ const Player: NextPage = () => {
             }
         }
     }, [paused])
-    
+
     useEffect(() => {
-        if(details && typeof window !== 'undefined'){
+        if (details && typeof window !== 'undefined') {
             document.title = `${details.videoDetails?.title} | ${document.title}`
         }
     }, [details])
@@ -72,7 +72,7 @@ const Player: NextPage = () => {
         return (
             <Group direction='column' position='center'>
                 <Box sx={{ marginTop: '-3%', position: 'relative', borderRadius: '25%', clipPath: 'circle(30%)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <Image draggable='false' sx={{ filter: 'brightness(0.7)', width: '100vmin' }} alt={details.videoDetails?.title} width='100%' src={details.videoDetails?.thumbnails[details.videoDetails.thumbnails.length - 1].url} />
+                    <Image draggable='false' sx={{ filter: 'brightness(0.7)' }} mx='md' alt={details.videoDetails?.title} src={details.videoDetails?.thumbnails[details.videoDetails.thumbnails.length - 1].url} />
                     <Box sx={{ position: 'absolute', zIndex: 99, justifyContent: 'center' }}>
                         <ActionIcon variant='outline' size='xl' onClick={() => { setPaused(!paused) }}>
                             {paused ? <PlayerPlay /> : <PlayerPause />}
@@ -92,7 +92,7 @@ const Player: NextPage = () => {
     return (
         <Container p='sm'>
             <LoadingOverlay visible={loading} />
-            <Title sx={{fontFamily: 'Comfortaa, sans-serif'}} mb='sm' align='center'><Link href='/'>Ossia</Link></Title>
+            <Title sx={{ fontFamily: 'Comfortaa, sans-serif' }} mb='sm' align='center'><Link href='/'>Ossia</Link></Title>
             <audio onLoadedData={() => { setLoading(false) }} style={{ 'display': 'none' }} />
             <Player />
             <div style={{ margin: '0 10vw' }}>
