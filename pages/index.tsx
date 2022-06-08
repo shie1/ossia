@@ -93,11 +93,12 @@ const Home: NextPage = () => {
     const feedItems = [...items].map((el) => ({
       title: el.querySelector("title")?.innerHTML,
       description: el.querySelector("description")?.innerHTML,
+      pubDate: el.querySelector("pubDate")?.innerHTML,
     }));
     setRss(feedItems);
   };
 
-  if(typeof window !== 'undefined'){
+  if (typeof window !== 'undefined') {
     getRss("https://ossia.ml/rss.xml")
   }
 
@@ -114,10 +115,13 @@ const Home: NextPage = () => {
             <Card my='sm' key={i} shadow="sm" p="md">
               <Text mb='sm' weight={500} size="lg">
                 {item.title}
+                <Badge color="blue" variant="light">
+                  {(new Date(item.pubDate)).toLocaleString()}
+                </Badge>
               </Text>
 
               <Text size="sm">
-               {item.description}
+                {item.description}
               </Text>
             </Card>
           );
