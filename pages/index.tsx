@@ -82,6 +82,10 @@ const Home: NextPage = () => {
   }
 
   const getRss = async (rssUrl: string) => {
+    if(rss){return}
+    if(document.location.origin.indexOf('localhost') != -1){
+      rssUrl = "https://rss.com/blog/feed/"
+    }
     const urlRegex = /(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/;
     if (!urlRegex.test(rssUrl)) {
       return;
@@ -115,14 +119,12 @@ const Home: NextPage = () => {
             <Card my='sm' key={i} shadow="sm" p="md">
               <Text mb='sm' weight={500} size="lg">
                 {item.title}
-                <Badge color="blue" variant="light">
+                <Badge color="blue" mx='sm' variant="light">
                   {(new Date(item.pubDate)).toLocaleString()}
                 </Badge>
               </Text>
 
-              <Text size="sm">
-                {item.description}
-              </Text>
+              <Text size="sm" dangerouslySetInnerHTML={{__html: item.description}} />
             </Card>
           );
         })}

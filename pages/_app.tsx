@@ -51,7 +51,7 @@ function MyApp({ Component, pageProps }: AppProps) {
               <Text>Can&apos;t connect to server, please check your internet connection!</Text>
             </Modal>
             <Container p='sm'>
-              <Title sx={{ fontFamily: 'Comfortaa, sans-serif' }} mb='sm' align='center'><Link href='/'>Ossia</Link></Title>
+              <Title className='title' sx={{ fontFamily: 'Comfortaa, sans-serif' }} mb='sm' align='center'><Link href='/'>Ossia</Link></Title>
               <Component {...pageProps} />
             </Container>
             <Affix sx={{padding: '.2rem', opacity: '.75'}}>

@@ -11,7 +11,11 @@ a {
   text-decoration: none;
 }
 
-a.link:hover {
+a:not(.title){
+  opacity: .7;
+}
+
+a:not(.title):hover {
   opacity: .5;
 }
 
