@@ -5,6 +5,7 @@ import type { NextPage } from 'next'
 import Link from 'next/link';
 import { createElement, useEffect, useRef, useState } from 'react';
 import { PlayerPause, PlayerPlay, VolumeOff, Volume, Download } from 'tabler-icons-react';
+import {MetaTags} from "../functions"
 
 const Player: NextPage = () => {
     const [id, setID]: any = useState("")
@@ -83,6 +84,7 @@ const Player: NextPage = () => {
     useEffect(() => {
         if (details && typeof window !== 'undefined') {
             document.title = `${details.videoDetails?.title} | ${document.title}`
+            document.appendChild(<MetaTags title={ `${details.videoDetails?.title} | ${document.title}`} description="Missing...">)
         }
     }, [details])
 
