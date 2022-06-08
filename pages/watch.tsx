@@ -84,12 +84,6 @@ const Player: NextPage = () => {
         }
     }, [paused])
 
-    useEffect(() => {
-        if (details && typeof window !== 'undefined') {
-            document.title = `${details.videoDetails?.title} | ${document.title}`
-        }
-    }, [details])
-
     const Player = () => {
         if (!details) { return <></> }
         return (
@@ -117,6 +111,11 @@ const Player: NextPage = () => {
         sanitizeHtml: true,
         className: 'link'
     });
+
+    const MTD = () => {
+        if(!details){return <></>}
+        return <MetaTags title={`${details.videoDetails?.title} | ${document.title}`} description={details.videoDetails?.description} image={details.videoDetails?.thumbnails[details.videoDetails.thumbnails.length - 1].url} />
+    }
 
     return (
         <>
