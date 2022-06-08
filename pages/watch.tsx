@@ -119,6 +119,7 @@ const Player: NextPage = () => {
 
     return (
         <>
+            <MTD />
             <LoadingOverlay visible={loading} />
             <audio onLoadedData={() => { setLoading(false) }} style={{ 'display': 'none' }} />
             <Player />
