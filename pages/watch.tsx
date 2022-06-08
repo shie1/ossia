@@ -4,8 +4,9 @@ import { showNotification } from '@mantine/notifications';
 import type { NextPage } from 'next'
 import Link from 'next/link';
 import { createElement, useEffect, useRef, useState } from 'react';
-import { PlayerPause, PlayerPlay, VolumeOff, Volume, Download } from 'tabler-icons-react';
-import {MetaTags} from "../functions"
+import { PlayerPause, PlayerPlay, VolumeOff, Volume, Download, BrandYoutube } from 'tabler-icons-react';
+import { MetaTags } from "../functions"
+import Autolinker from "autolinker"
 
 const Player: NextPage = () => {
     const [id, setID]: any = useState("")
@@ -39,7 +40,7 @@ const Player: NextPage = () => {
         }
     }
 
-    useHotkeys([["ctrl+M", () => { mute() }],
+    useHotkeys([["M", () => { mute() }],
     ['space', () => { setPaused(!paused) }],
     ['ctrl+L', () => { setLoading(false) }]])
 
@@ -66,6 +67,8 @@ const Player: NextPage = () => {
                 })
             } else {
                 fetch(`${document.location.origin}/api/details?v=${id}`).then(async resp => { setDetails(await resp.json()) })
+                const vu = document.querySelector('#videoURL') as HTMLAnchorElement
+                vu.href = `https://youtu.be/${id}`
             }
         }
     }, [id, details])
@@ -92,7 +95,7 @@ const Player: NextPage = () => {
         return (
             <Group direction='column' position='center'>
                 <Box sx={{ marginTop: '-3%', position: 'relative', borderRadius: '25%', clipPath: 'circle(30%)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <Image draggable='false' sx={{ filter: 'brightness(0.7)', width: '45vw' }} mx='md' alt={details.videoDetails?.title} src={details.videoDetails?.thumbnails[details.videoDetails.thumbnails.length - 1].url} />
+                    <Image draggable='false' sx={{ filter: 'brightness(0.7)', width: '100%', minWidth: '45vw', maxWidth: '25vh' }} mx='md' alt={details.videoDetails?.title} src={details.videoDetails?.thumbnails[details.videoDetails.thumbnails.length - 1].url} />
                     <Box sx={{ position: 'absolute', zIndex: 99, justifyContent: 'center' }}>
                         <ActionIcon variant='outline' size='xl' onClick={() => { setPaused(!paused) }}>
                             {paused ? <PlayerPlay /> : <PlayerPause />}
@@ -109,20 +112,33 @@ const Player: NextPage = () => {
         }
     }, [volume])
 
+    var autolinker = new Autolinker({
+        newWindow: true,
+        sanitizeHtml: true,
+        className: 'link'
+    });
+
     return (
         <>
             <LoadingOverlay visible={loading} />
             <audio onLoadedData={() => { setLoading(false) }} style={{ 'display': 'none' }} />
             <Player />
             <div style={{ margin: '0 10vw' }}>
-                <Text mb={5} size='xl'>{details.videoDetails?.title}</Text>
+                <Group spacing={4} direction='row'>
+                    <Text size='xl'>{details.videoDetails?.title}</Text>
+                    <a id='videoURL' target='_blank' rel="noreferrer">
+                        <ActionIcon variant='transparent'>
+                            <BrandYoutube />
+                        </ActionIcon>
+                    </a>
+                </Group>
                 <Text size='sm'>{details.videoDetails?.author.name}</Text>
                 <Divider my='md' />
-                <Group mb='sm' position='center'>
+                <Group spacing='sm' mb='sm' position='center'>
                     <ActionIcon onClick={mute}>
                         {volume === 0 ? <Volume /> : <VolumeOff />}
                     </ActionIcon>
-                    <a id='download' onClick={(e)=>{
+                    <a id='download' onClick={(e) => {
                         showNotification({
                             'title': 'Downloading',
                             'message': 'The download has started, please wait!',
@@ -143,6 +159,9 @@ const Player: NextPage = () => {
                     ]} />
                 </InputWrapper>
                 <Space h='xl' />
+                <Divider my='sm' />
+                <Text align='center' size='xl'>Description</Text>
+                <Text dangerouslySetInnerHTML={{ __html: autolinker.link(details.videoDetails?.description) }} sx={{ whiteSpace: 'pre-wrap' }}></Text>
             </div>
         </>
     )

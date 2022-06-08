@@ -11,6 +11,10 @@ a {
   text-decoration: none;
 }
 
+a.link:hover {
+  opacity: .5;
+}
+
 * {
   box-sizing: border-box;
 }

@@ -14,6 +14,7 @@
     "@mantine/modals": "^4.2.8",
     "@mantine/next": "^4.2.7",
     "@mantine/notifications": "^4.2.7",
+    "autolinker": "^3.15.0",
     "next": "12.1.6",
     "next-pwa": "^5.5.4",
     "react": "18.1.0",
