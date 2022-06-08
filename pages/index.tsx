@@ -120,7 +120,7 @@ const Home: NextPage = () => {
               <Text mb='sm' weight={500} size="lg">
                 {item.title}
                 <Badge color="blue" mx='sm' variant="light">
-                  {item.pubDate}
+                  {(new Date(item.pubDate)).toLocaleString()}
                 </Badge>
               </Text>
 
