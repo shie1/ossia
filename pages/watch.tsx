@@ -46,7 +46,8 @@ const Player: NextPage = () => {
         if (typeof window !== 'undefined' && id !== 'dev') {
             if (document.getElementsByTagName('audio')[0].src) { return }
             document.getElementsByTagName('audio')[0].src = `${document.location.origin}/api/stream?v=${id}`
-            document.querySelector("#download")!.href = `${document.location.origin}/api/stream?v=${id}`
+            const downBtn = document.querySelector("#download") as HTMLAnchorElement | null
+            downBtn!.href = `${document.location.origin}/api/stream?v=${id}`
         }
 
         if (typeof window !== 'undefined' && !details) {
