@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+    <channel>
+        <title>Ossia.ml</title>
+        <link>https://ossia.ml</link>
+        <language>en-US</language>
+        <item>
+            <title>Version 1.0.3 - Experimental Updates feed</title>
+            <description>
+                Version 1.0.3 is released, it includes a news feed on the main page.
+            </description>
+        </item>
+    </channel>
+</rss>

@@ -9,10 +9,11 @@ import { MetaTags } from '../functions';
 const Home: NextPage = () => {
   const [searchQuery, setQuery] = useState("");
   const [results, setResults] = useState<any>(0)
+  const [rss, setRss] = useState<any>(false)
 
   useHotkeys([['ctrl+K', () => { setResults(0) }],])
 
-  if(typeof window !== 'undefined'){
+  if (typeof window !== 'undefined') {
     document.title = "Ossia"
   }
 
@@ -80,6 +81,49 @@ const Home: NextPage = () => {
     )
   }
 
+  const getRss = async (rssUrl: string) => {
+    const urlRegex = /(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/;
+    if (!urlRegex.test(rssUrl)) {
+      return;
+    }
+    const res = await fetch(`https://api.allorigins.win/get?url=${rssUrl}`);
+    const { contents } = await res.json();
+    const feed = new window.DOMParser().parseFromString(contents, "text/xml");
+    const items = feed.querySelectorAll("item");
+    const feedItems = [...items].map((el) => ({
+      title: el.querySelector("title")?.innerHTML,
+      description: el.querySelector("description")?.innerHTML,
+    }));
+    setRss(feedItems);
+  };
+
+  getRss("https://ossia.ml/rss.xml")
+
+  const RSSFeed = () => {
+    let i = 0
+    if (!rss) { return <></> }
+    return (
+      <div>
+        <Divider my='lg' />
+        <Title sx={{ fontFamily: 'Comfortaa, sans-serif', fontSize: '1.5em' }} >Updates</Title>
+        {rss.map((item: any) => {
+          i++
+          return (
+            <Card my='sm' key={i} shadow="sm" p="md">
+              <Text mb='sm' weight={500} size="lg">
+                {item.title}
+              </Text>
+
+              <Text size="sm">
+               {item.description}
+              </Text>
+            </Card>
+          );
+        })}
+      </div>
+    )
+  }
+
   return (
     <>
       <MetaTags title="Ossia - YouTube Music Player" description="Ossia is a free to use YouTube client designed for listening to music." image="/preview.png" />
@@ -90,6 +134,7 @@ const Home: NextPage = () => {
       <Text>Ossia is a free to use YouTube client designed for listening to music.
         This indie project is being made and maintained by Shie1 in its early access stage since 2022-06-05.
       </Text>
+      <RSSFeed />
     </>
   )
 }
