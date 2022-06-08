@@ -7,7 +7,7 @@ export default async function handler(
 ) {
     const app: Object = {
         'version': "1.0.2",
-        'fullName': "Ossia Music Player"
+        'fullName': "Ossia Music Player (BETA)"
     }
     res.status(200).json(app)
 }
