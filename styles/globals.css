@@ -11,8 +11,10 @@ a {
   text-decoration: none;
 }
 
+
 a:not(.title a, .nodim){
   opacity: .7;
+  transition: .1s;
 }
 
 a:not(.title a, .nodim):hover {

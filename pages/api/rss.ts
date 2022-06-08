@@ -1,12 +1,19 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
-import rssparser from "rss-parser"
+import fs from "fs"
+import xml2js from "xml2js"
+import path from "path"
+
+const fsPromises = fs.promises;
 
 export default async function handler(
     req: any,
     res: NextApiResponse<any>
 ) {
-    const parser = new rssparser()
-    const rb = JSON.parse(req.body)
-    res.status(200).json(await parser.parseURL(rb.rss))
+    const xml = await fsPromises.readFile(path.join(process.cwd(),"public/rss.xml"), "utf-8")
+    xml2js.parseString(xml, (err, data) => {
+        if(!req.query.p){
+            res.status(200).json(data)
+        }
+    })
 }

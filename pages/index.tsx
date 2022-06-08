@@ -86,11 +86,12 @@ const Home: NextPage = () => {
   const getRss = (rssUrl: string) => {
     if (gotRss) { return }
     setGotRss(true)
-    fetch(`${document.location.origin}/api/rss`, { method: 'POST', body: JSON.stringify({ 'rss': rssUrl }) }).then(async resp => { setRss(await resp.json()) })
+    fetch(`${document.location.origin}/api/rss`, { method: 'POST', body: JSON.stringify({ 'rss': rssUrl }) }).then(async resp => { setRss((await resp.json()).rss) })
   };
 
   if (typeof window !== 'undefined') {
     getRss(`${document.location.origin}/rss.xml`)
+    console.log(rss)
   }
 
   const RSSFeed = () => {
@@ -99,25 +100,27 @@ const Home: NextPage = () => {
     return (
       <div>
         <Divider my='lg' />
-        <Title sx={{ fontFamily: 'Comfortaa, sans-serif', fontSize: '1.5em' }} >Updates</Title>
-        {rss.items.map((item: any) => {
-          i++
-          return (
-            <Card my='sm' key={i} shadow="sm" p="md">
-              <Text mb='sm' weight={500} size="lg">
-                <Group spacing='sm' direction="row">
-                  <span>
-                    {item.title}
-                  </span>
-                  <Badge color="blue" variant="light">
-                    {(new Date(item.pubDate)).toLocaleString()}
-                  </Badge>
-                </Group>
-              </Text>
-              <Text size="sm" dangerouslySetInnerHTML={{ __html: item.contentSnippet }} />
-            </Card>
-          );
-        })}
+        <Title mb={4} sx={{ fontFamily: 'Comfortaa, sans-serif', fontSize: '1.5em' }} >Updates</Title>
+        <div style={{display: 'flex', flexDirection: 'column-reverse'}}>
+          {rss.channel[0].item.map((item: any) => {
+            i++
+            return (
+              <Card my={6} key={i} shadow="sm" p="md">
+                <Text mb='sm' weight={500} size="lg">
+                  <Group spacing='sm' direction="row">
+                    <span>
+                      {item.title}
+                    </span>
+                    <Badge color="blue" variant="light">
+                      {(new Date(item.pubDate)).toLocaleString()}
+                    </Badge>
+                  </Group>
+                </Text>
+                <Text size="sm" dangerouslySetInnerHTML={{ __html: item.description }} />
+              </Card>
+            );
+          })}
+        </div>
       </div>
     )
   }
