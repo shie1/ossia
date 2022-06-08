@@ -18,12 +18,5 @@
       <description>The title sums it up... I removed live streams (previously seen as videos with no length) from the search page because Ossia can't actually play them.</description>
       <pubDate>Wed, 08 Jun 2022 17:55:20 +0200</pubDate>
     </item>
-    <item>
-      <title>New Post</title>
-      <guid>https://ossia.ml/post?p=2</guid>
-      <category>Other</category>
-      <description>Other</description>
-      <pubDate>Wed, 08 Jun 2022 21:19:49 +0200</pubDate>
-    </item>
   </channel>
 </rss>

@@ -4,7 +4,7 @@ import type { NextPage } from 'next'
 const Post: NextPage = () => {
   return (
     <>
-      <form method='POST' action='/api/rsswrite'>
+      <form method='POST' action='/api/rsswrite' target='_blank'>
         <PasswordInput
           placeholder="Password"
           label="Password"
