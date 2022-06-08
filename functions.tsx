@@ -1,4 +1,4 @@
-const MetaTags = ({title, description, image}) => {
+export function MetaTags({title, description, image}) => {
     const Image = () => {
         if(!image){return <div />}
         return (
@@ -26,5 +26,3 @@ const MetaTags = ({title, description, image}) => {
         </>
         )
 }
-
-export {MetaTags};
