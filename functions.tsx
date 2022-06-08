@@ -26,3 +26,5 @@ const MetaTags = ({title, description, image}) => {
         </>
         )
 }
+
+export MetaTags;
