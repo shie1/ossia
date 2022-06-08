@@ -4,6 +4,7 @@ import type { NextPage } from 'next'
 import Link from 'next/link';
 import { useEffect, useState } from 'react'
 import { Search } from 'tabler-icons-react'
+import { MetaTags } from '../functions';
 
 const Home: NextPage = () => {
   const [searchQuery, setQuery] = useState("");
@@ -81,10 +82,7 @@ const Home: NextPage = () => {
 
   return (
     <>
-      <meta name="title" content="Ossia - Youtube Music Player" />
-      <meta name="description" content="Download and listen to songs from YouTube in the easiest way possible!" />
-      <meta name="og:title" content="Ossia - Youtube Music Player" />
-      <meta name="og:description" content="Download and listen to songs from YouTube in the easiest way possible!" />
+      <MetaTags title="Ossia - YouTube Music Player" description="Ossia is a free to use YouTube client designed for listening to music." />
       <TextInput mb='lg' id='searchInput' onSubmit={(event: any) => { setQuery(event.target.value) }} onChange={(event: any) => { setQuery(event.target.value) }} size='md' placeholder="Search for a song" icon={<Search size={14} />} rightSection={<ConditionalLoader />} />
       <SearchResults />
       <Divider my='lg' />

@@ -1,5 +1,5 @@
 export const MetaTags = ({title,description,image}: any) => {
-    const Image = () => {
+    const ImageTags = () => {
         if(!image){return <div />}
         return (
             <>
@@ -24,7 +24,7 @@ export const MetaTags = ({title,description,image}: any) => {
             <meta name="twitter:title" content={title} />
             <meta name="twitter:description" content={description} />
             
-            <Image />
+            <ImageTags />
         </>
         )
 }
