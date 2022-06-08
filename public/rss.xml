@@ -6,6 +6,8 @@
         <language>en-US</language>
         <item>
             <title>Removed live streams from search - A quick fix</title>
+            <guid>https://ossia.ml/post?p=1</guid>
+            <category>Update</category>
             <description>
                 The title sums it up... I removed live streams (previously seen as videos with no length) from the search page because Ossia can't actually play them.
             </description>
@@ -13,6 +15,8 @@
         </item>
         <item>
             <title>Version 1.0.3 - Experimental Updates feed</title>
+            <guid>https://ossia.ml/post?p=0</guid>
+            <category>Update</category>
             <description>
                 Version 1.0.3 is released, it includes a news feed on the main page.
             </description>

@@ -88,7 +88,7 @@ const Player: NextPage = () => {
         if (!details) { return <></> }
         return (
             <Group direction='column' position='center'>
-                <Box sx={{ marginTop: '-3%', position: 'relative', borderRadius: '25%', clipPath: 'circle(30%)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Box sx={{ marginTop: '-2.5%', position: 'relative', borderRadius: '25%', clipPath: 'circle(30%)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <Image draggable='false' sx={{ filter: 'brightness(0.7)', width: '100%', minWidth: '45vw', maxWidth: '25vh' }} mx='md' alt={details.videoDetails?.title} src={details.videoDetails?.thumbnails[details.videoDetails.thumbnails.length - 1].url} />
                     <Box sx={{ position: 'absolute', zIndex: 99, justifyContent: 'center' }}>
                         <ActionIcon variant='outline' size='xl' onClick={() => { setPaused(!paused) }}>
@@ -124,7 +124,7 @@ const Player: NextPage = () => {
             <audio onLoadedData={() => { setLoading(false) }} style={{ 'display': 'none' }} />
             <Player />
             <div style={{ margin: '0 10vw' }}>
-                <Group spacing={4} direction='row'>
+                <Group mb={2} spacing={4} direction='row'>
                     <Text size='xl'>{details.videoDetails?.title}</Text>
                     <a id='videoURL' target='_blank' rel="noreferrer">
                         <ActionIcon variant='transparent'>
@@ -161,7 +161,7 @@ const Player: NextPage = () => {
                 <Space h='xl' />
                 <Divider my='sm' />
                 <Text align='center' size='xl'>Description</Text>
-                <Text dangerouslySetInnerHTML={{ __html: autolinker.link(details.videoDetails?.description) }} sx={{ whiteSpace: 'pre-wrap' }}></Text>
+                <Text dangerouslySetInnerHTML={{ __html: autolinker.link(details.videoDetails?.description) }} sx={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word' }}></Text>
             </div>
         </>
     )
