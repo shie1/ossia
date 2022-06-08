@@ -10,6 +10,7 @@ const Home: NextPage = () => {
   const [searchQuery, setQuery] = useState("");
   const [results, setResults] = useState<any>(0)
   const [rss, setRss] = useState<any>(false)
+  const [gotRss, setGotRss] = useState<boolean>(false)
 
   useHotkeys([['ctrl+K', () => { setResults(0) }],])
 
@@ -81,29 +82,14 @@ const Home: NextPage = () => {
     )
   }
 
-  const getRss = async (rssUrl: string) => {
-    if(rss){return}
-    if(document.location.origin.indexOf('localhost') != -1){
-      rssUrl = "https://rss.com/blog/feed/"
-    }
-    const urlRegex = /(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/;
-    if (!urlRegex.test(rssUrl)) {
-      return;
-    }
-    const res = await fetch(`https://api.allorigins.win/get?url=${rssUrl}`);
-    const { contents } = await res.json();
-    const feed = new window.DOMParser().parseFromString(contents, "text/xml");
-    const items = feed.querySelectorAll("item");
-    const feedItems = [...items].map((el) => ({
-      title: el.querySelector("title")?.innerHTML,
-      description: el.querySelector("description")?.innerHTML,
-      pubDate: el.querySelector("pubDate")?.innerHTML,
-    }));
-    setRss(feedItems);
+  const getRss = (rssUrl: string) => {
+    if(gotRss){return}
+    setGotRss(true)
+    fetch(`${document.location.origin}/api/rss`, {method: 'POST', body: JSON.stringify({'rss': rssUrl})}).then(async resp => {setRss(await resp.json())})
   };
 
   if (typeof window !== 'undefined') {
-    getRss("https://ossia.ml/rss.xml")
+    getRss(`${document.location.origin}/rss.xml`)
   }
 
   const RSSFeed = () => {
@@ -113,7 +99,7 @@ const Home: NextPage = () => {
       <div>
         <Divider my='lg' />
         <Title sx={{ fontFamily: 'Comfortaa, sans-serif', fontSize: '1.5em' }} >Updates</Title>
-        {rss.map((item: any) => {
+        {rss.items.map((item: any) => {
           i++
           return (
             <Card my='sm' key={i} shadow="sm" p="md">
@@ -123,7 +109,7 @@ const Home: NextPage = () => {
                   {(new Date(item.pubDate)).toLocaleString()}
                 </Badge>
               </Text>
-              <Text size="sm" dangerouslySetInnerHTML={{__html: item.description}} />
+              <Text size="sm" dangerouslySetInnerHTML={{__html: item.contentSnippet}} />
             </Card>
           );
         })}
