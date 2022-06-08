@@ -4,8 +4,11 @@ const runtimeCaching = require('next-pwa/cache')
 const nextConfig = {
   reactStrictMode: true,
   pwa: {
-    dest: 'public',
+    dest: "public",
+    register: true,
+    skipWaiting: true,
     runtimeCaching,
+    buildExcludes: [/middleware-manifest.json$/]
   },
 }
 
