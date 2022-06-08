@@ -1,7 +1,4 @@
-export function MetaTags(props: any) : any => {
-    const title = props.title
-    const description = props.description
-    const image = props.image
+const MetaTags => ({title,description,image}) => {
     const Image = () => {
         if(!image){return <div />}
         return (
