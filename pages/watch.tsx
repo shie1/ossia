@@ -84,7 +84,6 @@ const Player: NextPage = () => {
     useEffect(() => {
         if (details && typeof window !== 'undefined') {
             document.title = `${details.videoDetails?.title} | ${document.title}`
-            document.append(<MetaTags title={ `${details.videoDetails?.title} | ${document.title}`} description="Missing..." />)
         }
     }, [details])
 
