@@ -105,7 +105,7 @@ const Home: NextPage = () => {
           return (
             <Card my='sm' key={i} shadow="sm" p="md">
               <Text mb='sm' weight={500} size="lg">
-                <Group spacing={4} direction="row">
+                <Group spacing='sm' direction="row">
                   <span>
                     {item.title}
                   </span>
