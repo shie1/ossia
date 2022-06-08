@@ -1,14 +1,14 @@
-export const MetaTags = ({title,description,image}: any) => {
+export const MetaTags = ({ title, description, image }: any) => {
     const ImageTags = () => {
-        if(!image){return <div />}
+        if (!image) { return <div /> }
         return (
             <>
                 <meta property="og:image" content={image} />
                 <meta name="twitter:image" content={image} />
             </>
-            )
+        )
     }
-    
+
     return (
         <>
             <title>{title}</title>
@@ -17,14 +17,19 @@ export const MetaTags = ({title,description,image}: any) => {
             <meta property="og:type" content="website" />
             <meta property="og:title" content={title} />
             <meta property="og:description" content={description} />
-            
+
+            <meta name='application-name' content={title} />
+            <meta name='apple-mobile-web-app-capable' content='yes' />
+            <meta name='apple-mobile-web-app-status-bar-style' content='default' />
+            <meta name='apple-mobile-web-app-title' content={title} />
+
             <meta name="twitter:card" content="summary_large_image" />
             <meta property="twitter:domain" content="ossia.ml" />
             <meta property="twitter:url" content="https://ossia.ml/" />
             <meta name="twitter:title" content={title} />
             <meta name="twitter:description" content={description} />
-            
+
             <ImageTags />
         </>
-        )
+    )
 }
