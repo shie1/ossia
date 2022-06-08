@@ -19,6 +19,7 @@
     "next-pwa": "^5.5.4",
     "react": "18.1.0",
     "react-dom": "18.1.0",
+    "rfc822-date": "^0.0.3",
     "tabler-icons-react": "^1.48.0",
     "youtube-search-without-api-key": "^1.0.7",
     "ytdl-core": "^4.11.0"

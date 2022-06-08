@@ -123,7 +123,6 @@ const Home: NextPage = () => {
                   {(new Date(item.pubDate)).toLocaleString()}
                 </Badge>
               </Text>
-
               <Text size="sm" dangerouslySetInnerHTML={{__html: item.description}} />
             </Card>
           );
