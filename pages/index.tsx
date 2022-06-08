@@ -81,6 +81,8 @@ const Home: NextPage = () => {
 
   return (
     <>
+      <meta name="title" content="Ossia - Youtube Music Player" />
+      <meta name"description" content="Download and listen to songs from YouTube in the easiest way possible!" />
       <TextInput mb='lg' id='searchInput' onSubmit={(event: any) => { setQuery(event.target.value) }} onChange={(event: any) => { setQuery(event.target.value) }} size='md' placeholder="Search for a song" icon={<Search size={14} />} rightSection={<ConditionalLoader />} />
       <SearchResults />
       <Divider my='lg' />
