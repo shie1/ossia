@@ -70,6 +70,7 @@ const Home: NextPage = () => {
           { maxWidth: 600, cols: 1, spacing: 'sm' },
         ]}>
           {results.map((item: any) => {
+            if(!item.duration_raw){return <></>}
             i++
             return (
               <li style={{ all: 'unset' }} key={i}>
