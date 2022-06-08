@@ -97,7 +97,9 @@ const Home: NextPage = () => {
     setRss(feedItems);
   };
 
-  getRss("https://ossia.ml/rss.xml")
+  if(typeof window !== 'undefined'){
+    getRss("https://ossia.ml/rss.xml")
+  }
 
   const RSSFeed = () => {
     let i = 0
