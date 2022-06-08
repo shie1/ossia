@@ -112,14 +112,8 @@ const Player: NextPage = () => {
         className: 'link'
     });
 
-    const MTD = () => {
-        if(!details){return <></>}
-        return <MetaTags title={`${details.videoDetails?.title} | ${document.title}`} description={details.videoDetails?.description} image={details.videoDetails?.thumbnails[details.videoDetails.thumbnails.length - 1].url} />
-    }
-
     return (
         <>
-            <MTD />
             <LoadingOverlay visible={loading} />
             <audio onLoadedData={() => { setLoading(false) }} style={{ 'display': 'none' }} />
             <Player />
