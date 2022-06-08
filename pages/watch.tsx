@@ -138,7 +138,7 @@ const Player: NextPage = () => {
                     <ActionIcon onClick={mute}>
                         {volume === 0 ? <Volume /> : <VolumeOff />}
                     </ActionIcon>
-                    <a id='download' onClick={(e) => {
+                    <a className='nodim' id='download' onClick={(e) => {
                         showNotification({
                             'title': 'Downloading',
                             'message': 'The download has started, please wait!',

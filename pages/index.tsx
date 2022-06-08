@@ -70,7 +70,7 @@ const Home: NextPage = () => {
           { maxWidth: 600, cols: 1, spacing: 'sm' },
         ]}>
           {results.map((item: any) => {
-            if(!item.duration_raw){return <></>}
+            if (!item.duration_raw) { return <></> }
             i++
             return (
               <li style={{ all: 'unset' }} key={i}>
@@ -84,9 +84,9 @@ const Home: NextPage = () => {
   }
 
   const getRss = (rssUrl: string) => {
-    if(gotRss){return}
+    if (gotRss) { return }
     setGotRss(true)
-    fetch(`${document.location.origin}/api/rss`, {method: 'POST', body: JSON.stringify({'rss': rssUrl})}).then(async resp => {setRss(await resp.json())})
+    fetch(`${document.location.origin}/api/rss`, { method: 'POST', body: JSON.stringify({ 'rss': rssUrl }) }).then(async resp => { setRss(await resp.json()) })
   };
 
   if (typeof window !== 'undefined') {
@@ -105,12 +105,16 @@ const Home: NextPage = () => {
           return (
             <Card my='sm' key={i} shadow="sm" p="md">
               <Text mb='sm' weight={500} size="lg">
-                {item.title} <Space w="sm"/>
-                <Badge color="blue" variant="light">
-                  {(new Date(item.pubDate)).toLocaleString()}
-                </Badge>
+                <Group spacing={4} direction="row">
+                  <span>
+                    {item.title}
+                  </span>
+                  <Badge color="blue" variant="light">
+                    {(new Date(item.pubDate)).toLocaleString()}
+                  </Badge>
+                </Group>
               </Text>
-              <Text size="sm" dangerouslySetInnerHTML={{__html: item.contentSnippet}} />
+              <Text size="sm" dangerouslySetInnerHTML={{ __html: item.contentSnippet }} />
             </Card>
           );
         })}
