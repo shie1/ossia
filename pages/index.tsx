@@ -104,9 +104,9 @@ const Home: NextPage = () => {
           i++
           return (
             <Card my='sm' key={i} shadow="sm" p="md">
-              <Text mb='sm' weight={500} size="lg">
+              <Text mb='sm' mr='sm' weight={500} size="lg">
                 {item.title}
-                <Badge color="blue" mx='sm' variant="light">
+                <Badge color="blue" variant="light">
                   {(new Date(item.pubDate)).toLocaleString()}
                 </Badge>
               </Text>
