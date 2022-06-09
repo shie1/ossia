@@ -6,8 +6,8 @@ export default async function handler(
     res: NextApiResponse<object>
 ) {
     const app: Object = {
-        'version': "1.0.3",
-        'fullName': "Ossia Music Player (BETA)"
+        'version': "1.1.0",
+        'fullName': "Ossia Music Player (Early Access)"
     }
     res.status(200).json(app)
 }
