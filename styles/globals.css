@@ -27,13 +27,13 @@ a:not(.title a, .nodim):hover {
 
 body::-webkit-scrollbar-track
 {
-	background-color: #1A1B1E;
+	background-color: #151617;
 }
 
 body::-webkit-scrollbar
 {
 	width: 14px;
-	background-color: #1A1B1E;
+	background-color: inherit;
 }
 
 body::-webkit-scrollbar-thumb
