@@ -106,7 +106,7 @@ const Home: NextPage = () => {
     return (
       <div>
         <Divider my='lg' />
-        <Title mb={4} sx={{ fontFamily: 'Comfortaa, sans-serif', fontSize: '1.5em' }} >Updates</Title>
+        <Title mb={4} sx={{ fontFamily: 'Comfortaa, sans-serif', fontSize: '1.5em' }} >Blog</Title>
         <div style={{ display: 'flex', flexDirection: 'column-reverse' }}>
           {rss.channel[0].item.map((item: any) => {
             i++
