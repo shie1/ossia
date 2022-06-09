@@ -11,11 +11,24 @@ const Home: NextPage = () => {
   const [results, setResults] = useState<any>(0)
   const [rss, setRss] = useState<any>(false)
   const [gotRss, setGotRss] = useState<boolean>(false)
+  const [fl, setFl] = useState<boolean>(true)
 
   useHotkeys([['ctrl+K', () => { setResults(0) }],])
 
   if (typeof window !== 'undefined') {
     document.title = "Ossia"
+  }
+
+  const setSong = async (video: string) => {
+    const details: any = await (await fetch(`${document.location.origin}/api/details?v=${video}`)).json()
+    const detailsE = document.querySelector('#songDetails') as HTMLDivElement
+    const audioE = document.querySelector('audio') as HTMLAudioElement
+    detailsE.querySelector('h1')!.innerText = details.videoDetails.title
+    detailsE.querySelector('h2')!.innerText = details.videoDetails.author.name
+    detailsE.querySelector('div')!.innerText = video
+    detailsE.querySelector('span')!.innerText = details.videoDetails?.thumbnails[details.videoDetails.thumbnails.length - 1].url
+    detailsE.querySelector('p')!.innerText = details.videoDetails?.description
+    audioE.src = `${document.location.origin}/api/stream?v=${video}`
   }
 
   useEffect(() => {
@@ -42,23 +55,18 @@ const Home: NextPage = () => {
   const SearchResults = () => {
     let i = 0
     if (typeof results != 'object') { return <></>; }
-    console.log(results)
-    const Duration = ({ duration }: any) => {
-      if (!duration) { return <></> }
-      return (<Badge color="pink" variant="light">
-        {duration}
-      </Badge>)
-    }
     const Video = ({ video }: any) => {
       return (
-        <Card sx={{ cursor: 'pointer', transition: '100ms', ":hover": { transform: 'scale(1.05)' } }} shadow="sm" p="lg" onClick={() => { window.open(`${location.origin}/watch?v=${video.id.videoId}`, '_self') }}>
+        <Card sx={{ cursor: 'pointer', transition: '100ms', ":hover": { transform: 'scale(1.05)' } }} shadow="sm" p="lg" onClick={() => { setSong(video.id.videoId) }}>
           <Card.Section>
             <Image src={video.snippet.thumbnails.high.url} alt={video.title} />
           </Card.Section>
 
           <Group position="apart" mt='sm'>
             <Text sx={{ display: '-webkit-box', textOverflow: 'ellipsis', overflow: 'hidden', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical' }} weight={500}>{video.title}</Text>
-            <Duration duration={video.snippet.duration} />
+            <Badge color="pink" variant="light">
+              {video.snippet.duration}
+            </Badge>
           </Group>
         </Card>
       )
@@ -91,7 +99,6 @@ const Home: NextPage = () => {
 
   if (typeof window !== 'undefined') {
     getRss(`${document.location.origin}/rss.xml`)
-    console.log(rss)
   }
 
   const RSSFeed = () => {
@@ -101,7 +108,7 @@ const Home: NextPage = () => {
       <div>
         <Divider my='lg' />
         <Title mb={4} sx={{ fontFamily: 'Comfortaa, sans-serif', fontSize: '1.5em' }} >Updates</Title>
-        <div style={{display: 'flex', flexDirection: 'column-reverse'}}>
+        <div style={{ display: 'flex', flexDirection: 'column-reverse' }}>
           {rss.channel[0].item.map((item: any) => {
             i++
             return (

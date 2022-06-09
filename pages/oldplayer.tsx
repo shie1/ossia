@@ -1,5 +1,5 @@
 import { ActionIcon, Box, Container, Divider, Group, Image, InputWrapper, LoadingOverlay, Progress, SimpleGrid, Slider, Text, Title, Button, Space } from '@mantine/core';
-import { useHotkeys } from '@mantine/hooks';
+import { useHotkeys, useLocalStorage } from '@mantine/hooks';
 import { showNotification } from '@mantine/notifications';
 import type { NextPage } from 'next'
 import Link from 'next/link';
@@ -7,14 +7,21 @@ import { createElement, useEffect, useRef, useState } from 'react';
 import { PlayerPause, PlayerPlay, VolumeOff, Volume, Download, BrandYoutube } from 'tabler-icons-react';
 import { MetaTags } from "../functions"
 import Autolinker from "autolinker"
+import type {videoInfo} from 'ytdl-core';
 
 const Player: NextPage = () => {
     const [id, setID]: any = useState("")
     const [paused, setPaused] = useState(true)
     const [details, setDetails] = useState<any>(false)
-    const [loading, setLoading] = useState(true)
-    const [volume, setVolume] = useState(100)
     const [prevVol, setPrevVol] = useState(100)
+    const [volume, setVolume] = useLocalStorage<any>({
+        key: 'volume',
+        defaultValue: 100,
+    });
+    const [loading, setLoading] = useLocalStorage<boolean>({
+        key: 'loading',
+        defaultValue: false,
+      });
     if (typeof window !== 'undefined' && !id) {
         setID((new URLSearchParams(window.location.search).get('v')))
     }
@@ -41,8 +48,7 @@ const Player: NextPage = () => {
     }
 
     useHotkeys([["M", () => { mute() }],
-    ['space', () => { setPaused(!paused) }],
-    ['ctrl+L', () => { setLoading(false) }]])
+    ['space', () => { setPaused(!paused) }],])
 
     useEffect(() => {
         if (typeof window !== 'undefined' && id !== 'dev') {
@@ -73,6 +79,16 @@ const Player: NextPage = () => {
         }
     }, [id, details])
 
+    useEffect(()=>{
+        if(details){
+            const detailsD = document.querySelector('#songDetails') as HTMLDivElement
+            detailsD.querySelector('h1')!.innerText = details.videoDetails.title
+            detailsD.querySelector('h2')!.innerText = details.videoDetails.author.name
+            detailsD.querySelector('span')!.innerText = details.videoDetails?.thumbnails[details.videoDetails.thumbnails.length - 1].url
+            detailsD.querySelector('p')!.innerText = details.videoDetails?.description
+        }
+    },[details])
+
     useEffect(() => {
         if (typeof window !== 'undefined') {
             const player = document.getElementsByTagName('audio')[0]
@@ -102,6 +118,7 @@ const Player: NextPage = () => {
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
+            console.log(volume / 100)
             document.getElementsByTagName('audio')[0].volume = volume / 100
         }
     }, [volume])
@@ -114,8 +131,6 @@ const Player: NextPage = () => {
 
     return (
         <>
-            <LoadingOverlay visible={loading} />
-            <audio onLoadedData={() => { setLoading(false) }} style={{ 'display': 'none' }} />
             <Player />
             <div style={{ margin: '0 10vw' }}>
                 <Group mb={2} spacing={4} direction='row'>
@@ -139,7 +154,7 @@ const Player: NextPage = () => {
                             'icon': <Download />,
                             'id': 'Download'
                         })
-                    }} download={id}>
+                    }} download>
                         <ActionIcon>
                             <Download />
                         </ActionIcon>
