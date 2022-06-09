@@ -7,20 +7,13 @@ import { useEffect, useState } from 'react';
 import { useHotkeys, useLocalStorage } from '@mantine/hooks';
 import Link from 'next/link';
 import { BrandYoutube, PlayerPause, PlayerPlay, Volume, VolumeOff, Download } from 'tabler-icons-react'
-import Autolinker from 'autolinker';
-
-var autolinker = new Autolinker({
-  newWindow: true,
-  sanitizeHtml: true,
-  className: 'link'
-});
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
     key: 'color-scheme',
     defaultValue: 'dark',
   });
-  const [volume, setVolume] = useState<number>(100)
+  const [volume, setVolume] = useState(100)
   const [loading, setLoading] = useState<boolean>(false)
   const [dw, setDw] = useState(false)
   const [fl, setFl] = useState<boolean>(true)
@@ -80,7 +73,6 @@ function MyApp({ Component, pageProps }: AppProps) {
   }
 
   useHotkeys([
-    ['ctrl+J', () => { toggleColorScheme() }],
     ['space', play],
     ['m', mute]
   ])
@@ -104,7 +96,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <Image mb='sm' alt='a' src={document?.querySelector("#songDetails span")?.innerHTML} />
         <Group mb={1} spacing={4} direction='row'>
           <Text size='xl'>{document?.querySelector("#songDetails h1")?.innerHTML}</Text>
-          <a id='videoURL' target='_blank' rel="noreferrer">
+          <a href={`https://youtu.be/${document?.querySelector("#songDetails div")?.innerHTML}`} target='_blank' rel="noreferrer">
             <ActionIcon variant='transparent'>
               <BrandYoutube />
             </ActionIcon>
@@ -127,7 +119,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           <ActionIcon onClick={play}>
             {paused ? <PlayerPlay /> : <PlayerPause />}
           </ActionIcon>
-          <a href={document?.querySelector("#songDetails div")?.innerHTML} className='nodim' id='download' onClick={() => {
+          <a href={`${document?.location.origin}/api/stream?v=${document?.querySelector("#songDetails div")?.innerHTML}`} className='nodim' id='download' onClick={() => {
             showNotification({
               'title': 'Downloading',
               'message': 'The download has started, please wait!',
@@ -154,14 +146,14 @@ function MyApp({ Component, pageProps }: AppProps) {
             </div>
 
             <LoadingOverlay visible={loading} />
-            <audio onPause={() => { setPaused(true) }} onPlay={() => { setPaused(false) }} onLoadStart={() => { setLoading(true) }} onLoadedData={() => { setLoading(false) }} style={{ 'display': 'none' }} />
+            <audio autoPlay onChange={() => { setLoading(true) }} onEnded={() => { setPaused(true) }} onPause={() => { setPaused(true) }} onPlay={() => { setPaused(false) }} onLoadStart={() => { setLoading(true) }} onLoadedData={() => { setLoading(false) }} style={{ 'display': 'none' }} />
             <Modal
               opened={!online}
               onClose={() => { }}
               title="Page offline"
               withCloseButton={false}
             >
-              <Text>Can&apos;t connect to server, please check your internet connection!</Text>
+              <Text>Can&apos;t connect to the server, please check your internet connection!</Text>
             </Modal>
             <Container p='sm'>
               <Title className='title' sx={{ fontFamily: 'Comfortaa, sans-serif' }} mb='sm' align='center'><Link href='/'>Ossia</Link></Title>
@@ -169,19 +161,18 @@ function MyApp({ Component, pageProps }: AppProps) {
             </Container>
             <Affix sx={{ padding: '.2rem', opacity: '.75' }}>
               <Text>{appInfo.fullName} {appInfo.version}</Text>
+              {!dw ? <ActionIcon variant='outline' size='xl' m='sm' onClick={() => { setDw(!dw) }} sx={{ position: 'fixed', bottom: 0, left: 0, background: 'rgba(0,0,0,.5)' }}>
+                <PlayerPlay />
+              </ActionIcon> : <></>}
             </Affix>
             <Drawer
               opened={dw}
               onClose={() => setDw(false)}
-              title="Player"
               padding="xl"
               size="xl"
             >
               <Player />
             </Drawer>
-            {!dw ? <ActionIcon variant='outline' size='xl' m='sm' onClick={() => { setDw(!dw) }} sx={{ position: 'fixed', bottom: 0, left: 0 }}>
-              <PlayerPlay />
-            </ActionIcon> : <></>}
             <Space h='xl' />
           </NotificationsProvider>
         </ModalsProvider>

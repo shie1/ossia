@@ -11,7 +11,6 @@ const Home: NextPage = () => {
   const [results, setResults] = useState<any>(0)
   const [rss, setRss] = useState<any>(false)
   const [gotRss, setGotRss] = useState<boolean>(false)
-  const [fl, setFl] = useState<boolean>(true)
 
   useHotkeys([['ctrl+K', () => { setResults(0) }],])
 
@@ -20,15 +19,15 @@ const Home: NextPage = () => {
   }
 
   const setSong = async (video: string) => {
-    const details: any = await (await fetch(`${document.location.origin}/api/details?v=${video}`)).json()
-    const detailsE = document.querySelector('#songDetails') as HTMLDivElement
     const audioE = document.querySelector('audio') as HTMLAudioElement
+    audioE.src = `${document.location.origin}/api/stream?v=${video}`
+    const detailsE = document.querySelector('#songDetails') as HTMLDivElement
+    const details: any = await (await fetch(`${document.location.origin}/api/details?v=${video}`)).json()
     detailsE.querySelector('h1')!.innerText = details.videoDetails.title
     detailsE.querySelector('h2')!.innerText = details.videoDetails.author.name
     detailsE.querySelector('div')!.innerText = video
     detailsE.querySelector('span')!.innerText = details.videoDetails?.thumbnails[details.videoDetails.thumbnails.length - 1].url
     detailsE.querySelector('p')!.innerText = details.videoDetails?.description
-    audioE.src = `${document.location.origin}/api/stream?v=${video}`
   }
 
   useEffect(() => {
