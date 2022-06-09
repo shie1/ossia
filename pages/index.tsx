@@ -118,11 +118,12 @@ const Home: NextPage = () => {
                       {item.title}
                     </span>
                     <Badge color="blue" variant="light">
-                      {(new Date(item.pubDate)).toLocaleString()}
+                      {item.category}
                     </Badge>
                   </Group>
                 </Text>
-                <Text size="sm" dangerouslySetInnerHTML={{ __html: item.description }} />
+                <Text mb='sm' size="sm" dangerouslySetInnerHTML={{ __html: item.description }} />
+                <Text sx={{opacity: '.7'}} size='xs'>Posted on: {(new Date(item.pubDate)).toLocaleString()}</Text>
               </Card>
             );
           })}
