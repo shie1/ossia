@@ -20,7 +20,6 @@ export default async function handler(
     if(rb.password != 'OpLkÉá123!'){return res.status(500)}
     const xml = await fsPromises.readFile(path.join(process.cwd(), "public/rss.xml"), "utf-8")
     xml2js.parseString(xml, (err, data) => {
-        console.log(data.rss.channel[0].item)
         data.rss.channel[0].item.push({
             "title": [rb.title],
             "guid": [`https://ossia.ml/post?p=${data.rss.channel[0].item.length}`],

@@ -18,5 +18,12 @@
       <description>The title sums it up... I removed live streams (previously seen as videos with no length) from the search page because Ossia can't actually play them.</description>
       <pubDate>Wed, 08 Jun 2022 17:55:20 +0200</pubDate>
     </item>
+    <item>
+      <title>Version 1.1.0 - The new and improved sidebar</title>
+      <guid>https://ossia.ml/post?p=2</guid>
+      <category>Update</category>
+      <description>Version 1.1.0 is released. Say goodbye to the old player, say hello to the sidebar! Seamlessly switch between songs without the silence. Search for song while listening and just press the song for autoplay! (I also fixed the player's pause/play state, so no more double pressing.)</description>
+      <pubDate>Thu, 09 Jun 2022 21:07:31 +0200</pubDate>
+    </item>
   </channel>
 </rss>
