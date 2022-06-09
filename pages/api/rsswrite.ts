@@ -3,8 +3,8 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import fs from "fs"
 import xml2js from "xml2js"
 import path from "path"
-import rfc from "rfc822-date"
 
+const rfc: any = require("rfc822-date)
 const fsPromises = fs.promises;
 
 const prepend = (value: any, array: any) => {
