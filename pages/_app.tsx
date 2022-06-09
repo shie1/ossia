@@ -1,12 +1,12 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
-import { Affix, ColorScheme, ColorSchemeProvider, MantineProvider, Modal, Text, Title, Container, Space, LoadingOverlay, Drawer, ActionIcon, Image, Divider, InputWrapper, Slider, Group } from '@mantine/core'
+import { Affix, Header, MantineProvider, Modal, Text, Title, Container, Space, LoadingOverlay, Drawer, ActionIcon, Image, Divider, InputWrapper, Slider, Group, AppShell, Navbar } from '@mantine/core'
 import { ModalsProvider } from '@mantine/modals';
 import { NotificationsProvider, showNotification } from '@mantine/notifications'
 import { useEffect, useState } from 'react';
 import { useHotkeys, useLocalStorage } from '@mantine/hooks';
 import Link from 'next/link';
-import { BrandYoutube, PlayerPause, PlayerPlay, Volume, VolumeOff, Download } from 'tabler-icons-react'
+import { BrandYoutube, PlayerPause, PlayerPlay, Volume, VolumeOff, Download, Heart } from 'tabler-icons-react'
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [volume, setVolume] = useState(100)
@@ -127,25 +127,33 @@ function MyApp({ Component, pageProps }: AppProps) {
           </div>
           <LoadingOverlay visible={loading} />
           <audio autoPlay onChange={() => { setLoading(true) }} onEnded={() => { setPaused(true) }} onPause={() => { setPaused(true) }} onPlay={() => { setPaused(false) }} onLoadStart={() => { setLoading(true) }} onLoadedData={() => { setLoading(false) }} style={{ 'display': 'none' }} />
-          <Container p='sm'>
-            <Title className='title' sx={{ fontFamily: 'Comfortaa, sans-serif' }} mb='sm' align='center'><Link href='/'>Ossia</Link></Title>
-            <Component {...pageProps} />
-          </Container>
-          <Affix sx={{ padding: '.2rem', opacity: '.75' }}>
-            <Text>{appInfo.fullName} {appInfo.version}</Text>
-            {!dw ? <ActionIcon variant='outline' size='xl' m='sm' onClick={() => { setDw(!dw) }} sx={{ position: 'fixed', bottom: 0, left: 0, background: 'rgba(0,0,0,.5)' }}>
-              <PlayerPlay />
-            </ActionIcon> : <></>}
-          </Affix>
-          <Drawer
-            opened={dw}
-            onClose={() => setDw(false)}
-            padding="xl"
-            size="xl"
-          >
-            <Player />
-          </Drawer>
-          <Space h='xl' />
+          <AppShell
+            header={
+              <Header height={60} p="xs">
+                <Group sx={{display: 'flex',alignItems: 'center', justifyContent: 'center'}} position='center' direction='row'>
+                  <Title className='title' sx={{ fontFamily: 'Comfortaa, sans-serif' }} mb='sm'><Link href='/'>Ossia</Link></Title>
+                </Group>
+              </Header>
+            }>
+            <Container p='sm'>
+              <Component {...pageProps} />
+              <Affix sx={{ padding: '.2rem .4rem', opacity: '.75' }}>
+                <Text>{appInfo.fullName} {appInfo.version}</Text>
+                {!dw ? <ActionIcon variant='outline' size='xl' m='sm' onClick={() => { setDw(!dw) }} sx={{ position: 'fixed', bottom: 0, left: 0, background: 'rgba(0,0,0,.5)' }}>
+                  <PlayerPlay />
+                </ActionIcon> : <></>}
+              </Affix>
+              <Drawer
+                opened={dw}
+                onClose={() => setDw(false)}
+                padding="xl"
+                size="xl"
+              >
+                <Player />
+              </Drawer>
+              <Space h='xl' />
+            </Container>
+          </AppShell>
         </NotificationsProvider>
       </ModalsProvider>
     </MantineProvider>

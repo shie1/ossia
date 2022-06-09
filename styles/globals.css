@@ -24,3 +24,19 @@ a:not(.title a, .nodim):hover {
 * {
   box-sizing: border-box;
 }
+
+body::-webkit-scrollbar-track
+{
+	background-color: #1A1B1E;
+}
+
+body::-webkit-scrollbar
+{
+	width: 14px;
+	background-color: #1A1B1E;
+}
+
+body::-webkit-scrollbar-thumb
+{
+	background-color: #25262B;
+}
