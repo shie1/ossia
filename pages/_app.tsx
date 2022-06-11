@@ -1,12 +1,12 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
-import { Affix, Header, MantineProvider, Modal, Text, Title, Container, Space, LoadingOverlay, Drawer, ActionIcon, Image, Divider, InputWrapper, Slider, Group, AppShell, Navbar } from '@mantine/core'
+import { Affix, Header, MantineProvider, Modal, Text, Title, Container, Space, LoadingOverlay, Drawer, ActionIcon, Image, Divider, InputWrapper, Slider, Group, AppShell, Navbar, Popover } from '@mantine/core'
 import { ModalsProvider } from '@mantine/modals';
 import { NotificationsProvider, showNotification } from '@mantine/notifications'
 import { useEffect, useState } from 'react';
 import { useHotkeys, useLocalStorage } from '@mantine/hooks';
 import Link from 'next/link';
-import { BrandYoutube, PlayerPause, PlayerPlay, Volume, VolumeOff, Download, Heart } from 'tabler-icons-react'
+import { BrandYoutube, PlayerPause, PlayerPlay, Volume, VolumeOff, Download, Heart, Clock } from 'tabler-icons-react'
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [volume, setVolume] = useState(100)
@@ -118,6 +118,30 @@ function MyApp({ Component, pageProps }: AppProps) {
     )
   }
 
+  const FooterButton = ({text,icon,link}:any) => {
+    const [po, setPo] = useState(false)
+
+    return (
+      <Popover
+        target={
+          <Link prefetch href={link}>
+            <ActionIcon onMouseLeave={() => { setPo(false) }} onMouseEnter={() => { setPo(true) }} size='lg'>
+              {icon}
+            </ActionIcon>
+          </Link>
+        }
+        opened={po}
+        onClose={() => { setPo(false) }}
+        position="top"
+        spacing='sm'
+        shadow='xl'
+        withArrow
+      >
+        <Text>{text}</Text>
+      </Popover>
+    )
+  }
+
   return (
     <MantineProvider theme={{ colorScheme: 'dark' }} withGlobalStyles withNormalizeCSS>
       <ModalsProvider>
@@ -130,10 +154,16 @@ function MyApp({ Component, pageProps }: AppProps) {
           <AppShell
             header={
               <Header height={60} p="xs">
-                <Group sx={{display: 'flex',alignItems: 'center', justifyContent: 'center'}} position='center' direction='row'>
+                <Group sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} position='center' direction='row'>
                   <Title className='title' sx={{ fontFamily: 'Comfortaa, sans-serif' }} mb='sm'><Link href='/'>Ossia</Link></Title>
                 </Group>
               </Header>
+            }
+            footer={
+              <Group spacing='sm' p='md' position="center" id='center'>
+                <FooterButton text="Liked songs" icon={<Heart />} link="/liked" />
+                <FooterButton text="Recently played" icon={<Clock />} link="/history" />
+              </Group>
             }>
             <Container p='sm'>
               <Component {...pageProps} />
@@ -151,7 +181,6 @@ function MyApp({ Component, pageProps }: AppProps) {
               >
                 <Player />
               </Drawer>
-              <Space h='xl' />
             </Container>
           </AppShell>
         </NotificationsProvider>
