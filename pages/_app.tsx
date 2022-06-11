@@ -118,7 +118,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     )
   }
 
-  const FooterButton = ({text,icon,link}:any) => {
+  const FooterButton = ({ text, icon, link }: any) => {
     const [po, setPo] = useState(false)
 
     return (
@@ -160,10 +160,13 @@ function MyApp({ Component, pageProps }: AppProps) {
               </Header>
             }
             footer={
-              <Group spacing='sm' p='md' position="center" id='center'>
-                <FooterButton text="Liked songs" icon={<Heart />} link="/liked" />
-                <FooterButton text="Recently played" icon={<Clock />} link="/history" />
-              </Group>
+              <>
+                <Group spacing='sm' p='md' position="center" id='center'>
+                  <FooterButton text="Liked songs" icon={<Heart />} link="/liked" />
+                  <FooterButton text="Recently played" icon={<Clock />} link="/history" />
+                </Group>
+                <Space h='md' />
+              </>
             }>
             <Container p='sm'>
               <Component {...pageProps} />
