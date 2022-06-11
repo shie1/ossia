@@ -125,7 +125,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Popover
         target={
           <Link prefetch href={link}>
-            <ActionIcon onMouseLeave={() => { setPo(false) }} onMouseEnter={() => { setPo(true) }} size='lg'>
+            <ActionIcon onMouseLeave={() => { setPo(false) }} onMouseEnter={() => { setPo(true) }} size='xl'>
               {icon}
             </ActionIcon>
           </Link>
