@@ -1,9 +1,9 @@
-import { Card, Container, Divider, Group, Loader, Text, TextInput, Title, Button, Image, Badge, SimpleGrid, Space } from '@mantine/core'
+import { Card, Container, Divider, Group, Loader, Text, TextInput, Title, Button, Image, Badge, SimpleGrid, Space, Tabs } from '@mantine/core'
 import { useHotkeys } from '@mantine/hooks'
 import type { NextPage } from 'next'
 import Link from 'next/link';
 import { useEffect, useState } from 'react'
-import { Search } from 'tabler-icons-react'
+import { InfoCircle, Note, Search } from 'tabler-icons-react'
 import { MetaTags } from '../functions';
 
 const Home: NextPage = () => {
@@ -105,8 +105,6 @@ const Home: NextPage = () => {
     if (!rss) { return <></> }
     return (
       <div>
-        <Divider my='lg' />
-        <Title mb={4} sx={{ fontFamily: 'Comfortaa, sans-serif', fontSize: '1.5em' }} >Blog</Title>
         <div style={{ display: 'flex', flexDirection: 'column-reverse' }}>
           {rss.channel[0].item.map((item: any) => {
             i++
@@ -123,7 +121,7 @@ const Home: NextPage = () => {
                   </Group>
                 </Text>
                 <Text mb='sm' size="sm" dangerouslySetInnerHTML={{ __html: item.description }} />
-                <Text sx={{opacity: '.7'}} size='xs'>Posted on: {(new Date(item.pubDate)).toLocaleString()}</Text>
+                <Text sx={{ opacity: '.7' }} size='xs'>Posted on: {(new Date(item.pubDate)).toLocaleString()}</Text>
               </Card>
             );
           })}
@@ -138,11 +136,16 @@ const Home: NextPage = () => {
       <TextInput mb='lg' id='searchInput' onSubmit={(event: any) => { setQuery(event.target.value) }} onChange={(event: any) => { setQuery(event.target.value) }} size='md' placeholder="Search for a song" icon={<Search size={14} />} rightSection={<ConditionalLoader />} />
       <SearchResults />
       <Divider my='lg' />
-      <Title sx={{ fontFamily: 'Comfortaa, sans-serif', fontSize: '1.5em' }}>About Osssia</Title>
-      <Text>Ossia is a free to use YouTube client designed for listening to music.
-        This indie project is being made and maintained by Shie1 in its early access stage since 2022-06-05.
-      </Text>
-      <RSSFeed />
+      <Tabs>
+        <Tabs.Tab label="About Ossia" icon={<InfoCircle />}>
+          <Text>Ossia is a free to use YouTube client designed for listening to music.
+            This indie project is being made and maintained by Shie1 in its early access stage since 2022-06-05.
+          </Text>
+        </Tabs.Tab>
+        <Tabs.Tab label="Blog" icon={<Note />}>
+          <RSSFeed />
+        </Tabs.Tab>
+      </Tabs>
     </>
   )
 }
