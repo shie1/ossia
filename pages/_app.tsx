@@ -9,12 +9,16 @@ import Link from 'next/link';
 import { BrandYoutube, PlayerPause, PlayerPlay, Volume, VolumeOff, Download, Books, Home, Heart, Heartbeat, X } from 'tabler-icons-react'
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const [volume, setVolume] = useState(100)
+  const [volume, setVolume] = useLocalStorage({
+    key: 'volume', defaultValue: 100
+  })
   const [loading, setLoading] = useState<boolean>(false)
   const [dw, setDw] = useState(false)
   const [prevVol, setPrevVol] = useState(100)
   const [appInfo, setAppInfo] = useState<any>(false)
-  const [paused, setPaused] = useState(true)
+  const [paused, setPaused] = useLocalStorage(
+    { key: 'paused', defaultValue: true }
+  )
   const [liked, setLiked] = useLocalStorage<Array<any>>(
     { key: 'liked-songs', defaultValue: [] }
   );
@@ -225,22 +229,22 @@ function MyApp({ Component, pageProps }: AppProps) {
               </Header>
             }
             footer={
-              <>
+              <div style={{borderTop: '1px solid #2C2E33'}}>
                 <Group spacing='sm' p='md' position="center" id='center'>
                   <FooterButton icon={<Home />} text="Home" link="/" />
                   <FooterButton icon={<Books />} text="Library" link="/library" />
                   <FooterButton icon={<PlayerPlay />} text="Player" link="/player" />
                 </Group>
                 <Space h='md' />
-              </>
+              </div>
             }>
             <Container p='sm'>
               <Component {...pageProps} />
               <Affix sx={{ padding: '.2rem .4rem', opacity: '.75' }}>
                 <Text>{appInfo.shortName} {appInfo.version}</Text>
-                {!dw ? <ActionIcon variant='outline' size='xl' m='sm' onClick={() => { setDw(!dw) }} sx={{ position: 'fixed', bottom: 0, left: 0, background: 'rgba(0,0,0,.5)' }}>
+                {!dw && typeof window !== 'undefined' ? location.pathname !== '/player' ? <ActionIcon variant='outline' size='xl' m='sm' onClick={() => { setDw(!dw) }} sx={{ position: 'fixed', bottom: 0, left: 0, background: 'rgba(0,0,0,.5)' }}>
                   <PlayerPlay />
-                </ActionIcon> : <></>}
+                </ActionIcon> : <></> : <></>}
               </Affix>
               <Drawer
                 opened={dw}
