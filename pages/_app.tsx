@@ -223,7 +223,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           <div style={{ display: 'none' }} id='songDetails'>
             <h1 /><h2 /><div /><span /><p />
           </div>
-          <LoadingOverlay visible={loading} />
+          <LoadingOverlay sx={{position: "sticky"}} visible={loading} />
           <audio autoPlay onChange={() => { setLoading(true) }} onEnded={() => { setPaused(true) }} onPause={() => { setPaused(true) }} onPlay={() => { setPaused(false) }} onLoadStart={(e: any) => {
             if (e.target.src.startsWith(`${document.location.origin}/api/`)) {
               setLoading(true)
