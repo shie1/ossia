@@ -31,12 +31,12 @@ const Library: NextPage = () => {
 
     const SongList = ({ list, d, set }: any) => {
         const [po,setPo] = useState(false)
+        const stuff = list.reverse()
         useEffect(() => {
-            const stuff = list.reverse()
             if (d[0] !== stuff) {
                 d[1](stuff)
             }
-        }, [d, list])
+        }, [d, stuff])
         let i = 0
         if (d[0].length == 0) {
             return <></>
