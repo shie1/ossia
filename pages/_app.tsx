@@ -229,6 +229,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                 <Group spacing='sm' p='md' position="center" id='center'>
                   <FooterButton icon={<Home />} text="Home" link="/" />
                   <FooterButton icon={<Books />} text="Library" link="/library" />
+                  <FooterButton icon={<PlayerPlay />} text="Player" link="/player" />
                 </Group>
                 <Space h='md' />
               </>

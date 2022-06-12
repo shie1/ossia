@@ -140,7 +140,7 @@ const Home: NextPage = () => {
       <Divider my='lg' />
       <Tabs>
         <Tabs.Tab label="About" icon={<InfoCircle />}>
-          <Paper p='sm' mt='sm'>
+          <Paper withBorder p='sm' mt='sm'>
             Ossia is a free to use YouTube client designed for listening to music.
             This indie project is being made and maintained by Shie1 in its early access stage since 2022-06-05.
           </Paper>
