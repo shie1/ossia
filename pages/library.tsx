@@ -32,7 +32,10 @@ const Library: NextPage = () => {
     const SongList = ({ list, d, set }: any) => {
         const [po,setPo] = useState(false)
         useEffect(() => {
-            const stuff = list.reverse()
+            const stuff = list
+            stuff.sort((a: any,b: any) => {
+                return (new Date(a.added)).getTime() - (new Date(b.added)).getTime()
+            })
             if (d[0] !== stuff) {
                 d[1](stuff)
             }
