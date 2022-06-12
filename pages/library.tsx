@@ -34,7 +34,7 @@ const Library: NextPage = () => {
         useEffect(() => {
             const stuff = list
             stuff.sort((a: any,b: any) => {
-                return (new Date(a.added)).getTime() - (new Date(b.added)).getTime()
+                return (new Date(b.added)).getTime() - (new Date(a.added)).getTime()
             })
             if (d[0] !== stuff) {
                 d[1](stuff)
