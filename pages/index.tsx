@@ -1,9 +1,9 @@
-import { Card, Container, Divider, Group, Loader, Text, TextInput, Title, Button, Image, Badge, SimpleGrid, Space, Tabs } from '@mantine/core'
+import { Card, Container, Divider, Group, Loader, Text, TextInput, Title, Button, Image, Badge, SimpleGrid, Space, Tabs, ActionIcon, Paper, AspectRatio } from '@mantine/core'
 import { useHotkeys } from '@mantine/hooks'
 import type { NextPage } from 'next'
 import Link from 'next/link';
 import { useEffect, useState } from 'react'
-import { InfoCircle, Note, Search } from 'tabler-icons-react'
+import { InfoCircle, Note, Search, X } from 'tabler-icons-react'
 import { MetaTags } from '../functions';
 
 const Home: NextPage = () => {
@@ -58,7 +58,9 @@ const Home: NextPage = () => {
       return (
         <Card sx={{ cursor: 'pointer', transition: '100ms', ":hover": { transform: 'scale(1.05)' } }} shadow="sm" p="lg" onClick={() => { setSong(video.id.videoId) }}>
           <Card.Section>
-            <Image src={video.snippet.thumbnails.high.url} alt={video.title} />
+            <AspectRatio ratio={1280 / 720}>
+              <Image src={video.snippet.thumbnails.high.url} alt={video.title} />
+            </AspectRatio>
           </Card.Section>
 
           <Group position="apart" mt='sm'>
@@ -133,14 +135,15 @@ const Home: NextPage = () => {
   return (
     <>
       <MetaTags title="Ossia - YouTube Music Player" description="Ossia is a free to use YouTube client designed for listening to music." image="/preview.png" />
-      <TextInput mb='lg' id='searchInput' onSubmit={(event: any) => { setQuery(event.target.value) }} onChange={(event: any) => { setQuery(event.target.value) }} size='md' placeholder="Search for a song" icon={<Search size={14} />} rightSection={<ConditionalLoader />} />
+      <TextInput mb='sm' id='searchInput' onSubmit={(event: any) => { setQuery(event.target.value) }} onChange={(event: any) => { setQuery(event.target.value) }} size='md' placeholder="Search for a song" icon={<Search size={14} />} rightSection={<ConditionalLoader />} />
       <SearchResults />
       <Divider my='lg' />
       <Tabs>
-        <Tabs.Tab label="About Ossia" icon={<InfoCircle />}>
-          <Text>Ossia is a free to use YouTube client designed for listening to music.
+        <Tabs.Tab label="About" icon={<InfoCircle />}>
+          <Paper p='sm' mt='sm'>
+            Ossia is a free to use YouTube client designed for listening to music.
             This indie project is being made and maintained by Shie1 in its early access stage since 2022-06-05.
-          </Text>
+          </Paper>
         </Tabs.Tab>
         <Tabs.Tab label="Blog" icon={<Note />}>
           <RSSFeed />

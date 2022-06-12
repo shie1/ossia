@@ -25,6 +25,10 @@ a:not(.title a, .nodim):hover {
   box-sizing: border-box;
 }
 
+ul, li {
+  all: unset
+}
+
 body::-webkit-scrollbar-track
 {
 	background-color: #151617;

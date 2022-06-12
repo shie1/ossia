@@ -1,12 +1,12 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
-import { Affix, Header, MantineProvider, Modal, Text, Title, Container, Space, LoadingOverlay, Drawer, ActionIcon, Image, Divider, InputWrapper, Slider, Group, AppShell, Navbar, Popover } from '@mantine/core'
+import { Affix, Header, MantineProvider, Modal, Text, Title, Container, Space, LoadingOverlay, Drawer, ActionIcon, Image, Divider, InputWrapper, Slider, Group, AppShell, Navbar, Popover, AspectRatio } from '@mantine/core'
 import { ModalsProvider } from '@mantine/modals';
 import { NotificationsProvider, showNotification } from '@mantine/notifications'
 import { useEffect, useState } from 'react';
 import { useHotkeys, useLocalStorage } from '@mantine/hooks';
 import Link from 'next/link';
-import { BrandYoutube, PlayerPause, PlayerPlay, Volume, VolumeOff, Download, Heart, Clock } from 'tabler-icons-react'
+import { BrandYoutube, PlayerPause, PlayerPlay, Volume, VolumeOff, Download, Books, Home, Heart, Heartbeat, X } from 'tabler-icons-react'
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [volume, setVolume] = useState(100)
@@ -15,6 +15,12 @@ function MyApp({ Component, pageProps }: AppProps) {
   const [prevVol, setPrevVol] = useState(100)
   const [appInfo, setAppInfo] = useState<any>(false)
   const [paused, setPaused] = useState(true)
+  const [liked, setLiked] = useLocalStorage<Array<any>>(
+    { key: 'liked-songs', defaultValue: [] }
+  );
+  const [history, setHistory] = useLocalStorage<Array<any>>(
+    { key: 'history', defaultValue: [] }
+  );
 
   useEffect(() => {
     if (typeof window !== 'undefined' && !appInfo) {
@@ -29,6 +35,60 @@ function MyApp({ Component, pageProps }: AppProps) {
       document.getElementsByTagName('audio')[0].volume = volume / 100
     }
   }, [volume])
+
+  const clearSong = () => {
+    const audioE = document.querySelector('audio') as HTMLAudioElement
+    audioE.src = ''
+    const detailsE = document.querySelector('#songDetails') as HTMLDivElement
+    detailsE.querySelector('h1')!.innerHTML = ''
+    detailsE.querySelector('h2')!.innerHTML = ''
+    detailsE.querySelector('div')!.innerHTML = ''
+    detailsE.querySelector('span')!.innerHTML = ''
+    detailsE.querySelector('p')!.innerHTML = ''
+    setDw(false)
+  }
+
+  const addLike = () => {
+    const song = {
+      'id': document.querySelector("#songDetails div")?.innerHTML,
+      'title': document.querySelector("#songDetails h1")?.innerHTML,
+      'thumbnail': document.querySelector("#songDetails span")?.innerHTML,
+      'added': (new Date()).toUTCString()
+    }
+
+    const take = (list: any, val: any) => {
+      return list.filter((value: any, index: any, arr: any) => {
+        return value.id != val;
+      });
+    }
+
+    const id = document.querySelector("#songDetails div")!.innerHTML
+    if (isLiked(id)) {
+      setLiked(take(liked, id));
+    } else {
+      setLiked(oldArray => [song, ...oldArray]);
+    }
+  }
+
+  const addHistory = () => {
+    const song = {
+      'id': document.querySelector("#songDetails div")?.innerHTML,
+      'title': document.querySelector("#songDetails h1")?.innerHTML,
+      'thumbnail': document.querySelector("#songDetails span")?.innerHTML,
+      'added': (new Date()).toUTCString()
+    }
+
+    const id = document.querySelector("#songDetails div")!.innerHTML
+    if (history.length >= 24) {
+      setHistory(oldArray => [song, ...oldArray.slice(1)]);
+    } else {
+      setHistory(oldArray => [song, ...oldArray]);
+    }
+  }
+
+  const isLiked = (song: string) => {
+    return liked.findIndex(item => item.id == song) != -1
+  }
 
   const play = () => {
     const audioE = document.querySelector('audio') as HTMLAudioElement
@@ -73,7 +133,9 @@ function MyApp({ Component, pageProps }: AppProps) {
     }
     return (
       <div>
-        <Image mb='sm' alt='a' src={document?.querySelector("#songDetails span")?.innerHTML} />
+        <AspectRatio mb='sm' ratio={1280 / 720}>
+          <Image alt='a' src={document?.querySelector("#songDetails span")?.innerHTML} />
+        </AspectRatio>
         <Group mb={1} spacing={4} direction='row'>
           <Text size='xl'>{document?.querySelector("#songDetails h1")?.innerHTML}</Text>
           <a href={`https://youtu.be/${document?.querySelector("#songDetails div")?.innerHTML}`} target='_blank' rel="noreferrer">
@@ -83,22 +145,14 @@ function MyApp({ Component, pageProps }: AppProps) {
           </a>
         </Group>
         <Text size='sm'>{document?.querySelector("#songDetails h2")?.innerHTML}</Text>
-        <div style={{ display: 'none' }}>
-          <Divider my='sm' />
-          <InputWrapper label="Volume">
-            <Slider value={volume} onChange={setVolume} marks={[
-              { value: 0, label: '0%' },
-              { value: 50, label: '50%' },
-              { value: 100, label: '100%' },
-            ]} />
-          </InputWrapper>
-          <Space h='lg' />
-        </div>
         <Group my='sm' position="center">
-          <ActionIcon onClick={mute}>
+          <ActionIcon size='xl' onClick={clearSong}>
+            <X />
+          </ActionIcon>
+          <ActionIcon size='xl' onClick={mute}>
             {volume === 0 ? <VolumeOff /> : <Volume />}
           </ActionIcon>
-          <ActionIcon onClick={play}>
+          <ActionIcon size='xl' onClick={play}>
             {paused ? <PlayerPlay /> : <PlayerPause />}
           </ActionIcon>
           <a href={`${document?.location.origin}/api/stream?v=${document?.querySelector("#songDetails div")?.innerHTML}`} className='nodim' id='download' onClick={() => {
@@ -109,12 +163,15 @@ function MyApp({ Component, pageProps }: AppProps) {
               'id': 'Download'
             })
           }} download>
-            <ActionIcon>
+            <ActionIcon size='xl'>
               <Download />
             </ActionIcon>
           </a>
+          <ActionIcon size='xl' onClick={addLike}>
+            {isLiked(document.querySelector("#songDetails div")!.innerHTML) ? <Heartbeat /> : <Heart />}
+          </ActionIcon>
         </Group>
-      </div>
+      </div >
     )
   }
 
@@ -150,7 +207,15 @@ function MyApp({ Component, pageProps }: AppProps) {
             <h1 /><h2 /><div /><span /><p />
           </div>
           <LoadingOverlay visible={loading} />
-          <audio autoPlay onChange={() => { setLoading(true) }} onEnded={() => { setPaused(true) }} onPause={() => { setPaused(true) }} onPlay={() => { setPaused(false) }} onLoadStart={() => { setLoading(true) }} onLoadedData={() => { setLoading(false) }} style={{ 'display': 'none' }} />
+          <audio autoPlay onChange={() => { setLoading(true) }} onEnded={() => { setPaused(true) }} onPause={() => { setPaused(true) }} onPlay={() => { setPaused(false) }} onLoadStart={(e: any) => {
+            if (e.target.src.startsWith(`${document.location.origin}/api/`)) {
+              setLoading(true)
+            }
+          }
+          } onLoadedData={(e: any) => {
+            setLoading(false)
+            addHistory()
+          }} style={{ 'display': 'none' }} />
           <AppShell
             header={
               <Header height={60} p="xs">
@@ -162,8 +227,8 @@ function MyApp({ Component, pageProps }: AppProps) {
             footer={
               <>
                 <Group spacing='sm' p='md' position="center" id='center'>
-                  <FooterButton text="Liked songs" icon={<Heart />} link="/liked" />
-                  <FooterButton text="Recently played" icon={<Clock />} link="/history" />
+                  <FooterButton icon={<Home />} text="Home" link="/" />
+                  <FooterButton icon={<Books />} text="Library" link="/library" />
                 </Group>
                 <Space h='md' />
               </>
@@ -171,7 +236,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             <Container p='sm'>
               <Component {...pageProps} />
               <Affix sx={{ padding: '.2rem .4rem', opacity: '.75' }}>
-                <Text>{appInfo.fullName} {appInfo.version}</Text>
+                <Text>{appInfo.shortName} {appInfo.version}</Text>
                 {!dw ? <ActionIcon variant='outline' size='xl' m='sm' onClick={() => { setDw(!dw) }} sx={{ position: 'fixed', bottom: 0, left: 0, background: 'rgba(0,0,0,.5)' }}>
                   <PlayerPlay />
                 </ActionIcon> : <></>}

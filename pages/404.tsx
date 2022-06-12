@@ -1,7 +1,7 @@
 import { Text } from '@mantine/core'
 import type { NextPage } from 'next'
 
-const Post: NextPage = () => {
+const page404: NextPage = () => {
   return (
     <>
         <Text size='xl' align='center'>Page not found...</Text>
@@ -9,4 +9,4 @@ const Post: NextPage = () => {
   )
 }
 
-export default Post
+export default page404
