@@ -30,7 +30,7 @@ export default async function handler(
         const builder = new xml2js.Builder();
         const xml = builder.buildObject(data);
         fs.writeFile(path.join(process.cwd(), "public/rss.xml"), xml, () => {
-            res.status(200).json(true)
+            res.status(200).json(data)
         })
     })
 }
