@@ -1,10 +1,11 @@
-import { ActionIcon, AspectRatio, Text, Image, Group, InputWrapper, Slider, Space } from '@mantine/core'
+import { ActionIcon, AspectRatio, Text, Image, Group, InputWrapper, Slider, Space, Divider, SegmentedControl } from '@mantine/core'
 import { useLocalStorage } from '@mantine/hooks'
 import { showNotification } from '@mantine/notifications'
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { BrandYoutube, Download, Heart, Heartbeat, PlayerPause, PlayerPlay, Volume, VolumeOff, X } from 'tabler-icons-react'
+import Autolinker from 'autolinker'
 
 const Player: NextPage = () => {
     const [volume, setVolume] = useLocalStorage({
@@ -21,6 +22,11 @@ const Player: NextPage = () => {
         { key: 'history', defaultValue: [] }
     );
 
+    var autolinker = new Autolinker({
+        newWindow: true,
+        sanitizeHtml: true,
+        className: 'link'
+    });
     const router = useRouter()
 
     const isLiked = (song: string) => {
@@ -56,7 +62,7 @@ const Player: NextPage = () => {
     }
 
     const clearSong = () => {
-        if(typeof window === 'undefined'){return}
+        if (typeof window === 'undefined') { return }
         const audioE = document.querySelector('audio') as HTMLAudioElement
         audioE.src = ''
         const detailsE = document.querySelector('#songDetails') as HTMLDivElement
@@ -69,7 +75,7 @@ const Player: NextPage = () => {
     }
 
     const addLike = () => {
-        if(typeof window === 'undefined'){return}
+        if (typeof window === 'undefined') { return }
         const song = {
             'id': document.querySelector("#songDetails div")?.innerHTML,
             'title': document.querySelector("#songDetails h1")?.innerHTML,
@@ -92,7 +98,7 @@ const Player: NextPage = () => {
     }
 
     const Player = () => {
-        if(typeof window === 'undefined'){return <></>}
+        if (typeof window === 'undefined') { return <></> }
         if (!document?.querySelector("#songDetails span")?.innerHTML) {
             return (
                 <>
@@ -141,13 +147,21 @@ const Player: NextPage = () => {
                     </ActionIcon>
                 </Group>
                 <InputWrapper label="Volume">
-                    <Slider onChange={setVolume} value={volume} marks={[
-                        { value: 0, label: '0%' },
-                        { value: 50, label: '50%' },
-                        { value: 100, label: '100%' },
-                    ]} />
+                    <Group position='center'>
+                        <SegmentedControl transitionDuration={0} value={volume.toString()} onChange={val => { setVolume(Number(val)) }}
+                            data={[
+                                { label: 'Muted', value: '0' },
+                                { label: 'Low', value: '25' },
+                                { label: 'Medium', value: '50' },
+                                { label: 'High', value: '75' },
+                                { label: 'Max', value: '100' },
+                            ]}
+                        />
+                    </Group>
                 </InputWrapper>
-                <Space h='xl' />
+                <Divider my='sm' />
+                <Text align='center' mb={2} size='xl'>Description</Text>
+                <Text sx={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word' }} dangerouslySetInnerHTML={{ __html: autolinker.link(document.querySelector("#songDetails p")!.innerHTML.replace(/<br>/g, '\n')) }} />
             </div >
         )
     }

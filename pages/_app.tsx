@@ -1,6 +1,6 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
-import { Affix, Header, MantineProvider, Modal, Text, Title, Container, Space, LoadingOverlay, Drawer, ActionIcon, Image, Divider, InputWrapper, Slider, Group, AppShell, Navbar, Popover, AspectRatio } from '@mantine/core'
+import { Affix, Header, MantineProvider, Modal, Text, Title, Container, Space, LoadingOverlay, Drawer, ActionIcon, Image, SegmentedControl, InputWrapper, Slider, Group, AppShell, Navbar, Popover, AspectRatio } from '@mantine/core'
 import { ModalsProvider } from '@mantine/modals';
 import { NotificationsProvider, showNotification } from '@mantine/notifications'
 import { useEffect, useState } from 'react';
@@ -176,13 +176,18 @@ function MyApp({ Component, pageProps }: AppProps) {
           </ActionIcon>
         </Group>
         <InputWrapper label="Volume">
-          <Slider onChange={setVolume} value={volume} marks={[
-            { value: 0, label: '0%' },
-            { value: 50, label: '50%' },
-            { value: 100, label: '100%' },
-          ]} />
+          <Group position='center'>
+            <SegmentedControl transitionDuration={0} value={volume.toString()} onChange={val => { setVolume(Number(val)) }}
+              data={[
+                { label: 'Muted', value: '0' },
+                { label: 'Low', value: '25' },
+                { label: 'Medium', value: '50' },
+                { label: 'High', value: '75' },
+                { label: 'Max', value: '100' },
+              ]}
+            />
+          </Group>
         </InputWrapper>
-        <Space h='xl' />
       </div >
     )
   }
