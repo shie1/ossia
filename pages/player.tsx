@@ -10,7 +10,6 @@ const Player: NextPage = () => {
     const [volume, setVolume] = useLocalStorage({
         key: 'volume', defaultValue: 100
     })
-    const [tempvol, setTV] = useState(volume)
     const [prevVol, setPrevVol] = useState(100)
     const [paused, setPaused] = useLocalStorage(
         { key: 'paused', defaultValue: true }
@@ -57,6 +56,7 @@ const Player: NextPage = () => {
     }
 
     const clearSong = () => {
+        if(typeof window === 'undefined'){return}
         const audioE = document.querySelector('audio') as HTMLAudioElement
         audioE.src = ''
         const detailsE = document.querySelector('#songDetails') as HTMLDivElement
@@ -69,6 +69,7 @@ const Player: NextPage = () => {
     }
 
     const addLike = () => {
+        if(typeof window === 'undefined'){return}
         const song = {
             'id': document.querySelector("#songDetails div")?.innerHTML,
             'title': document.querySelector("#songDetails h1")?.innerHTML,
@@ -91,6 +92,7 @@ const Player: NextPage = () => {
     }
 
     const Player = () => {
+        if(typeof window === 'undefined'){return <></>}
         if (!document?.querySelector("#songDetails span")?.innerHTML) {
             return (
                 <>
@@ -139,7 +141,7 @@ const Player: NextPage = () => {
                     </ActionIcon>
                 </Group>
                 <InputWrapper label="Volume">
-                    <Slider onChange={setTV} value={tempvol} marks={[
+                    <Slider onChange={setVolume} value={volume} marks={[
                         { value: 0, label: '0%' },
                         { value: 50, label: '50%' },
                         { value: 100, label: '100%' },

@@ -175,6 +175,14 @@ function MyApp({ Component, pageProps }: AppProps) {
             {isLiked(document.querySelector("#songDetails div")!.innerHTML) ? <Heartbeat /> : <Heart />}
           </ActionIcon>
         </Group>
+        <InputWrapper label="Volume">
+          <Slider onChange={setVolume} value={volume} marks={[
+            { value: 0, label: '0%' },
+            { value: 50, label: '50%' },
+            { value: 100, label: '100%' },
+          ]} />
+        </InputWrapper>
+        <Space h='xl' />
       </div >
     )
   }
@@ -229,7 +237,7 @@ function MyApp({ Component, pageProps }: AppProps) {
               </Header>
             }
             footer={
-              <div style={{borderTop: '1px solid #2C2E33'}}>
+              <div style={{ borderTop: '1px solid #2C2E33' }}>
                 <Group spacing='sm' p='md' position="center" id='center'>
                   <FooterButton icon={<Home />} text="Home" link="/" />
                   <FooterButton icon={<Books />} text="Library" link="/library" />
