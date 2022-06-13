@@ -1,0 +1,42 @@
+{
+  "name": "ossia",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "postbuild": "next-sitemap --config next-sitemap.config.mjs",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@mantine/core": "^4.2.7",
+    "@mantine/hooks": "^4.2.7",
+    "@mantine/modals": "^4.2.8",
+    "@mantine/next": "^4.2.7",
+    "@mantine/notifications": "^4.2.7",
+    "autolinker": "^3.15.0",
+    "next": "12.1.6",
+    "next-pwa": "^5.5.4",
+    "next-sitemap": "^3.0.5",
+    "react": "18.1.0",
+    "react-dom": "18.1.0",
+    "rfc822-date": "^0.0.3",
+    "rimraf": "^3.0.2",
+    "rss-parser": "^3.12.0",
+    "tabler-icons-react": "^1.48.0",
+    "xml2js": "^0.4.23",
+    "youtube-search-without-api-key": "^1.0.7",
+    "ytdl-core": "^4.11.0"
+  },
+  "devDependencies": {
+    "@types/node": "17.0.36",
+    "@types/react": "18.0.9",
+    "@types/react-dom": "18.0.5",
+    "@types/xml2js": "^0.4.11",
+    "dotenv": "^16.0.1",
+    "eslint": "8.16.0",
+    "eslint-config-next": "12.1.6",
+    "typescript": "4.7.2"
+  }
+}
