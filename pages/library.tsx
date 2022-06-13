@@ -27,10 +27,8 @@ const Library: NextPage = () => {
         detailsE.querySelector('p')!.innerText = details.videoDetails?.description
     }
 
-
-
     const SongList = ({ list, d, set }: any) => {
-        const [po,setPo] = useState(false)
+        const [po, setPo] = useState(false)
         const stuff = list.reverse()
         useEffect(() => {
             if (d[0] !== stuff) {
@@ -46,7 +44,7 @@ const Library: NextPage = () => {
                 <Group position='center'>
                     <Popover
                         target={
-                            <ActionIcon size='lg' onMouseEnter={()=>{setPo(true)}} onMouseLeave={()=>{setPo(false)}} onClick={() => { openConfirmModal(() => { set([]) }) }} mb='md'>
+                            <ActionIcon size='lg' onMouseEnter={() => { setPo(true) }} onMouseLeave={() => { setPo(false) }} onClick={() => { openConfirmModal(() => { set([]) }) }} mb='md'>
                                 <X />
                             </ActionIcon>
                         }
