@@ -9,7 +9,7 @@ const sendmail = require('sendmail')({
     },
     silent: true,
     devPort: 1025, // Default: False
-    devHost: 'localhost', // Default: localhost
+    devHost: 'ossia.ml', // Default: localhost
     smtpPort: 2525, // Default: 25
     smtpHost: 'ossia.ml' // Default: -1 - extra smtp host after resolveMX
   })
