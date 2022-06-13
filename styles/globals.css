@@ -21,6 +21,15 @@ a:not(.title a, .nodim):hover {
   opacity: .5;
 }
 
+.menuLink{
+  transition: .2s;
+}
+
+.menuLink:hover{
+  cursor: pointer;
+  background: #141517;
+}
+
 * {
   box-sizing: border-box;
 }

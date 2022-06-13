@@ -1,12 +1,12 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
-import { Affix, Header, MantineProvider, Modal, Text, Title, Container, Space, LoadingOverlay, Drawer, ActionIcon, Image, SegmentedControl, InputWrapper, Slider, Group, AppShell, Navbar, Popover, AspectRatio } from '@mantine/core'
+import { Affix, Header, MantineProvider, Modal, Text, Title, Container, Space, LoadingOverlay, Drawer, ActionIcon, Image, SegmentedControl, InputWrapper, Slider, Group, AppShell, Navbar, Popover, AspectRatio, ScrollArea, Paper } from '@mantine/core'
 import { ModalsProvider } from '@mantine/modals';
 import { NotificationsProvider, showNotification } from '@mantine/notifications'
 import { useEffect, useState } from 'react';
 import { useHotkeys, useLocalStorage } from '@mantine/hooks';
 import Link from 'next/link';
-import { BrandYoutube, PlayerPause, PlayerPlay, Volume, VolumeOff, Download, Books, Home, Heart, Heartbeat, X } from 'tabler-icons-react'
+import { BrandYoutube, PlayerPause, PlayerPlay, Volume, VolumeOff, Download, Books, Home, Heart, Heartbeat, X, Menu2 } from 'tabler-icons-react'
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [volume, setVolume] = useLocalStorage({
@@ -216,6 +216,28 @@ function MyApp({ Component, pageProps }: AppProps) {
     )
   }
 
+  const Menu = () => {
+    const MenuLink = ({ icon, link, text }: any) => {
+      return (
+        <Link href={link}>
+          <Paper onClick={(e:any) => {setDw(false)}} sx={{width: '100%'}} withBorder p='sm' className='menuLink'>
+            <Group direction='row'>
+              {icon}
+              <Text size='md'>{text}</Text>
+            </Group>
+          </Paper>
+        </Link>
+      )
+    }
+    return (
+      <Group spacing='sm' direction='column'>
+        <MenuLink icon={<Home />} link="/" text="Home" />
+        <MenuLink icon={<Books />} link="/library" text="Library" />
+        <MenuLink icon={<PlayerPlay />} link="/player" text="Player" />
+      </Group>
+    )
+  }
+
   return (
     <MantineProvider theme={{ colorScheme: 'dark' }} withGlobalStyles withNormalizeCSS>
       <ModalsProvider>
@@ -223,7 +245,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           <div style={{ display: 'none' }} id='songDetails'>
             <h1 /><h2 /><div /><span /><p />
           </div>
-          <LoadingOverlay sx={{position: "fixed"}} visible={loading} />
+          <LoadingOverlay sx={{ position: "fixed" }} visible={loading} />
           <audio autoPlay onChange={() => { setLoading(true) }} onEnded={() => { setPaused(true) }} onPause={() => { setPaused(true) }} onPlay={() => { setPaused(false) }} onLoadStart={(e: any) => {
             if (e.target.src.startsWith(`${document.location.origin}/api/`)) {
               setLoading(true)
@@ -255,17 +277,18 @@ function MyApp({ Component, pageProps }: AppProps) {
               <Component {...pageProps} />
               <Affix sx={{ padding: '.2rem .4rem', opacity: '.75' }}>
                 <Text>{appInfo.shortName} {appInfo.version}</Text>
-                {!dw && typeof window !== 'undefined' ? location.pathname !== '/player' ? <ActionIcon variant='outline' size='xl' m='sm' onClick={() => { setDw(!dw) }} sx={{ position: 'fixed', bottom: 0, left: 0, background: 'rgba(0,0,0,.5)' }}>
-                  <PlayerPlay />
-                </ActionIcon> : <></> : <></>}
+                {!dw ? <ActionIcon variant='outline' size='xl' m='sm' onClick={() => { setDw(!dw) }} sx={{ position: 'fixed', bottom: 0, left: 0, background: 'rgba(0,0,0,.5)' }}>
+                  <Menu2 />
+                </ActionIcon> : <></>}
               </Affix>
               <Drawer
                 opened={dw}
                 onClose={() => setDw(false)}
                 padding="xl"
                 size="xl"
+                title="Navigation"
               >
-                <Player />
+                <Menu />
               </Drawer>
             </Container>
           </AppShell>
