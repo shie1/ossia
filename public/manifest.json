@@ -8,6 +8,11 @@
     "scope": "/",
     "start_url": "/",
     "icons": [
+      {
+        "src": "/ossia.png",
+        "sizes": "3000x3000",
+        "type": "image/png"
+      }
     ],
     "splash_pages": null
   }
