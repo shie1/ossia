@@ -4,7 +4,7 @@ import { showNotification } from '@mantine/notifications'
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-import { BrandYoutube, Download, Heart, Heartbeat, PlayerPause, PlayerPlay, Volume, VolumeOff, X } from 'tabler-icons-react'
+import { BrandYoutube, Download, Heart, Heartbeat, PlayerPause, PlayerPlay, RepeatOff, RepeatOnce, Volume, VolumeOff, X } from 'tabler-icons-react'
 import Autolinker from 'autolinker'
 
 const Player: NextPage = () => {
@@ -21,6 +21,9 @@ const Player: NextPage = () => {
     const [history, setHistory] = useLocalStorage<Array<any>>(
         { key: 'history', defaultValue: [] }
     );
+    const [loop, setLoop] = useLocalStorage({
+        key: 'loop', defaultValue: true
+    })
 
     var autolinker = new Autolinker({
         newWindow: true,
@@ -124,8 +127,8 @@ const Player: NextPage = () => {
                     <ActionIcon size='xl' onClick={clearSong}>
                         <X />
                     </ActionIcon>
-                    <ActionIcon size='xl' onClick={mute}>
-                        {volume === 0 ? <VolumeOff /> : <Volume />}
+                    <ActionIcon size='xl' onClick={() => { setLoop(!loop) }}>
+                        {loop ? <RepeatOnce /> : <RepeatOff />}
                     </ActionIcon>
                     <ActionIcon size='xl' onClick={play}>
                         {paused ? <PlayerPlay /> : <PlayerPause />}

@@ -6,11 +6,14 @@ import { NotificationsProvider, showNotification } from '@mantine/notifications'
 import { useEffect, useState } from 'react';
 import { useHotkeys, useLocalStorage } from '@mantine/hooks';
 import Link from 'next/link';
-import { BrandYoutube, PlayerPause, PlayerPlay, Volume, VolumeOff, Download, Books, Home, Heart, Heartbeat, X, Menu2 } from 'tabler-icons-react'
+import { BrandYoutube, PlayerPause, PlayerPlay, Volume, VolumeOff, Download, Books, Home, Heart, Heartbeat, X, Menu2, RepeatOff, RepeatOnce, Settings } from 'tabler-icons-react'
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [volume, setVolume] = useLocalStorage({
     key: 'volume', defaultValue: 100
+  })
+  const [loop, setLoop] = useLocalStorage({
+    key: 'loop', defaultValue: true
   })
   const [loading, setLoading] = useState<boolean>(false)
   const [dw, setDw] = useState(false)
@@ -153,8 +156,8 @@ function MyApp({ Component, pageProps }: AppProps) {
           <ActionIcon size='xl' onClick={clearSong}>
             <X />
           </ActionIcon>
-          <ActionIcon size='xl' onClick={mute}>
-            {volume === 0 ? <VolumeOff /> : <Volume />}
+          <ActionIcon size='xl' onClick={() => {setLoop(!loop)}}>
+            {loop ? <RepeatOnce /> : <RepeatOff />}
           </ActionIcon>
           <ActionIcon size='xl' onClick={play}>
             {paused ? <PlayerPlay /> : <PlayerPause />}
@@ -234,6 +237,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <MenuLink icon={<Home />} link="/" text="Home" />
         <MenuLink icon={<Books />} link="/library" text="Library" />
         <MenuLink icon={<PlayerPlay />} link="/player" text="Player" />
+        <MenuLink icon={<Settings />} link="/settings" text="Settings" />
       </Group>
     )
   }
@@ -246,7 +250,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             <h1 /><h2 /><div /><span /><p />
           </div>
           <LoadingOverlay sx={{ position: "fixed" }} visible={loading} />
-          <audio autoPlay onChange={() => { setLoading(true) }} onEnded={() => { setPaused(true) }} onPause={() => { setPaused(true) }} onPlay={() => { setPaused(false) }} onLoadStart={(e: any) => {
+          <audio loop={loop} autoPlay onChange={() => { setLoading(true) }} onEnded={() => { setPaused(true) }} onPause={() => { setPaused(true) }} onPlay={() => { setPaused(false) }} onLoadStart={(e: any) => {
             if (e.target.src.startsWith(`${document.location.origin}/api/`)) {
               setLoading(true)
             }
@@ -266,7 +270,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             footer={
               <div style={{ borderTop: '1px solid #2C2E33' }}>
                 <Group spacing='sm' p='md' position="center" id='center'>
-                  <Text>{appInfo.fullName} {appInfo.version} | built and maintained <Anchor target='_blank' href='https://github.com/shie1'>Shie1bi</Anchor></Text>
+                  <Text align='center'>{appInfo.fullName} v{appInfo.version}<br />built and maintained <Anchor target='_blank' href='https://github.com/shie1'>Shie1bi</Anchor></Text>
                 </Group>
                 <Space h='md' />
               </div>

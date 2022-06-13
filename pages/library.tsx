@@ -28,13 +28,16 @@ const Library: NextPage = () => {
     }
 
     const SongList = ({ list, d, set }: any) => {
-        const [po, setPo] = useState(false)
-        const stuff = list.reverse()
+        const [po,setPo] = useState(false)
         useEffect(() => {
+            const stuff = list
+            stuff.sort((a: any,b: any) => {
+                return (new Date(b.added)).getTime() - (new Date(a.added)).getTime()
+            })
             if (d[0] !== stuff) {
                 d[1](stuff)
             }
-        }, [d, stuff])
+        }, [d, list])
         let i = 0
         if (d[0].length == 0) {
             return <></>
@@ -64,6 +67,7 @@ const Library: NextPage = () => {
                 ]}>
                     {d[0].map((item: any) => {
                         i++
+                        if(!item.title){return <></>}
                         return (
                             <Card key={i} sx={{ cursor: 'pointer', transition: '100ms', ":hover": { transform: 'scale(1.05)' } }} shadow="sm" p="lg" onClick={() => { setSong(item.id) }}>
                                 <Card.Section>
