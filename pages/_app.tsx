@@ -1,6 +1,6 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
-import { Affix, Header, MantineProvider, Modal, Text, Title, Container, Space, LoadingOverlay, Drawer, ActionIcon, Image, SegmentedControl, InputWrapper, Slider, Group, AppShell, Navbar, Popover, AspectRatio, ScrollArea, Paper } from '@mantine/core'
+import { Affix, Header, MantineProvider, Modal, Text, Title, Container, Space, LoadingOverlay, Drawer, ActionIcon, Image, SegmentedControl, InputWrapper, Slider, Group, AppShell, Navbar, Popover, AspectRatio, ScrollArea, Paper, Anchor } from '@mantine/core'
 import { ModalsProvider } from '@mantine/modals';
 import { NotificationsProvider, showNotification } from '@mantine/notifications'
 import { useEffect, useState } from 'react';
@@ -220,7 +220,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     const MenuLink = ({ icon, link, text }: any) => {
       return (
         <Link href={link}>
-          <Paper onClick={(e:any) => {setDw(false)}} sx={{width: '100%'}} withBorder p='sm' className='menuLink'>
+          <Paper onClick={(e: any) => { setDw(false) }} sx={{ width: '100%' }} withBorder p='sm' className='menuLink'>
             <Group direction='row'>
               {icon}
               <Text size='md'>{text}</Text>
@@ -266,9 +266,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             footer={
               <div style={{ borderTop: '1px solid #2C2E33' }}>
                 <Group spacing='sm' p='md' position="center" id='center'>
-                  <FooterButton icon={<Home />} text="Home" link="/" />
-                  <FooterButton icon={<Books />} text="Library" link="/library" />
-                  <FooterButton icon={<PlayerPlay />} text="Player" link="/player" />
+                  <Text>{appInfo.fullName} {appInfo.version} | built and maintained <Anchor target='_blank' href='https://github.com/shie1'>Shie1bi</Anchor></Text>
                 </Group>
                 <Space h='md' />
               </div>
@@ -276,7 +274,6 @@ function MyApp({ Component, pageProps }: AppProps) {
             <Container p='sm'>
               <Component {...pageProps} />
               <Affix sx={{ padding: '.2rem .4rem', opacity: '.75' }}>
-                <Text>{appInfo.shortName} {appInfo.version}</Text>
                 {!dw ? <ActionIcon variant='outline' size='xl' m='sm' onClick={() => { setDw(!dw) }} sx={{ position: 'fixed', bottom: 0, left: 0, background: 'rgba(0,0,0,.5)' }}>
                   <Menu2 />
                 </ActionIcon> : <></>}
