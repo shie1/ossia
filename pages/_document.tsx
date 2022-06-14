@@ -15,19 +15,16 @@ export default function Document() {
                 />
                 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3057716180157458"
                     crossOrigin="anonymous"></script>
-                <Script
-                    src="https://www.googletagmanager.com/gtag/js?id=G-6RV1HQYTBK"
-                    strategy="afterInteractive"
-                />
-                <Script id="google-analytics" strategy="afterInteractive">
+                <script async src="https://www.googletagmanager.com/gtag/js?id=G-6RV1HQYTBK"></script>
+                <script>
                     {`
                     window.dataLayer = window.dataLayer || [];
-                    function gtag(){window.dataLayer.push(arguments);}
+                    function gtag(){dataLayer.push(arguments);}
                     gtag('js', new Date());
 
                     gtag('config', 'G-6RV1HQYTBK');
                     `}
-                </Script>
+                </script>
                 <link rel="preconnect" href="https://fonts.googleapis.com" />
                 <link rel="preconnect" href="https://fonts.gstatic.com" />
                 <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400&display=swap" rel="stylesheet"></link>

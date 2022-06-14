@@ -96,6 +96,12 @@ function MyApp({ Component, pageProps }: AppProps) {
     }
   }, [volume])
 
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      document.getElementsByTagName('audio')[0].loop = loop
+    }
+  }, [loop])
+
   const clearSong = () => {
     const audioE = document.querySelector('audio') as HTMLAudioElement
     audioE.src = ''
@@ -304,7 +310,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             <h1 id='title' /><h2 id='author' /><div id='id' /><span id='thumbnail' /><p id='description' /><section id='json' />
           </div>
           <LoadingOverlay sx={{ position: "fixed" }} visible={loading} />
-          <audio loop={loop} autoPlay onChange={() => { setLoading(true) }} onEnded={() => { setPaused(true) }} onPause={() => { setPaused(true) }} onPlay={() => { setPaused(false) }} onLoadStart={(e: any) => {
+          <audio autoPlay onChange={() => { setLoading(true) }} onEnded={() => { setPaused(true) }} onPause={() => { setPaused(true) }} onPlay={() => { setPaused(false) }} onLoadStart={(e: any) => {
             if (e.target.src.startsWith(`${document.location.origin}/api/`)) {
               setLoading(true)
             }
