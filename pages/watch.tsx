@@ -17,11 +17,28 @@ const Watch: NextPage = () => {
         if (typeof window !== 'undefined' && !details) {
             const id = (new URLSearchParams(location.search)).get('v')
             if (id) { setSong(id!, currentLQ); router.push('/player') }
-            fetch(`${document.location.origin}/api/details?v=${id}${currentLQ ? '&q=lowestaudio' : ''}`).then(async (resp:any) => {
+            fetch(`${document.location.origin}/api/details?v=${id}${currentLQ ? '&q=lowestaudio' : ''}`).then(async (resp: any) => {
                 setDetails(await resp.json())
             })
         }
-    }, [details,currentLQ,router])
+    }, [details, currentLQ, router])
+
+    useEffect(() => {
+        if (details) {
+            const title = `${details.videoDetails.title} | Ossia`
+            const description = `Listen to ${details.videoDetails.title} by ${details.videoDetails.author.name}`
+            const image = details.videoDetails?.thumbnails[details.videoDetails.thumbnails.length - 1].url
+
+            document.querySelector("title")!.innerHTML = title
+            document.querySelector('meta[property="og:title"]')?.setAttribute('content', title)
+
+            document.querySelector('meta[property="og:description"]')?.setAttribute('content', description)
+            document.querySelector('meta[name="description"]')?.setAttribute('content', description)
+
+            document.querySelector('meta[property="og:image"]')?.setAttribute('content', image)
+            document.querySelector('meta[name="twitter:image"]')?.setAttribute('content', image)
+        }
+    }, [details])
 
     const Details = () => {
         return (
@@ -31,9 +48,7 @@ const Watch: NextPage = () => {
                 </AspectRatio>
                 <Text dangerouslySetInnerHTML={{ __html: details?.title }} size='xl' />
                 <Text dangerouslySetInnerHTML={{ __html: details?.author }} size='sm' />
-                <Text sx={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word' }} dangerouslySetInnerHTML={{ __html: details?.description }} />
-                <MetaTags image={details?.thumbnail} title={`${details?.title} | Ossia`} description={`Listen to ${details?.title} by ${details?.author} on the Ossia Music Player!`} />
-            </>
+                <Text sx={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word' }} dangerouslySetInnerHTML={{ __html: details?.description }} />            </>
         )
     }
 
