@@ -37,8 +37,9 @@ export const MetaTags = ({ title, description, image }: any) => {
 
 export const setSong = async (video: string, lq: boolean) => {
     const audioE = document.querySelector('audio') as HTMLAudioElement
-    audioE.src = `${document.location.origin}/api/stream?v=${video}`
     const detailsE = document.querySelector('#songDetails') as HTMLDivElement
+    if(video == detailsE.querySelector('div')?.innerText){return}
+    audioE.src = `${document.location.origin}/api/stream?v=${video}`
     const details: any = await (await fetch(`${document.location.origin}/api/details?v=${video}${lq ? '&q=lowestaudio' : ''}`)).json()
     detailsE.querySelector('h1')!.innerText = details.videoDetails.title
     detailsE.querySelector('h2')!.innerText = details.videoDetails.author.name
