@@ -1,4 +1,5 @@
 export const MetaTags = ({ title, description, image }: any) => {
+    if(!title){return <></>}
     const ImageTags = () => {
         if (!image) { return <div /> }
         return (
