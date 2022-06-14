@@ -1,11 +1,12 @@
-import { ActionIcon, AspectRatio, Text, Image, Group, InputWrapper, Slider, Space, Divider, SegmentedControl } from '@mantine/core'
+import { ActionIcon, AspectRatio, Text, Image, Group, InputWrapper, Slider, Space, Divider, SegmentedControl, Card, Badge, SimpleGrid, Collapse, Accordion, AccordionItem } from '@mantine/core'
 import { useLocalStorage } from '@mantine/hooks'
 import { showNotification } from '@mantine/notifications'
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
-import { BrandYoutube, Download, Heart, Heartbeat, PlayerPause, PlayerPlay, RepeatOff, RepeatOnce, Volume, VolumeOff, X } from 'tabler-icons-react'
+import { BrandYoutube, Download, Heart, Heartbeat, InfoCircle, Music, PlayerPause, PlayerPlay, RepeatOff, RepeatOnce, Volume, VolumeOff, X } from 'tabler-icons-react'
 import Autolinker from 'autolinker'
+import { setSong } from '../functions'
 
 const Player: NextPage = () => {
     const [volume, setVolume] = useLocalStorage({
@@ -100,7 +101,47 @@ const Player: NextPage = () => {
         }
     }
 
+    const Related = ({ json }: any) => {
+        const related = JSON.parse(json)["related_videos"]
+        let i = 0
+        const Video = ({ video }: any) => {
+            return (
+                <Card sx={{ cursor: 'pointer', transition: '100ms', ":hover": { transform: 'scale(1.05)' } }} shadow="sm" p="lg" onClick={() => { setSong(video.id) }}>
+                    <Card.Section>
+                        <AspectRatio ratio={1280 / 720}>
+                            <Image src={video.thumbnails[video.thumbnails.length - 1].url} alt={video.title} />
+                        </AspectRatio>
+                    </Card.Section>
+
+                    <Group position="apart" mt='sm'>
+                        <Text dangerouslySetInnerHTML={{ __html: video.title }} sx={{ display: '-webkit-box', textOverflow: 'ellipsis', overflow: 'hidden', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical' }} weight={500} />
+                    </Group>
+                </Card>
+            )
+        }
+        return (
+            <ul style={{ all: 'unset' }}>
+                <SimpleGrid cols={3} spacing='sm' breakpoints={[
+                    { maxWidth: 925, cols: 2, spacing: 'sm' },
+                    { maxWidth: 600, cols: 1, spacing: 'sm' },
+                ]}>
+                    {related.map((item: any) => {
+                        if (!item.length_seconds) { return <></> }
+                        i++
+                        return (
+                            <li style={{ all: 'unset' }} key={i}>
+                                <Video video={item} />
+                            </li>
+                        );
+                    })}
+                </SimpleGrid>
+            </ul>
+        )
+    }
+
     const Player = () => {
+        const [descOpen, setDescOpen] = useState<boolean>(false)
+        const [relOpen, setRelOpen] = useState<boolean>(false)
         if (typeof window === 'undefined') { return <></> }
         if (!document?.querySelector("#songDetails span")?.innerHTML) {
             return (
@@ -115,14 +156,14 @@ const Player: NextPage = () => {
                     <Image alt='a' src={document?.querySelector("#songDetails span")?.innerHTML} />
                 </AspectRatio>
                 <Group mb={1} spacing={4} direction='row'>
-                    <Text size='xl'>{document?.querySelector("#songDetails h1")?.innerHTML}</Text>
+                    <Text dangerouslySetInnerHTML={{ __html: document?.querySelector("#songDetails h1")!.innerHTML }} size='xl' />
                     <a href={`https://youtu.be/${document?.querySelector("#songDetails div")?.innerHTML}`} target='_blank' rel="noreferrer">
                         <ActionIcon variant='transparent'>
                             <BrandYoutube />
                         </ActionIcon>
                     </a>
                 </Group>
-                <Text size='sm'>{document?.querySelector("#songDetails h2")?.innerHTML}</Text>
+                <Text dangerouslySetInnerHTML={{ __html: document?.querySelector("#songDetails h2")!.innerHTML }} size='sm' />
                 <Group my='sm' position="center">
                     <ActionIcon size='xl' onClick={clearSong}>
                         <X />
@@ -163,8 +204,14 @@ const Player: NextPage = () => {
                     </Group>
                 </InputWrapper>
                 <Divider my='sm' />
-                <Text align='center' mb={2} size='xl'>Description</Text>
-                <Text sx={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word' }} dangerouslySetInnerHTML={{ __html: autolinker.link(document.querySelector("#songDetails p")!.innerHTML.replace(/<br>/g, '\n')) }} />
+                <Accordion>
+                    <AccordionItem icon={<InfoCircle />} label="Description">
+                        <Text sx={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word' }} dangerouslySetInnerHTML={{ __html: autolinker.link(document.querySelector("#songDetails p")!.innerHTML.replace(/<br>/g, '\n')) }} />
+                    </AccordionItem>
+                    <AccordionItem icon={<Music />} label="Related songs">
+                        <Related json={document?.querySelector("#songDetails section")!.innerHTML} />
+                    </AccordionItem>
+                </Accordion>
             </div >
         )
     }

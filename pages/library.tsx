@@ -4,6 +4,7 @@ import type { NextPage } from 'next'
 import { useLocalStorage } from '@mantine/hooks';
 import { useEffect, useState } from 'react';
 import { useModals } from '@mantine/modals';
+import { setSong } from '../functions';
 
 const Library: NextPage = () => {
     const [liked, setLiked] = useLocalStorage<Array<any>>(
@@ -14,18 +15,6 @@ const Library: NextPage = () => {
     );
     const [likedD, setLikedD] = useState([])
     const [historyD, setHistoryD] = useState([])
-
-    const setSong = async (video: string) => {
-        const audioE = document.querySelector('audio') as HTMLAudioElement
-        audioE.src = `${document.location.origin}/api/stream?v=${video}`
-        const detailsE = document.querySelector('#songDetails') as HTMLDivElement
-        const details: any = await (await fetch(`${document.location.origin}/api/details?v=${video}`)).json()
-        detailsE.querySelector('h1')!.innerText = details.videoDetails.title
-        detailsE.querySelector('h2')!.innerText = details.videoDetails.author.name
-        detailsE.querySelector('div')!.innerText = video
-        detailsE.querySelector('span')!.innerText = details.videoDetails?.thumbnails[details.videoDetails.thumbnails.length - 1].url
-        detailsE.querySelector('p')!.innerText = details.videoDetails?.description
-    }
 
     const SongList = ({ list, d, set }: any) => {
         const [po,setPo] = useState(false)
@@ -77,7 +66,7 @@ const Library: NextPage = () => {
                                 </Card.Section>
 
                                 <Group position="apart" mt='sm'>
-                                    <Text sx={{ display: '-webkit-box', textOverflow: 'ellipsis', overflow: 'hidden', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical' }} weight={500}>{item.title}</Text>
+                                    <Text dangerouslySetInnerHTML={{__html: item.title}} sx={{ display: '-webkit-box', textOverflow: 'ellipsis', overflow: 'hidden', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical' }} weight={500} />
                                     <Badge color="pink" variant="light">
                                         {(new Date(item.added)).toLocaleString()}
                                     </Badge>

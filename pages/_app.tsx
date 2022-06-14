@@ -49,7 +49,8 @@ function MyApp({ Component, pageProps }: AppProps) {
     const detailsE = document.querySelector('#songDetails') as HTMLDivElement
     detailsE.querySelector('h1')!.innerHTML = ''
     detailsE.querySelector('h2')!.innerHTML = ''
-    detailsE.querySelector('div')!.innerHTML = ''
+    detailsE.querySelector('div#id')!.innerHTML = ''
+    detailsE.querySelector('section#json')!.innerHTML = ''
     detailsE.querySelector('span')!.innerHTML = ''
     detailsE.querySelector('p')!.innerHTML = ''
     setDw(false)
@@ -69,7 +70,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       });
     }
 
-    const id = document.querySelector("#songDetails div")!.innerHTML
+    const id = document.querySelector("#songDetails div#id")!.innerHTML
     if (isLiked(id)) {
       setLiked(take(liked, id));
     } else {
@@ -79,13 +80,13 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   const addHistory = () => {
     const song = {
-      'id': document.querySelector("#songDetails div")?.innerHTML,
+      'id': document.querySelector("#songDetails div#id")?.innerHTML,
       'title': document.querySelector("#songDetails h1")?.innerHTML,
       'thumbnail': document.querySelector("#songDetails span")?.innerHTML,
       'added': (new Date()).toUTCString()
     }
 
-    const id = document.querySelector("#songDetails div")!.innerHTML
+    const id = document.querySelector("#songDetails div#id")!.innerHTML
     if (history.length >= 24) {
       setHistory(oldArray => [song, ...oldArray.slice(1)]);
     } else {
@@ -145,7 +146,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         </AspectRatio>
         <Group mb={1} spacing={4} direction='row'>
           <Text size='xl'>{document?.querySelector("#songDetails h1")?.innerHTML}</Text>
-          <a href={`https://youtu.be/${document?.querySelector("#songDetails div")?.innerHTML}`} target='_blank' rel="noreferrer">
+          <a href={`https://youtu.be/${document?.querySelector("#songDetails div#id")?.innerHTML}`} target='_blank' rel="noreferrer">
             <ActionIcon variant='transparent'>
               <BrandYoutube />
             </ActionIcon>
@@ -162,7 +163,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           <ActionIcon size='xl' onClick={play}>
             {paused ? <PlayerPlay /> : <PlayerPause />}
           </ActionIcon>
-          <a href={`${document?.location.origin}/api/stream?v=${document?.querySelector("#songDetails div")?.innerHTML}`} className='nodim' id='download' onClick={() => {
+          <a href={`${document?.location.origin}/api/stream?v=${document?.querySelector("#songDetails div#id")?.innerHTML}`} className='nodim' id='download' onClick={() => {
             showNotification({
               'title': 'Downloading',
               'message': 'The download has started, please wait!',
@@ -175,7 +176,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             </ActionIcon>
           </a>
           <ActionIcon size='xl' onClick={addLike}>
-            {isLiked(document.querySelector("#songDetails div")!.innerHTML) ? <Heartbeat /> : <Heart />}
+            {isLiked(document.querySelector("#songDetails div#id")!.innerHTML) ? <Heartbeat /> : <Heart />}
           </ActionIcon>
         </Group>
         <InputWrapper label="Volume">
@@ -247,7 +248,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <ModalsProvider>
         <NotificationsProvider>
           <div style={{ display: 'none' }} id='songDetails'>
-            <h1 /><h2 /><div /><span /><p />
+            <h1 id='title' /><h2 id='author'/><div id='id' /><span id='thumbnail' /><p id='description' /><section id='json' />
           </div>
           <LoadingOverlay sx={{ position: "fixed" }} visible={loading} />
           <audio loop={loop} autoPlay onChange={() => { setLoading(true) }} onEnded={() => { setPaused(true) }} onPause={() => { setPaused(true) }} onPlay={() => { setPaused(false) }} onLoadStart={(e: any) => {
