@@ -31,6 +31,7 @@ const Watch: NextPage = () => {
     }
 
     const Details = () => {
+        if(typeof window === 'undefined' || !details){return <></>}
         return (
             <>
                 <MetaTags image={details?.thumbnail} title={`${details?.title} | Ossia`} description={`Listen to ${details?.title} by ${details?.author} on the Ossia Music Player!`} />
