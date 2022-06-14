@@ -39,12 +39,6 @@ function MyApp({ Component, pageProps }: AppProps) {
     { key: 'history', defaultValue: [] }
   );
 
-  if (typeof window !== 'undefined') {
-    navigator.connection.addEventListener('typechange', function () {
-      alert(navigator.connection.type);
-    });
-  }
-
   useEffect(() => {
     switch(lqmode){
       case 0:
