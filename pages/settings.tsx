@@ -1,9 +1,9 @@
-import { Accordion, AccordionItem, Text, Button, SegmentedControl } from '@mantine/core'
+import { Accordion, AccordionItem, Text, Button, SegmentedControl, JsonInput } from '@mantine/core'
 import { useLocalStorage } from '@mantine/hooks';
 import { useModals } from '@mantine/modals';
 import { showNotification } from '@mantine/notifications';
 import type { NextPage } from 'next'
-import { Adjustments, AntennaBars5, CalendarTime, ClearAll, Database, DatabaseExport, DatabaseImport, DatabaseOff, X } from 'tabler-icons-react';
+import { Adjustments, AntennaBars5, Braces, CalendarTime, Database, DatabaseExport, DatabaseImport, DatabaseOff, X } from 'tabler-icons-react';
 
 const Settings: NextPage = () => {
     const modals = useModals();
@@ -50,6 +50,28 @@ const Settings: NextPage = () => {
         confirm(action)
     }
 
+    const LSDisp = () => {
+        if (typeof window === 'undefined') { return <></> }
+        let i = 0
+        return (<Accordion>
+            {Object.keys(localStorage).map((item: any) => {
+                i++
+                return (
+                    <AccordionItem label={item} key={i}>
+                        <JsonInput
+                            label={item}
+                            validationError=""
+                            autosize
+                            formatOnBlur
+                            value={localStorage[item]}
+                            minRows={3}
+                        />
+                    </AccordionItem>
+                )
+            })}
+        </Accordion>)
+    }
+
     return (
         <>
             <Accordion>
@@ -71,10 +93,17 @@ const Settings: NextPage = () => {
                 </AccordionItem>
                 <AccordionItem icon={<Adjustments />} label="Behaviour">
                     <Accordion>
-                        <AccordionItem icon={<AntennaBars5 />} label="Low quality Mode">
+                        <AccordionItem icon={<AntennaBars5 />} label="Low quality mode">
                             <Text mb={2}>With low quality mode enabled, Ossia will download songs and thumbnails in the lowest quality possible. This feature is recommended if you&apos;re using mobile data.</Text>
                             <Text mb='sm'>Auto: Ossia will try to detect when it&apos;s running on mobile data and set the mode accordingly.</Text>
                             <SegmentedControl onChange={(val) => { setLQMode(Number(val)) }} value={lqmode.toString()} data={[{ 'label': 'Off', 'value': '0' }, { 'label': 'Auto', 'value': '1' }, { 'label': 'On', 'value': '2' }]} />
+                        </AccordionItem>
+                    </Accordion>
+                </AccordionItem>
+                <AccordionItem icon={<Braces />} label="Advanced">
+                    <Accordion>
+                        <AccordionItem icon={<DatabaseExport />} label="Display all data from local storage">
+                            <LSDisp />
                         </AccordionItem>
                     </Accordion>
                 </AccordionItem>
