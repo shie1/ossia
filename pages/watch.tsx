@@ -9,34 +9,31 @@ const Watch: NextPage = () => {
     const router = useRouter()
     const [details, setDetails] = useState<any>()
 
-    useEffect(() => {
-        if (typeof window !== 'undefined' && !details) {
-            setDetails({
-                'thumbnail': document?.querySelector("#songDetails span")?.innerHTML,
-                'title': document?.querySelector("#songDetails h1")!.innerHTML,
-                'author': document?.querySelector("#songDetails h2")!.innerHTML,
-                'description': document.querySelector("#songDetails p")!.innerHTML.replace(/<br>/g, '\n'),
-            })
-        }
-    }, [details])
-
     const [currentLQ, setCurrentLQ] = useLocalStorage<boolean>({
         'key': 'currentLQ', 'defaultValue': false
     })
 
+    useEffect(() => {
+        if (typeof window !== 'undefined' && !details) {
+            const id = (new URLSearchParams(location.search)).get('v')
+            if (id) { setSong(id!, currentLQ); router.push('/player') }
+            fetch(`${document.location.origin}/api/details?v=${id}${currentLQ ? '&q=lowestaudio' : ''}`).then(async (resp:any) => {
+                setDetails(await resp.json())
+            })
+        }
+    }, [details,currentLQ,router])
+
     if (typeof window !== 'undefined') {
         router.prefetch('/player')
-        const id = (new URLSearchParams(location.search)).get('v')
-        if (id) { setSong(id!, currentLQ); router.push('/player') }
+
     }
 
     const Details = () => {
-        if(typeof window === 'undefined' || !details){return <></>}
         return (
             <>
                 <MetaTags image={details?.thumbnail} title={`${details?.title} | Ossia`} description={`Listen to ${details?.title} by ${details?.author} on the Ossia Music Player!`} />
                 <AspectRatio mb='sm' ratio={1280 / 720}>
-                    <Image alt='a' src={details?.thumbnail} />
+                    <Image alt='' src={details?.thumbnail} />
                 </AspectRatio>
                 <Text dangerouslySetInnerHTML={{ __html: details?.title }} size='xl' />
                 <Text dangerouslySetInnerHTML={{ __html: details?.author }} size='sm' />
