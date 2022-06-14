@@ -29,6 +29,12 @@ function MyApp({ Component, pageProps }: AppProps) {
     { key: 'history', defaultValue: [] }
   );
 
+  if (typeof window !== 'undefined') {
+    navigator.connection.addEventListener('typechange', function () {
+      alert(navigator.connection.type);
+    });
+  }
+
   useEffect(() => {
     if (typeof window !== 'undefined' && !appInfo) {
       fetch(`${document.location.origin}/api/app`).then(async response => {
@@ -157,7 +163,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           <ActionIcon size='xl' onClick={clearSong}>
             <X />
           </ActionIcon>
-          <ActionIcon size='xl' onClick={() => {setLoop(!loop)}}>
+          <ActionIcon size='xl' onClick={() => { setLoop(!loop) }}>
             {loop ? <RepeatOnce /> : <RepeatOff />}
           </ActionIcon>
           <ActionIcon size='xl' onClick={play}>
@@ -248,7 +254,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <ModalsProvider>
         <NotificationsProvider>
           <div style={{ display: 'none' }} id='songDetails'>
-            <h1 id='title' /><h2 id='author'/><div id='id' /><span id='thumbnail' /><p id='description' /><section id='json' />
+            <h1 id='title' /><h2 id='author' /><div id='id' /><span id='thumbnail' /><p id='description' /><section id='json' />
           </div>
           <LoadingOverlay sx={{ position: "fixed" }} visible={loading} />
           <audio loop={loop} autoPlay onChange={() => { setLoading(true) }} onEnded={() => { setPaused(true) }} onPause={() => { setPaused(true) }} onPlay={() => { setPaused(false) }} onLoadStart={(e: any) => {

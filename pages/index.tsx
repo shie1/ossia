@@ -1,5 +1,5 @@
 import { Card, Container, Divider, Group, Loader, Text, TextInput, Title, Button, Image, Badge, SimpleGrid, Space, Tabs, ActionIcon, Paper, AspectRatio } from '@mantine/core'
-import { useHotkeys } from '@mantine/hooks'
+import { useHotkeys, useLocalStorage } from '@mantine/hooks'
 import type { NextPage } from 'next'
 import Link from 'next/link';
 import { useEffect, useState } from 'react'
@@ -11,12 +11,12 @@ const Home: NextPage = () => {
   const [results, setResults] = useState<any>(0)
   const [rss, setRss] = useState<any>(false)
   const [gotRss, setGotRss] = useState<boolean>(false)
+  const [lqmode, setLQMode] = useLocalStorage({
+    'key': 'lowQualityMode',
+    'defaultValue': 1
+  })
 
   useHotkeys([['ctrl+K', () => { setResults(0) }],])
-
-  if (typeof window !== 'undefined') {
-    document.title = "Ossia"
-  }
 
   useEffect(() => {
     const search = (query: string) => {

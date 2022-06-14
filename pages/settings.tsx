@@ -1,14 +1,22 @@
-import { Accordion, AccordionItem, Text, Button } from '@mantine/core'
+import { Accordion, AccordionItem, Text, Button, SegmentedControl } from '@mantine/core'
+import { useLocalStorage } from '@mantine/hooks';
 import { useModals } from '@mantine/modals';
 import { showNotification } from '@mantine/notifications';
 import type { NextPage } from 'next'
-import { CalendarTime, ClearAll, Database, DatabaseExport, DatabaseImport, DatabaseOff, X } from 'tabler-icons-react';
+import { Adjustments, AntennaBars5, CalendarTime, ClearAll, Database, DatabaseExport, DatabaseImport, DatabaseOff, X } from 'tabler-icons-react';
 
 const Settings: NextPage = () => {
     const modals = useModals();
+    const [lqmode, setLQMode] = useLocalStorage({
+        'key': 'lowQualityMode',
+        'defaultValue': 1
+    })
 
-    const comingSoon = () => {showNotification({title: 'Feature coming soon...',message: '',icon: <CalendarTime />,
-    })}
+    const comingSoon = () => {
+        showNotification({
+            title: 'Feature coming soon...', message: '', icon: <CalendarTime />,
+        })
+    }
 
     const importLocalStorage = comingSoon
 
@@ -58,6 +66,15 @@ const Settings: NextPage = () => {
                         <AccordionItem icon={<DatabaseExport />} label="Export User Data">
                             <Text mb='sm'>Ossia stores liked songs, recents etc. in the browsers local storage. If you wish to export this data to another device, press the button.</Text>
                             <Button onClick={exportLocalStorage}>Export data</Button>
+                        </AccordionItem>
+                    </Accordion>
+                </AccordionItem>
+                <AccordionItem icon={<Adjustments />} label="Behaviour">
+                    <Accordion>
+                        <AccordionItem icon={<AntennaBars5 />} label="Low quality Mode">
+                            <Text mb={2}>With low quality mode enabled, Ossia will download songs and thumbnails in the lowest quality possible. This feature is recommended if you&apos;re using mobile data.</Text>
+                            <Text mb='sm'>Auto: Ossia will try to detect when it&apos;s running on mobile data and set the mode accordingly.</Text>
+                            <SegmentedControl onChange={(val) => { setLQMode(Number(val)) }} value={lqmode.toString()} data={[{ 'label': 'Off', 'value': '0' }, { 'label': 'Auto', 'value': '1' }, { 'label': 'On', 'value': '2' }]} />
                         </AccordionItem>
                     </Accordion>
                 </AccordionItem>
