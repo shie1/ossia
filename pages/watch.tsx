@@ -16,10 +16,12 @@ const Watch: NextPage = () => {
     useEffect(() => {
         if (typeof window !== 'undefined' && !details) {
             const id = (new URLSearchParams(location.search)).get('v')
-            if (id) { setSong(id!, currentLQ); router.push('/player') }
+            if (!id) { return }
             fetch(`${document.location.origin}/api/details?v=${id}${currentLQ ? '&q=lowestaudio' : ''}`).then(async (resp: any) => {
                 setDetails(await resp.json())
             })
+            setSong(id!, currentLQ);
+            router.push('/player')
         }
     }, [details, currentLQ, router])
 
@@ -29,14 +31,14 @@ const Watch: NextPage = () => {
             const description = `Listen to ${details.videoDetails.title} by ${details.videoDetails.author.name}`
             const image = details.videoDetails?.thumbnails[details.videoDetails.thumbnails.length - 1].url
 
-            document.querySelector("title")!.innerHTML = title
-            document.querySelector('meta[property="og:title"]')?.setAttribute('content', title)
-
-            document.querySelector('meta[property="og:description"]')?.setAttribute('content', description)
-            document.querySelector('meta[name="description"]')?.setAttribute('content', description)
-
-            document.querySelector('meta[property="og:image"]')?.setAttribute('content', image)
-            document.querySelector('meta[name="twitter:image"]')?.setAttribute('content', image)
+            document.title = title
+            document.body.append(`
+            <meta name="description" content=${description} />
+            <meta property="og:title" content=${title} />
+            <meta property="og:description" content=${description} />
+            <meta property="og:image" content=${image} />
+            <meta name="twitter:image" content=${image} />
+            `)
         }
     }, [details])
 
