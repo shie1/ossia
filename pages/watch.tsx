@@ -23,21 +23,16 @@ const Watch: NextPage = () => {
         }
     }, [details,currentLQ,router])
 
-    if (typeof window !== 'undefined') {
-        router.prefetch('/player')
-
-    }
-
     const Details = () => {
         return (
             <>
-                <MetaTags image={details?.thumbnail} title={`${details?.title} | Ossia`} description={`Listen to ${details?.title} by ${details?.author} on the Ossia Music Player!`} />
                 <AspectRatio mb='sm' ratio={1280 / 720}>
                     <Image alt='' src={details?.thumbnail} />
                 </AspectRatio>
                 <Text dangerouslySetInnerHTML={{ __html: details?.title }} size='xl' />
                 <Text dangerouslySetInnerHTML={{ __html: details?.author }} size='sm' />
                 <Text sx={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word' }} dangerouslySetInnerHTML={{ __html: details?.description }} />
+                <MetaTags image={details?.thumbnail} title={`${details?.title} | Ossia`} description={`Listen to ${details?.title} by ${details?.author} on the Ossia Music Player!`} />
             </>
         )
     }
