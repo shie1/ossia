@@ -109,7 +109,7 @@ const Player: NextPage = () => {
                 <Card sx={{ cursor: 'pointer', transition: '100ms', ":hover": { transform: 'scale(1.05)' } }} shadow="sm" p="lg" onClick={() => { setSong(video.id, currentLQ) }}>
                     <Card.Section>
                         <AspectRatio ratio={1280 / 720}>
-                            <Image src={video.thumbnails[video.thumbnails.length - 1].url} alt={video.title} />
+                            <Image src={video.thumbnails[currentLQ ? 0 : video.thumbnails.length - 1].url} alt={video.title} />
                         </AspectRatio>
                     </Card.Section>
 
