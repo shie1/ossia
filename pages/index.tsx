@@ -99,7 +99,7 @@ const Home: NextPage = () => {
           {rss.channel[0].item.map((item: any) => {
             i++
             return (
-              <Card my={6} key={i} shadow="sm" p="md">
+              <Card className='rss' my={6} key={i} shadow="sm" p="md">
                 <Text mb='sm' weight={500} size="lg">
                   <Group spacing='sm' direction="row">
                     <span>

@@ -34,8 +34,18 @@ a:not(.title a, .nodim):hover {
   box-sizing: border-box;
 }
 
-ul, li {
+.rss * {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+ul, li:not(.rss *) {
   all: unset
+}
+
+.rss ul, li {
+  margin-left: 1.5em;
+  font-size: 1.01rem;
 }
 
 body::-webkit-scrollbar-track

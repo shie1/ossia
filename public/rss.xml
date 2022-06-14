@@ -25,5 +25,22 @@
       <description>Version 1.1.0 is released. Say goodbye to the old player, say hello to the sidebar! Seamlessly switch between songs without the silence. Search for song while listening and just press the song for autoplay! (I also fixed the player's pause/play state, so no more double pressing.)</description>
       <pubDate>Thu, 09 Jun 2022 21:07:31 +0200</pubDate>
     </item>
+    <item>
+      <title>Version 1.2.0 - The Big PWA Update</title>
+      <guid>https://ossia.ml/post?p=3</guid>
+      <category>Update</category>
+      <description>This update makes Ossia a Progressive Web Application (PWA), this means that you can download Ossia to your phone and you can ditch the browser completely.&#xD;
+&#xD;
+&lt;b&gt;Major changes:&lt;/b&gt;&#xD;
+&lt;ul&gt;&#xD;
+&lt;li&gt;Sidebar repurposed for navigation&lt;/li&gt;&#xD;
+&lt;li&gt;Added settings menu&lt;/li&gt;&#xD;
+&lt;li&gt;Added song library&lt;/li&gt;&#xD;
+&lt;li&gt;Added related songs to player&lt;/li&gt;&#xD;
+&lt;li&gt;Volume controls are back&lt;/li&gt;&#xD;
+&lt;li&gt;The website now has a low effort logo&lt;/li&gt;&#xD;
+&lt;/ul&gt;</description>
+      <pubDate>Tue, 14 Jun 2022 06:59:48 +0200</pubDate>
+    </item>
   </channel>
 </rss>
