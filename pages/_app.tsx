@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { useHotkeys, useLocalStorage } from '@mantine/hooks';
 import Link from 'next/link';
 import { BrandYoutube, PlayerPause, PlayerPlay, Volume, VolumeOff, Download, Books, Home, Heart, Heartbeat, X, Menu2, RepeatOff, RepeatOnce, Settings } from 'tabler-icons-react'
+import { useRouter } from 'next/router';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [volume, setVolume] = useLocalStorage({
@@ -22,10 +23,6 @@ function MyApp({ Component, pageProps }: AppProps) {
     'key': 'lowQualityMode',
     'defaultValue': 1
   })
-  const [loading, setLoading] = useState<boolean>(false)
-  const [dw, setDw] = useState(false)
-  const [prevVol, setPrevVol] = useState(100)
-  const [appInfo, setAppInfo] = useState<any>(false)
   const [currentLQ, setCurrentLQ] = useLocalStorage<boolean>({
     'key': 'currentLQ', 'defaultValue': false
   })
@@ -38,6 +35,25 @@ function MyApp({ Component, pageProps }: AppProps) {
   const [history, setHistory] = useLocalStorage<Array<any>>(
     { key: 'history', defaultValue: [] }
   );
+  const [loading, setLoading] = useState<boolean>(false)
+  const [dw, setDw] = useState(false)
+  const [prevVol, setPrevVol] = useState(100)
+  const [appInfo, setAppInfo] = useState<any>(false)
+
+  const router = useRouter()
+
+  const handleRouteChange = (url: any) => {
+    window.gtag('config', 'G-6RV1HQYTBK', {
+      page_path: url,
+    });
+  };
+
+  useEffect(() => {
+    router.events.on('routeChangeComplete', handleRouteChange);
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange);
+    };
+  }, [router.events]);
 
   if (typeof window !== 'undefined') {
     navigator.connection.addEventListener('typechange', function () {
@@ -46,7 +62,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   }
 
   useEffect(() => {
-    switch(lqmode){
+    switch (lqmode) {
       case 0:
         setCurrentLQ(false)
         break
@@ -54,7 +70,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         setCurrentLQ(true)
         break
       case 1:
-        switch(connectionType){
+        switch (connectionType) {
           case 'cellular':
             setCurrentLQ(true)
             break
