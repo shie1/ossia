@@ -13,6 +13,9 @@ const Player: NextPage = () => {
         key: 'volume', defaultValue: 100
     })
     const [prevVol, setPrevVol] = useState(100)
+    const [currentLQ, setCurrentLQ] = useLocalStorage<boolean>({
+        'key': 'currentLQ', 'defaultValue': false
+    })
     const [paused, setPaused] = useLocalStorage(
         { key: 'paused', defaultValue: true }
     )
@@ -106,7 +109,7 @@ const Player: NextPage = () => {
         let i = 0
         const Video = ({ video }: any) => {
             return (
-                <Card sx={{ cursor: 'pointer', transition: '100ms', ":hover": { transform: 'scale(1.05)' } }} shadow="sm" p="lg" onClick={() => { setSong(video.id) }}>
+                <Card sx={{ cursor: 'pointer', transition: '100ms', ":hover": { transform: 'scale(1.05)' } }} shadow="sm" p="lg" onClick={() => { setSong(video.id, currentLQ) }}>
                     <Card.Section>
                         <AspectRatio ratio={1280 / 720}>
                             <Image src={video.thumbnails[video.thumbnails.length - 1].url} alt={video.title} />

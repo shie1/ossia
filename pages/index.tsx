@@ -11,9 +11,8 @@ const Home: NextPage = () => {
   const [results, setResults] = useState<any>(0)
   const [rss, setRss] = useState<any>(false)
   const [gotRss, setGotRss] = useState<boolean>(false)
-  const [lqmode, setLQMode] = useLocalStorage({
-    'key': 'lowQualityMode',
-    'defaultValue': 1
+  const [currentLQ, setCurrentLQ] = useLocalStorage<boolean>({
+    'key': 'currentLQ', 'defaultValue': false
   })
 
   useHotkeys([['ctrl+K', () => { setResults(0) }],])
@@ -44,10 +43,10 @@ const Home: NextPage = () => {
     if (typeof results != 'object') { return <></>; }
     const Video = ({ video }: any) => {
       return (
-        <Card sx={{ cursor: 'pointer', transition: '100ms', ":hover": { transform: 'scale(1.05)' } }} shadow="sm" p="lg" onClick={() => { setSong(video.id.videoId) }}>
+        <Card sx={{ cursor: 'pointer', transition: '100ms', ":hover": { transform: 'scale(1.05)' } }} shadow="sm" p="lg" onClick={() => { setSong(video.id.videoId,currentLQ) }}>
           <Card.Section>
             <AspectRatio ratio={1280 / 720}>
-              <Image src={video.snippet.thumbnails.high.url} alt={video.title} />
+              <Image src={video.snippet.thumbnails[currentLQ ? 'default' : 'high'].url} alt={video.title} />
             </AspectRatio>
           </Card.Section>
 

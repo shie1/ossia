@@ -15,10 +15,20 @@ function MyApp({ Component, pageProps }: AppProps) {
   const [loop, setLoop] = useLocalStorage({
     key: 'loop', defaultValue: true
   })
+  const [connectionType, setCT] = useLocalStorage({
+    'key': 'connectionType', 'defaultValue': 'wifi'
+  })
+  const [lqmode, setLQMode] = useLocalStorage({
+    'key': 'lowQualityMode',
+    'defaultValue': 1
+  })
   const [loading, setLoading] = useState<boolean>(false)
   const [dw, setDw] = useState(false)
   const [prevVol, setPrevVol] = useState(100)
   const [appInfo, setAppInfo] = useState<any>(false)
+  const [currentLQ, setCurrentLQ] = useLocalStorage<boolean>({
+    'key': 'currentLQ', 'defaultValue': false
+  })
   const [paused, setPaused] = useLocalStorage(
     { key: 'paused', defaultValue: true }
   )
@@ -34,6 +44,27 @@ function MyApp({ Component, pageProps }: AppProps) {
       alert(navigator.connection.type);
     });
   }
+
+  useEffect(() => {
+    switch(lqmode){
+      case 0:
+        setCurrentLQ(false)
+        break
+      case 2:
+        setCurrentLQ(true)
+        break
+      case 1:
+        switch(connectionType){
+          case 'cellular':
+            setCurrentLQ(true)
+            break
+          default:
+            setCurrentLQ(false)
+            break
+        }
+        break
+    }
+  }, [lqmode, setCurrentLQ, connectionType])
 
   useEffect(() => {
     if (typeof window !== 'undefined' && !appInfo) {

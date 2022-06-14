@@ -10,6 +10,9 @@ const Library: NextPage = () => {
     const [liked, setLiked] = useLocalStorage<Array<any>>(
         { key: 'liked-songs', defaultValue: [] }
     );
+    const [currentLQ, setCurrentLQ] = useLocalStorage<boolean>({
+        'key': 'currentLQ', 'defaultValue': false
+    })
     const [history, setHistory] = useLocalStorage<Array<any>>(
         { key: 'history', defaultValue: [] }
     );
@@ -17,10 +20,10 @@ const Library: NextPage = () => {
     const [historyD, setHistoryD] = useState([])
 
     const SongList = ({ list, d, set }: any) => {
-        const [po,setPo] = useState(false)
+        const [po, setPo] = useState(false)
         useEffect(() => {
             const stuff = list
-            stuff.sort((a: any,b: any) => {
+            stuff.sort((a: any, b: any) => {
                 return (new Date(b.added)).getTime() - (new Date(a.added)).getTime()
             })
             if (d[0] !== stuff) {
@@ -56,9 +59,9 @@ const Library: NextPage = () => {
                 ]}>
                     {d[0].map((item: any) => {
                         i++
-                        if(!item.title){return <></>}
+                        if (!item.title) { return <></> }
                         return (
-                            <Card key={i} sx={{ cursor: 'pointer', transition: '100ms', ":hover": { transform: 'scale(1.05)' } }} shadow="sm" p="lg" onClick={() => { setSong(item.id) }}>
+                            <Card key={i} sx={{ cursor: 'pointer', transition: '100ms', ":hover": { transform: 'scale(1.05)' } }} shadow="sm" p="lg" onClick={() => { setSong(item.id,currentLQ) }}>
                                 <Card.Section>
                                     <AspectRatio ratio={1280 / 720}>
                                         <Image src={item.thumbnail} alt={item.title} />
@@ -66,7 +69,7 @@ const Library: NextPage = () => {
                                 </Card.Section>
 
                                 <Group position="apart" mt='sm'>
-                                    <Text dangerouslySetInnerHTML={{__html: item.title}} sx={{ display: '-webkit-box', textOverflow: 'ellipsis', overflow: 'hidden', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical' }} weight={500} />
+                                    <Text dangerouslySetInnerHTML={{ __html: item.title }} sx={{ display: '-webkit-box', textOverflow: 'ellipsis', overflow: 'hidden', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical' }} weight={500} />
                                     <Badge color="pink" variant="light">
                                         {(new Date(item.added)).toLocaleString()}
                                     </Badge>
