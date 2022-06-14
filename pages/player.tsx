@@ -22,9 +22,6 @@ const Player: NextPage = () => {
     const [liked, setLiked] = useLocalStorage<Array<any>>(
         { key: 'liked-songs', defaultValue: [] }
     );
-    const [history, setHistory] = useLocalStorage<Array<any>>(
-        { key: 'history', defaultValue: [] }
-    );
     const [loop, setLoop] = useLocalStorage({
         key: 'loop', defaultValue: true
     })

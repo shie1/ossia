@@ -3,6 +3,7 @@ const withPWA = require('next-pwa')
 const runtimeCaching = require('next-pwa/cache')
 const nextConfig = withPWA({
   reactStrictMode: true,
+  compress: true,
   pwa: {
     dest: "public",
     register: true,
