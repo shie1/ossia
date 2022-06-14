@@ -8,6 +8,8 @@ import { useHotkeys, useLocalStorage } from '@mantine/hooks';
 import Link from 'next/link';
 import { BrandYoutube, PlayerPause, PlayerPlay, Volume, VolumeOff, Download, Books, Home, Heart, Heartbeat, X, Menu2, RepeatOff, RepeatOnce, Settings } from 'tabler-icons-react'
 import { useRouter } from 'next/router';
+import * as gtag from "../lib/gtag";
+const isProduction = process.env.NODE_ENV === "production";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [volume, setVolume] = useLocalStorage({
@@ -42,16 +44,13 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   const router = useRouter()
 
-  const handleRouteChange = (url: any) => {
-    window.gtag('config', 'G-6RV1HQYTBK', {
-      page_path: url,
-    });
-  };
-
   useEffect(() => {
-    router.events.on('routeChangeComplete', handleRouteChange);
+    const handleRouteChange = (url: URL) => {
+      if (isProduction) gtag.pageview(url);
+    };
+    router.events.on("routeChangeComplete", handleRouteChange);
     return () => {
-      router.events.off('routeChangeComplete', handleRouteChange);
+      router.events.off("routeChangeComplete", handleRouteChange);
     };
   }, [router.events]);
 
