@@ -155,7 +155,7 @@ const Settings: NextPage = () => {
                 </AccordionItem>
                 <AccordionItem icon={<Braces />} label="Advanced">
                     <Accordion>
-                        <AccordionItem icon={<DatabaseExport />} label="Display all data from local storage">
+                        <AccordionItem icon={<Database />} label="Display all data from local storage">
                             <LSDisp />
                         </AccordionItem>
                     </Accordion>
