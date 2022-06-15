@@ -42,7 +42,7 @@ function MyApp({ Component, pageProps }: AppProps, props: any) {
     { key: 'history', defaultValue: [] }
   );
   const [scrobbleF, setScrobble] = useLocalStorage({
-    'key': 'scrobble', 'defaultValue': false
+    'key': 'scrobble', 'defaultValue': true
   })
   const [loading, setLoading] = useState<boolean>(false)
   const [dw, setDw] = useState(false)
