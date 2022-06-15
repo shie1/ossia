@@ -202,15 +202,15 @@ function MyApp({ Component, pageProps }: AppProps, props: any) {
       const descLines = videoDescription.split('<br>')
       title = htmlDecode(descLines[4])!.replace(/(\(.*\))|(【.*】)|(\[.*\])|({.*})/g, '')
       artist = videoAuthor?.split(" - ")[0]
-    } else {
+    }else{
       title = videoTitle?.split(' - ')[1]
       artist = videoTitle?.split(' - ')[0]
     }
     let data
-    console.log(title, artist)
+    console.log(title,artist)
     if (title) {
       data = await (await fetch(`${document.location.origin}/api/lastfm/search`, { method: 'POST', body: JSON.stringify({ 'track': title, ...(artist ? { 'artist': artist } : {}) }) })).json()
-      if (data.lfm.results[0]["opensearch:totalResults"][0] == 0) { return }
+      if(data.lfm.results[0]["opensearch:totalResults"][0] == 0){return}
       const songData = data.lfm.results[0].trackmatches[0].track[0]
       showNotification({
         'title': "Recognized song!",
@@ -220,7 +220,7 @@ function MyApp({ Component, pageProps }: AppProps, props: any) {
       })
       document.querySelector('#songDetails h1')!.innerHTML = songData.name
       document.querySelector('#songDetails h2')!.innerHTML = songData.artist
-      if (!scrobbleF || !logged) { return }
+      if(!scrobbleF || !logged){return}
       fetch(`${document.location.origin}/api/lastfm/scrobble`, { 'method': 'POST', body: JSON.stringify({ 'track': songData.name[0], 'artist': songData.artist[0] }) })
     }
   }
@@ -322,12 +322,14 @@ function MyApp({ Component, pageProps }: AppProps, props: any) {
   const Menu = () => {
     const MenuLink = ({ icon, link, text }: any) => {
       return (
-        <Paper component='a' href={link} onClick={(e: any) => { setDw(false) }} sx={{ width: '100%' }} withBorder p='sm' className='nodim menuLink'>
-          <Group direction='row'>
-            {icon}
-            <Text size='md'>{text}</Text>
-          </Group>
-        </Paper>
+        <Link href={link}>
+          <Paper onClick={(e: any) => { setDw(false) }} sx={{ width: '100%' }} withBorder p='sm' className='menuLink'>
+            <Group direction='row'>
+              {icon}
+              <Text size='md'>{text}</Text>
+            </Group>
+          </Paper>
+        </Link>
       )
     }
     return (
