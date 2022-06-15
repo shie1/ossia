@@ -22,7 +22,7 @@ export default async function handler(
         .query({
             'method': 'track.search',
             'api_key': env.LASTFM_KEY,
-            ...req.body
+            ...JSON.parse(req.body)
         })
         .parse(parser)
         .end((err,resp) => {
