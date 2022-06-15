@@ -9,7 +9,6 @@ import { useState } from 'react';
 import { getCookie } from 'cookies-next';
 
 const Settings: NextPage = (props: any) => {
-    console.log(props)
     const modals = useModals();
     const [exportModal, setExportModal] = useState(false)
     const [importModal, setImportModal] = useState(false)
