@@ -6,12 +6,13 @@ import { NotificationsProvider, showNotification } from '@mantine/notifications'
 import { useEffect, useState } from 'react';
 import { useHotkeys, useLocalStorage } from '@mantine/hooks';
 import Link from 'next/link';
-import { BrandYoutube, PlayerPause, PlayerPlay, Volume, VolumeOff, Download, Books, Home, Heart, Heartbeat, X, Menu2, RepeatOff, RepeatOnce, Settings } from 'tabler-icons-react'
+import { BrandYoutube, PlayerPause, PlayerPlay, Volume, VolumeOff, Download, Books, Home, Heart, Heartbeat, X, Menu2, RepeatOff, RepeatOnce, Settings, BrandLastfm } from 'tabler-icons-react'
 import { useRouter } from 'next/router';
 import * as gtag from "../lib/gtag";
+import { getCookie } from 'cookies-next';
 const isProduction = process.env.NODE_ENV === "production";
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps }: AppProps,props:any) {
   const [volume, setVolume] = useLocalStorage({
     key: 'volume', defaultValue: 100
   })
@@ -296,6 +297,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <MenuLink icon={<Home />} link="/" text="Home" />
         <MenuLink icon={<Books />} link="/library" text="Library" />
         <MenuLink icon={<PlayerPlay />} link="/player" text="Player" />
+        {<MenuLink icon={<BrandLastfm />} link="/lastfm" text="Last.fm" />}
         <MenuLink icon={<Settings />} link="/settings" text="Settings" />
       </Group>
     )

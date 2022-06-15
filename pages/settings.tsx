@@ -3,11 +3,13 @@ import { useLocalStorage } from '@mantine/hooks';
 import { useModals } from '@mantine/modals';
 import { showNotification } from '@mantine/notifications';
 import type { NextPage } from 'next'
-import { Adjustments, AntennaBars5, Braces, BrandLastfm, CalendarTime, Database, DatabaseExport, DatabaseImport, DatabaseOff, Link, User, X } from 'tabler-icons-react';
+import { Adjustments, AntennaBars5, Braces, BrandLastfm, CalendarTime, Database, DatabaseExport, DatabaseImport, DatabaseOff, Link, Unlink, User, UserOff, X } from 'tabler-icons-react';
 import lzstring from 'lz-string'
 import { useState } from 'react';
+import { getCookie } from 'cookies-next';
 
-const Settings: NextPage = () => {
+const Settings: NextPage = (props: any) => {
+    console.log(props)
     const modals = useModals();
     const [exportModal, setExportModal] = useState(false)
     const [importModal, setImportModal] = useState(false)
@@ -156,8 +158,18 @@ const Settings: NextPage = () => {
                 <AccordionItem icon={<Link />} label="Connections">
                     <Accordion>
                         <AccordionItem icon={<BrandLastfm />} label="Link Last.fm account">
-                            <Text mb='sm'>Scrobble your songs with Ossia.</Text>
-                            <Button className='nodim' component='a' href={typeof window !== 'undefined' ? `${location.origin}/login` : ''} target="_blank" leftIcon={<User />}>Sign in</Button>
+                            {
+                                !props.auth ?
+                                    <>
+                                        <Text mb='sm'>Scrobble your songs with Ossia.</Text>
+                                        <Button className='nodim' component='a' href={typeof window !== 'undefined' ? `${location.origin}/login` : ''} target="_blank" leftIcon={<User />}>Sign in</Button>
+                                    </> :
+                                    <>
+                                        <Text mb={2}>Scrobble your songs with Ossia.</Text>
+                                        <Text mb='sm' size='sm'>You&apos;re already logged in as {props.auth.lfm.session[0].name[0]}</Text>
+                                        <Button className='nodim' component='a' href={typeof window !== 'undefined' ? `${location.origin}/logout` : ''} target="_blank" leftIcon={<UserOff />}>Sign out</Button>
+                                    </>
+                            }
                         </AccordionItem>
                     </Accordion>
                 </AccordionItem>
@@ -171,6 +183,12 @@ const Settings: NextPage = () => {
             </Accordion>
         </>
     )
+}
+
+export const getServerSideProps = ({ req, res }: any) => {
+    let auth = getCookie('auth', { req, res }) as any
+    if (auth) { auth = JSON.parse(auth) }
+    return { props: { 'auth': auth } };
 }
 
 export default Settings
