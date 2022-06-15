@@ -2,7 +2,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { load } from 'ts-dotenv'
 import superagent from 'superagent'
-import { getCookie } from 'cookies-next'
 import { apiroot } from '../../../functions'
 const parser = require('superagent-xml2jsparser')
 
@@ -19,13 +18,10 @@ export default async function handler(
     req: any,
     res: NextApiResponse<any>
 ) {
-    const user = JSON.parse(getCookie('auth',{req,res}) as any)
-    const username = user.lfm.session[0].name[0]
     superagent.get(apiroot)
         .query({
-            'method': 'user.getInfo',
             'api_key': env.LASTFM_KEY,
-            'user': username
+            ...JSON.parse(req.body)
         })
         .parse(parser)
         .end((err,resp) => {

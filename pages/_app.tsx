@@ -337,7 +337,7 @@ function MyApp({ Component, pageProps }: AppProps, props: any) {
         <MenuLink icon={<Home />} link="/" text="Home" />
         <MenuLink icon={<Books />} link="/library" text="Library" />
         <MenuLink icon={<PlayerPlay />} link="/player" text="Player" />
-        {<MenuLink icon={<BrandLastfm />} link="/lastfm" text="Last.fm" />}
+        {<MenuLink icon={<BrandLastfm />} link="/user" text="Last.fm" />}
         <MenuLink icon={<Settings />} link="/settings" text="Settings" />
       </Group>
     )

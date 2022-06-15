@@ -21,6 +21,7 @@
     "cookies-next": "^2.0.4",
     "lz-string": "^1.4.4",
     "md5": "^2.3.0",
+    "moment": "^2.29.3",
     "next": "12.1.6",
     "next-auth": "^4.5.0",
     "next-pwa": "^5.5.4",
