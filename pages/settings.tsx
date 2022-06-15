@@ -157,7 +157,7 @@ const Settings: NextPage = () => {
                     <Accordion>
                         <AccordionItem icon={<BrandLastfm />} label="Link Last.fm account">
                             <Text mb='sm'>Scrobble your songs with Ossia.</Text>
-                            <Button className='nodim' component='a' href={`${location?.origin}/login`} target="_blank" leftIcon={<User />}>Sign in</Button>
+                            <Button className='nodim' component='a' href={`${document?.location.origin}/login`} target="_blank" leftIcon={<User />}>Sign in</Button>
                         </AccordionItem>
                     </Accordion>
                 </AccordionItem>
