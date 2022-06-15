@@ -26,6 +26,9 @@ function MyApp({ Component, pageProps }: AppProps, props: any) {
     'key': 'lowQualityMode',
     'defaultValue': 1
   })
+  const [logged, setLogged] = useLocalStorage({
+    'key': 'logged', 'defaultValue': false
+  })
   const [currentLQ, setCurrentLQ] = useLocalStorage<boolean>({
     'key': 'currentLQ', 'defaultValue': false
   })
@@ -217,7 +220,7 @@ function MyApp({ Component, pageProps }: AppProps, props: any) {
       })
       document.querySelector('#songDetails h1')!.innerHTML = songData.name
       document.querySelector('#songDetails h2')!.innerHTML = songData.artist
-      if(!scrobbleF){return}
+      if(!scrobbleF || !logged){return}
       fetch(`${document.location.origin}/api/lastfm/scrobble`, { 'method': 'POST', body: JSON.stringify({ 'track': songData.name[0], 'artist': songData.artist[0] }) })
     }
   }

@@ -166,14 +166,14 @@ const Settings: NextPage = (props: any) => {
                                 props.auth ?
                                     <>
                                         <Text mb='sm' size='sm'>You&apos;re already logged in as {props.auth.lfm.session[0].name[0]}</Text>
-                                        <Button className='nodim' component='a' href={typeof window !== 'undefined' ? `${location.origin}/login` : ''} leftIcon={<User />}>Sign in</Button>
+                                        <Button className='nodim' component='a' href={typeof window !== 'undefined' ? `${location.origin}/logout` : ''} leftIcon={<UserOff />}>Sign out</Button>
                                     </>
-                                    : <Button className='nodim' component='a' href={typeof window !== 'undefined' ? `${location.origin}/logout` : ''} leftIcon={<UserOff />}>Sign out</Button>
+                                    : <Button className='nodim' component='a' href={typeof window !== 'undefined' ? `${location.origin}/login` : ''} leftIcon={<User />}>Sign in</Button>
                             }
                         </AccordionItem>
                         <AccordionItem label="Scrobble" icon={<History />}>
                             <Text mb='sm'>Scrobble your songs to Last.fm.</Text>
-                            {!props.auth ? <Text mb='sm' size='sm'></Text> : <></>}
+                            {!props.auth ? <Text mb='sm' size='sm'>You will need to log in, if you want to use this feature!</Text> : <></>}
                             <Switch label="Enable feature" checked={scrobble} onChange={(event) => setScrobble(event.currentTarget.checked)} />
                         </AccordionItem>
                     </Accordion>
