@@ -1,9 +1,9 @@
-import { Accordion, AccordionItem, Text, Button, SegmentedControl, JsonInput, Modal, TextInput, Textarea, Breadcrumbs } from '@mantine/core'
+import { Accordion, AccordionItem, Text, Button, SegmentedControl, JsonInput, Modal, TextInput, Textarea, Breadcrumbs, Switch } from '@mantine/core'
 import { useLocalStorage } from '@mantine/hooks';
 import { useModals } from '@mantine/modals';
 import { showNotification } from '@mantine/notifications';
 import type { NextPage } from 'next'
-import { Adjustments, AntennaBars5, Braces, BrandLastfm, CalendarTime, Database, DatabaseExport, DatabaseImport, DatabaseOff, Link, Unlink, User, UserOff, X } from 'tabler-icons-react';
+import { Adjustments, AntennaBars5, Braces, BrandLastfm, CalendarTime, Database, DatabaseExport, DatabaseImport, DatabaseOff, History, Link, Unlink, User, UserOff, X } from 'tabler-icons-react';
 import lzstring from 'lz-string'
 import { useState } from 'react';
 import { getCookie } from 'cookies-next';
@@ -17,6 +17,9 @@ const Settings: NextPage = (props: any) => {
     const [lqmode, setLQMode] = useLocalStorage({
         'key': 'lowQualityMode',
         'defaultValue': 1
+    })
+    const [scrobble, setScrobble] = useLocalStorage({
+        'key': 'scrobble', 'defaultValue': true
     })
 
     const comingSoon = () => {
@@ -155,21 +158,23 @@ const Settings: NextPage = (props: any) => {
                         </AccordionItem>
                     </Accordion>
                 </AccordionItem>
-                <AccordionItem icon={<Link />} label="Connections">
+                <AccordionItem icon={<BrandLastfm />} label="Last.fm">
                     <Accordion>
-                        <AccordionItem icon={<BrandLastfm />} label="Link Last.fm account">
+                        <AccordionItem icon={<Link />} label="Link Last.fm account">
+                            <Text mb='sm'>Connect your Last.fm account to Ossia.</Text>
                             {
-                                !props.auth ?
+                                props.auth ?
                                     <>
-                                        <Text mb='sm'>Scrobble your songs with Ossia.</Text>
-                                        <Button className='nodim' component='a' href={typeof window !== 'undefined' ? `${location.origin}/login` : ''} leftIcon={<User />}>Sign in</Button>
-                                    </> :
-                                    <>
-                                        <Text mb={2}>Scrobble your songs with Ossia.</Text>
                                         <Text mb='sm' size='sm'>You&apos;re already logged in as {props.auth.lfm.session[0].name[0]}</Text>
-                                        <Button className='nodim' component='a' href={typeof window !== 'undefined' ? `${location.origin}/logout` : ''} leftIcon={<UserOff />}>Sign out</Button>
+                                        <Button className='nodim' component='a' href={typeof window !== 'undefined' ? `${location.origin}/login` : ''} leftIcon={<User />}>Sign in</Button>
                                     </>
+                                    : <Button className='nodim' component='a' href={typeof window !== 'undefined' ? `${location.origin}/logout` : ''} leftIcon={<UserOff />}>Sign out</Button>
                             }
+                        </AccordionItem>
+                        <AccordionItem label="Scrobble" icon={<History />}>
+                            <Text mb='sm'>Scrobble your songs to Last.fm.</Text>
+                            {!props.auth ? <Text mb='sm' size='sm'></Text> : <></>}
+                            <Switch label="Enable feature" checked={scrobble} onChange={(event) => setScrobble(event.currentTarget.checked)} />
                         </AccordionItem>
                     </Accordion>
                 </AccordionItem>

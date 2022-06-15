@@ -1,21 +1,29 @@
 import { Card, Container, Divider, Group, Loader, Text, TextInput, Title, Button, Image, Badge, SimpleGrid, Space, Tabs, ActionIcon, Paper, AspectRatio } from '@mantine/core'
 import { useHotkeys, useLocalStorage } from '@mantine/hooks'
+import { getCookie } from 'cookies-next';
 import type { NextPage } from 'next'
 import Link from 'next/link';
 import { useEffect, useState } from 'react'
 import { InfoCircle, Note, Search, X } from 'tabler-icons-react'
 import { MetaTags, setSong } from '../functions';
 
-const Home: NextPage = () => {
+const Home: NextPage = (props: any) => {
   const [searchQuery, setQuery] = useState("");
   const [results, setResults] = useState<any>(0)
   const [rss, setRss] = useState<any>(false)
   const [gotRss, setGotRss] = useState<boolean>(false)
+  const [logged, setLogged] = useLocalStorage({
+    'key': 'logged', 'defaultValue': false
+  })
   const [currentLQ, setCurrentLQ] = useLocalStorage<boolean>({
     'key': 'currentLQ', 'defaultValue': false
   })
 
   useHotkeys([['ctrl+K', () => { setResults(0) }],])
+
+  useEffect(() => {
+    setLogged(props.auth !== false)
+  }, [props, setLogged])
 
   useEffect(() => {
     const search = (query: string) => {
@@ -43,7 +51,7 @@ const Home: NextPage = () => {
     if (typeof results != 'object') { return <></>; }
     const Video = ({ video }: any) => {
       return (
-        <Card sx={{ cursor: 'pointer', transition: '100ms', ":hover": { transform: 'scale(1.05)' } }} shadow="sm" p="lg" onClick={() => { setSong(video.id.videoId,currentLQ) }}>
+        <Card sx={{ cursor: 'pointer', transition: '100ms', ":hover": { transform: 'scale(1.05)' } }} shadow="sm" p="lg" onClick={() => { setSong(video.id.videoId, currentLQ) }}>
           <Card.Section>
             <AspectRatio ratio={1280 / 720}>
               <Image src={video.snippet.thumbnails[currentLQ ? 'default' : 'high'].url} alt={video.title} />
@@ -138,6 +146,12 @@ const Home: NextPage = () => {
       </Tabs>
     </>
   )
+}
+
+export const getServerSideProps = ({ req, res }: any) => {
+  let auth = getCookie('auth', { req, res }) as any || false
+  if (auth) { auth = JSON.parse(auth) }
+  return { props: { 'auth': auth } };
 }
 
 export default Home

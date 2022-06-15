@@ -2,14 +2,21 @@ import { Anchor, Text } from '@mantine/core'
 import type { NextPage } from 'next'
 import { useEffect, useState } from 'react'
 import { removeCookies } from 'cookies-next'
+import { useLocalStorage } from '@mantine/hooks'
 
 const Login: NextPage = () => {
     const [redir, setRedir] = useState("")
+    const [logged, setLogged] = useLocalStorage({
+        'key': 'logged', 'defaultValue': false
+    })
     useEffect(() => {
         if (typeof window !== 'undefined' && !redir) {
             setRedir(document.location.origin)
         }
     }, [redir])
+    useEffect(()=>{
+        setLogged(false)
+    },[setLogged])
 
     return (
         <>

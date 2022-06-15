@@ -12,6 +12,9 @@ const LastFM: NextPage = (props: any) => {
     const [currentLQ, setCurrentLQ] = useLocalStorage<boolean>({
         'key': 'currentLQ', 'defaultValue': false
     })
+    const [logged, setLogged] = useLocalStorage({
+        'key': 'logged', 'defaultValue': false
+    })
 
     useEffect(() => {
         if (!user) {
@@ -20,6 +23,10 @@ const LastFM: NextPage = (props: any) => {
             })
         }
     }, [user])
+
+    useEffect(()=>{
+        setLogged(props.auth !== false)
+    },[props, setLogged])
 
     if (!props.auth) {
         const redir = "http://www.last.fm/api/auth/?api_key=070545b595db2dbcacbf07297c2e93e1"
