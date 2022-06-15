@@ -20,15 +20,24 @@ export default async function handler(
     res: NextApiResponse<any>
 ) {
     const sk = JSON.parse(getCookie('auth', { req, res }) as any).lfm.session[0].key[0]
-    superagent.get(apiroot)
-        .query({
-            'method': 'track.scrobble',
-            'api_key': env.LASTFM_KEY,
-            'sk': sk,
-            ...req.body
-        })
+    const params = genSig({
+        'method': 'track.scrobble',
+        'api_key': env.LASTFM_KEY,
+        'sk': sk,
+        'timestamp': parseInt(((new Date()).getTime() / 1000).toFixed(0)),
+        ...JSON.parse(req.body)
+    }, env)
+    const urlp = new URLSearchParams()
+    for (let item in params) {
+        urlp.set(item, params[item])
+    }
+    console.log(params)
+    superagent.post(apiroot)
+        .send(urlp.toString())
         .parse(parser)
+        .set('Content-Type', 'application/x-www-form-urlencoded')
         .end((err, resp) => {
+            if (err) { console.log(err) }
             res.status(200).json(resp.body)
         })
 }

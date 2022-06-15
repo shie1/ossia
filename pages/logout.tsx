@@ -1,13 +1,16 @@
 import { Anchor, Text } from '@mantine/core'
 import type { NextPage } from 'next'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { removeCookies } from 'cookies-next'
 
 const Login: NextPage = () => {
     const [redir, setRedir] = useState("")
-    if (typeof window !== 'undefined' && !redir) {
-        setRedir(document.location.origin + '/close')
-    }
+    useEffect(() => {
+        if (typeof window !== 'undefined' && !redir) {
+            setRedir(document.location.origin)
+        }
+    }, [redir])
+
     return (
         <>
             <meta httpEquiv="refresh" content={`0;URL='${redir}'`} />
@@ -19,7 +22,7 @@ const Login: NextPage = () => {
 
 export const getServerSideProps = ({ req, res }: any) => {
     removeCookies('auth', { req, res, path: '/' })
-    return {'props': {}}
+    return { 'props': {} }
 }
 
 export default Login

@@ -162,12 +162,12 @@ const Settings: NextPage = (props: any) => {
                                 !props.auth ?
                                     <>
                                         <Text mb='sm'>Scrobble your songs with Ossia.</Text>
-                                        <Button className='nodim' component='a' href={typeof window !== 'undefined' ? `${location.origin}/login` : ''} target="_blank" leftIcon={<User />}>Sign in</Button>
+                                        <Button className='nodim' component='a' href={typeof window !== 'undefined' ? `${location.origin}/login` : ''} leftIcon={<User />}>Sign in</Button>
                                     </> :
                                     <>
                                         <Text mb={2}>Scrobble your songs with Ossia.</Text>
                                         <Text mb='sm' size='sm'>You&apos;re already logged in as {props.auth.lfm.session[0].name[0]}</Text>
-                                        <Button className='nodim' component='a' href={typeof window !== 'undefined' ? `${location.origin}/logout` : ''} target="_blank" leftIcon={<UserOff />}>Sign out</Button>
+                                        <Button className='nodim' component='a' href={typeof window !== 'undefined' ? `${location.origin}/logout` : ''} leftIcon={<UserOff />}>Sign out</Button>
                                     </>
                             }
                         </AccordionItem>
@@ -186,7 +186,7 @@ const Settings: NextPage = (props: any) => {
 }
 
 export const getServerSideProps = ({ req, res }: any) => {
-    let auth = getCookie('auth', { req, res }) as any
+    let auth = getCookie('auth', { req, res }) as any || false
     if (auth) { auth = JSON.parse(auth) }
     return { props: { 'auth': auth } };
 }
