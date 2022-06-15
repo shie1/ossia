@@ -138,7 +138,7 @@ const LastFM: NextPage = (props: any) => {
                 <>
                     {recents.map((song) => {
                         i++
-                        const style:any = {'fontSize':'1em'};
+                        const style:any = {'fontSize':'2vmin'};
                         return (
                             <tr key={i}>
                                 <td style={style}>{song.name[0]}</td>
@@ -151,7 +151,7 @@ const LastFM: NextPage = (props: any) => {
             )
         }
         return (
-            <>
+            <Group position='center'>
                 <Table>
                     <thead>
                         <tr>
@@ -164,7 +164,7 @@ const LastFM: NextPage = (props: any) => {
                         <Rows />
                     </tbody>
                 </Table>
-            </>
+            </Group>
         )
     }
 
