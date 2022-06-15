@@ -1,3 +1,6 @@
+import { unescape } from 'querystring'
+import md5 from 'md5'
+
 export const MetaTags = ({ title, description, image }: any) => {
     if(!title){return <></>}
     const ImageTags = () => {
@@ -47,4 +50,17 @@ export const setSong = async (video: string, lq: boolean) => {
     detailsE.querySelector('span')!.innerText = details.videoDetails?.thumbnails[lq? 0 : details.videoDetails.thumbnails.length - 1].url
     detailsE.querySelector('p')!.innerText = details.videoDetails?.description
     detailsE.querySelector('section')!.innerText = JSON.stringify(details)
+}
+
+export const apiroot = "http://ws.audioscrobbler.com/2.0/"
+
+export const genSig = (json: any, env: any) => {
+    let sig = ""
+    const keys = Object.keys(json)
+    keys.sort()
+    for(const item of keys){
+        sig = sig + item + json[item]
+    }
+    json['api_sig'] = md5(unescape(encodeURIComponent(sig + env.LASTFM_SECRET)))
+    return json
 }

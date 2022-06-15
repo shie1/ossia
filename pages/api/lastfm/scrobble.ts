@@ -2,7 +2,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { load } from 'ts-dotenv'
 import superagent from 'superagent'
-import { setCookies } from 'cookies-next'
+import { getCookie } from 'cookies-next'
 import { apiroot, genSig } from '../../../functions'
 const parser = require('superagent-xml2jsparser')
 
@@ -17,19 +17,18 @@ const env = load({
 
 export default async function handler(
     req: any,
-    res: NextApiResponse<object>
+    res: NextApiResponse<any>
 ) {
-    const token = req.query['token']
+    const sk = JSON.parse(getCookie('auth', { req, res }) as any).lfm.session[0].key[0]
     superagent.get(apiroot)
-        .query(genSig({
-            'method': 'auth.getSession',
+        .query({
+            'method': 'track.scrobble',
             'api_key': env.LASTFM_KEY,
-            'token': token,
-        },env))
+            'sk': sk,
+            ...req.body
+        })
         .parse(parser)
         .end((err, resp) => {
-            if (err) { return console.log(err); }
-            setCookies('auth', resp.body, {req,res,path: '/',maxAge: 365*24*60*60})
-            res.redirect((env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://ossia.ml') + "/lastfm",)
+            res.status(200).json(resp.body)
         })
 }

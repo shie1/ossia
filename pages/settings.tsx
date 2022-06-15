@@ -3,7 +3,7 @@ import { useLocalStorage } from '@mantine/hooks';
 import { useModals } from '@mantine/modals';
 import { showNotification } from '@mantine/notifications';
 import type { NextPage } from 'next'
-import { Adjustments, AntennaBars5, Braces, CalendarTime, Database, DatabaseExport, DatabaseImport, DatabaseOff, X } from 'tabler-icons-react';
+import { Adjustments, AntennaBars5, Braces, BrandLastfm, CalendarTime, Database, DatabaseExport, DatabaseImport, DatabaseOff, Link, User, X } from 'tabler-icons-react';
 import lzstring from 'lz-string'
 import { useState } from 'react';
 
@@ -31,10 +31,10 @@ const Settings: NextPage = () => {
 
     const ilsModalAction = () => {
         const input = document?.querySelector("#importInput")! as HTMLInputElement
-        if(!input.value){return}
+        if (!input.value) { return }
         const json = JSON.parse(lzstring.decompressFromBase64(input.value)!)
-        for(const item in json){
-            localStorage.setItem(item,json[item])
+        for (const item in json) {
+            localStorage.setItem(item, json[item])
         }
         showNotification({
             'title': "Successful import",
@@ -150,6 +150,14 @@ const Settings: NextPage = () => {
                             <Text mb={2}>With low quality mode enabled, Ossia will download songs and thumbnails in the lowest quality possible. This feature is recommended if you&apos;re using mobile data.</Text>
                             <Text mb='sm'>Auto: Ossia will try to detect when it&apos;s running on mobile data and set the mode accordingly.</Text>
                             <SegmentedControl onChange={(val) => { setLQMode(Number(val)) }} value={lqmode.toString()} data={[{ 'label': 'Off', 'value': '0' }, { 'label': 'Auto', 'value': '1' }, { 'label': 'On', 'value': '2' }]} />
+                        </AccordionItem>
+                    </Accordion>
+                </AccordionItem>
+                <AccordionItem icon={<Link />} label="Connections">
+                    <Accordion>
+                        <AccordionItem icon={<BrandLastfm />} label="Link Last.fm account">
+                            <Text mb='sm'>Scrobble your songs with Ossia.</Text>
+                            <Button className='nodim' component='a' href={`${location.origin}/login`} target="_blank" leftIcon={<User />}>Sign in</Button>
                         </AccordionItem>
                     </Accordion>
                 </AccordionItem>
