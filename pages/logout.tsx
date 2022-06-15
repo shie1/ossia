@@ -6,11 +6,11 @@ import { removeCookies } from 'cookies-next'
 const Login: NextPage = () => {
     const [redir, setRedir] = useState("")
     if (typeof window !== 'undefined' && !redir) {
-        setRedir(document.location.origin)
+        setRedir(document.location.origin + '/close')
     }
     return (
         <>
-            <meta httpEquiv="refresh" content={`5;URL='${redir}'`} />
+            <meta httpEquiv="refresh" content={`0;URL='${redir}'`} />
             <Text mb={2} size='xl' align='center'>You will be redirected...</Text>
             <Text size='md' align='center'>If this doesn&apos;t happen automatically, <Anchor href={redir}>click here!</Anchor></Text>
         </>
