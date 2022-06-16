@@ -6,5 +6,6 @@ export default async function handler(
     req: any,
     res: NextApiResponse<any>
 ) {
+    res.setHeader('Content-Type', 'audio/webm')
     ytdl(req.query['v'], { filter: 'audioonly', quality: req.query['q'] ? req.query['q'] : 'highestaudio' }).pipe(res)
 }

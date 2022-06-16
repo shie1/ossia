@@ -130,14 +130,22 @@ const Home: NextPage = (props: any) => {
   return (
     <>
       <MetaTags title="Ossia - YouTube Music Player" description="Ossia is a free to use YouTube client designed for listening to music." image="/preview.png" />
+      <meta name='keywords' content="ossia, ossia music, ossia music player, ossia.ml, shie1, free to use youtube client, music, music player, last.fm, last.fm player" />
       <TextInput mb='sm' id='searchInput' onSubmit={(event: any) => { setQuery(event.target.value) }} onChange={(event: any) => { setQuery(event.target.value) }} size='md' placeholder="Search for a song" icon={<Search size={14} />} rightSection={<ConditionalLoader />} />
       <SearchResults />
       <Divider my='lg' />
       <Tabs>
         <Tabs.Tab label="About" icon={<InfoCircle />}>
-          <Paper withBorder p='sm' mt='sm'>
-            Ossia is a free to use YouTube client designed for listening to music.
-            This indie project is being made and maintained by Shie1 in its early access stage since 2022-06-05.
+          <Paper className='about' withBorder p='sm' mt='sm'>
+            <Text>Ossia is a free to use YouTube client designed for listening to music.</Text>
+            <Text>This indie project is being made and maintained by Shie1 and it&apos;in it&apos;s early access stage since 2022-06-05.</Text>
+            <Text mt='md' sx={{fontWeight: 600}} size='lg'>Why you should use Ossia:</Text>
+            <ul>
+              <li>There are no ads on our site.</li>
+              <li>We don&apos;t collect user data on the server.</li>
+              <li>You can link our player to Last.fm.</li>
+              <li>Ossia is a PWA (Progressive Web App) which means you can download it to your phone as an app, from your browser.</li>
+            </ul>
           </Paper>
         </Tabs.Tab>
         <Tabs.Tab label="Blog" icon={<Note />}>

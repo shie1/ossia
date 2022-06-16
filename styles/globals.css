@@ -39,12 +39,16 @@ a:not(.title a, .nodim):hover {
   word-wrap: break-word;
 }
 
-ul, li:not(.rss *) {
+ul, li:not(.rss *, .about *) {
   all: unset
 }
 
 .rss ul, li {
   margin-left: 1.5em;
+  font-size: 1.01rem;
+}
+
+.about ul, li {
   font-size: 1.01rem;
 }
 
