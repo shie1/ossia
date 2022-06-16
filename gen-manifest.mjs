@@ -1,11 +1,12 @@
 import fs from 'fs'
 import path from 'path'
 
+const pkg = require('./package.json');
 const manifest = {
     "name": "Ossia Music Player",
     "short_name": "Ossia",
-    "author": "Shie1",
-    "version": "1.2.1",
+    "author": pkg.author,
+    "version": pkg.version,
     "theme_color": "#1971C2",
     "background_color": "#1A1B1E",
     "display": "standalone",
