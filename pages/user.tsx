@@ -29,10 +29,12 @@ const LastFM: NextPage = (props: any) => {
         }
     }, [props.auth.lfm.session, user])
 
-    const clearUser = ()=>{
-        setUser(false)
-        setFriends([])
-        setRecents([])
+    const clearUser = () => {
+        setTimeout(() => {
+            setUser(false)
+            setFriends([])
+            setRecents([])
+        },500)
     }
 
     useEffect(() => {
@@ -150,7 +152,7 @@ const LastFM: NextPage = (props: any) => {
                         i++
                         const style: any = { 'fontSize': '2vmin' };
                         return (
-                            <tr className='user-recents-tr' onClick={()=>{setSongLfm(song.artist[0]['_'],song.name[0],currentLQ)}} key={i}>
+                            <tr className='user-recents-tr' onClick={() => { setSongLfm(song.artist[0]['_'], song.name[0], currentLQ) }} key={i}>
                                 <td style={style}>{song.name[0]}</td>
                                 <td style={style}>{song.artist[0]['_']}</td>
                                 <td style={style}>{moment(moment.utc(song.date[0]['_']).toDate()).local().fromNow()}</td>
@@ -178,7 +180,7 @@ const LastFM: NextPage = (props: any) => {
         )
     }
 
-    if(!user){
+    if (!user) {
         return <></>
     }
 
