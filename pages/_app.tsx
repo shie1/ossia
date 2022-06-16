@@ -193,7 +193,7 @@ function MyApp({ Component, pageProps }: AppProps, props: any) {
 
   const scrobble = async () => {
     if (typeof window === 'undefined') { return }
-    const prR = /\(([^)]+)\)|【([^】]+)】|\{([^\}]+)\}|\[([^\]]+)\]/g
+    const prR = /\(([^)]+)\)|【([^】]+)】|\{([^\}]+)\}|\[([^\]]+)\]|"|“|”/g
     const videoTitle = htmlDecode(document?.querySelector("#songDetails h1")!.innerHTML)!.replace(prR, '')
     const videoAuthor = htmlDecode(document?.querySelector("#songDetails h2")!.innerHTML!)
     const videoDescription = document?.querySelector("#songDetails p")!.innerHTML
@@ -211,12 +211,12 @@ function MyApp({ Component, pageProps }: AppProps, props: any) {
       artist = videoAuthor?.split(" - ")[0]
       data = await getData()
     } else {
-      title = `${videoAuthor} ${videoTitle.replace(prR, '')}`
-      artist = ""
+      title = `${videoTitle.replace(prR, '')}`
       data = await getData()
     }
     if (!data) {
-      title = `${videoTitle.replace(prR, '')}`
+      title = `${videoAuthor} ${videoTitle.replace(prR, '')}`
+      artist = ""
       data = await getData()
     }
     if (title) {
@@ -382,7 +382,7 @@ function MyApp({ Component, pageProps }: AppProps, props: any) {
             footer={
               <div style={{ borderTop: '1px solid #2C2E33' }}>
                 <Group spacing='sm' p='md' position="center" id='center'>
-                  <Text align='center'>{appInfo.fullName} v{appInfo.version}<br />built and maintained <Anchor target='_blank' href='https://github.com/shie1'>Shie1bi</Anchor></Text>
+                  <Text align='center'>{appInfo.name} v{appInfo.version}<br />built and maintained <Anchor target='_blank' href='https://github.com/shie1'>Shie1bi</Anchor></Text>
                 </Group>
                 <Space h='md' />
               </div>

@@ -1,14 +1,10 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
+import manifest from '../../gen-manifest.mjs'
 
 export default async function handler(
     req: any,
     res: NextApiResponse<object>
 ) {
-    const app: Object = {
-        'version': "1.2.1",
-        'fullName': "Ossia Music Player",
-        'shortName': "Ossia"
-    }
-    res.status(200).json(app)
+    res.status(200).json(manifest)
 }
