@@ -203,11 +203,10 @@ function MyApp({ Component, pageProps }: AppProps, props: any) {
       title = htmlDecode(descLines[2])?.split(" · ")[0]!.replace(/(\(.*\))|(【.*】)|(\[.*\])|({.*})/g, '')
       artist = videoAuthor?.split(" - ")[0]
     }else{
-      title = videoTitle?.split(' - ')[1]
-      artist = videoTitle?.split(' - ')[0]
+      title = `${videoAuthor} ${videoTitle}`
+      artist = ""
     }
     let data
-    console.log(title,artist)
     if (title) {
       data = await (await fetch(`${document.location.origin}/api/lastfm/search`, { method: 'POST', body: JSON.stringify({ 'track': title, ...(artist ? { 'artist': artist } : {}) }) })).json()
       if(data.lfm.results[0]["opensearch:totalResults"][0] == 0){return}
