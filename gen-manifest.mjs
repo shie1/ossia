@@ -26,6 +26,4 @@ const manifest = {
     "splash_pages": null
 }
 
-fs.writeFileSync(path.join(process.cwd(), "public/manifest.json"),JSON.stringify(manifest))
-
 export default manifest;
