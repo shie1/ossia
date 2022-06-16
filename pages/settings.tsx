@@ -173,7 +173,7 @@ const Settings: NextPage = (props: any) => {
                         <AccordionItem label="Scrobble" icon={<History />}>
                             <Text mb='sm'>Scrobble your songs to Last.fm.</Text>
                             {!props.auth ? <Text mb='sm' size='sm'>You will need to log in, if you want to use this feature!</Text> : <></>}
-                            <Switch label="Enable feature" checked={scrobble} onChange={(event) => setScrobble(event.currentTarget.checked)} />
+                            <Switch disabled={props.auth ? false : true} label="Enable feature" checked={scrobble} onChange={(event) => setScrobble(event.currentTarget.checked)} />
                         </AccordionItem>
                     </Accordion>
                 </AccordionItem>
