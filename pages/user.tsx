@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { BrandLastfm, Calendar, Clock, Friends as FriendsIcon, History, Microphone, Music } from 'tabler-icons-react'
 import { getCookie } from 'cookies-next'
 import moment from 'moment'
+import Link from 'next/link'
 
 const LastFM: NextPage = (props: any) => {
 
@@ -79,12 +80,14 @@ const LastFM: NextPage = (props: any) => {
         const Friend = ({ friend }: any) => {
             return (
                 <Grid.Col span={2}>
-                    <Paper component='a' href={`?u=${friend?.name}`} className='nodim menuLink' withBorder p='sm'>
-                        <Group m={0} p={0} align='center' direction='column'>
-                            <Avatar src={friend?.image[currentLQ ? 0 : friend.image.length - 1]['_']} radius={0} size='xl' />
-                            <Text sx={{ display: '-webkit-box', textOverflow: 'ellipsis', overflow: 'hidden', WebkitLineClamp: 1, WebkitBoxOrient: 'vertical' }} align='center'>{friend.name}</Text>
-                        </Group>
-                    </Paper>
+                    <Link href={`?u=${friend?.name}`}>
+                        <Paper className='nodim menuLink' withBorder p='sm'>
+                            <Group m={0} p={0} align='center' direction='column'>
+                                <Avatar src={friend?.image[currentLQ ? 0 : friend.image.length - 1]['_']} radius={0} size='xl' />
+                                <Text sx={{ display: '-webkit-box', textOverflow: 'ellipsis', overflow: 'hidden', WebkitLineClamp: 1, WebkitBoxOrient: 'vertical' }} align='center'>{friend.name}</Text>
+                            </Group>
+                        </Paper>
+                    </Link>
                 </Grid.Col>
             )
         }
@@ -138,7 +141,7 @@ const LastFM: NextPage = (props: any) => {
                 <>
                     {recents.map((song) => {
                         i++
-                        const style:any = {'fontSize':'2vmin'};
+                        const style: any = { 'fontSize': '2vmin' };
                         return (
                             <tr key={i}>
                                 <td style={style}>{song.name[0]}</td>
