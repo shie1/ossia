@@ -6,6 +6,6 @@ export default async function handler(
     req: any,
     res: NextApiResponse<object>
 ) {
-    console.log(manifest)
+    res.setHeader('Content-Type', 'application/json; charset=utf-8')
     res.status(200).json(manifest)
 }

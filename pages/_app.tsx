@@ -90,7 +90,7 @@ function MyApp({ Component, pageProps }: AppProps, props: any) {
 
   useEffect(() => {
     if (typeof window !== 'undefined' && !appInfo) {
-      fetch(`${document.location.origin}/api/app`).then(async response => {
+      fetch(`${document.location.origin}/api/manifest.webmanifest`).then(async response => {
         setAppInfo(await response.json())
       })
     }

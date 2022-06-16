@@ -8,14 +8,10 @@ const isProduction = process.env.NODE_ENV === "production";
 
 export default function Document() {
     return (
-        <Html>
+        <Html lang='en'>
             <Head >
                 <meta charSet="utf-8" />
                 <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-                <meta
-                    name="viewport"
-                    content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"
-                />
                 {isProduction && (
                     <>
                         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3057716180157458"
@@ -42,7 +38,7 @@ export default function Document() {
                 <link rel="preconnect" href="https://fonts.googleapis.com" />
                 <link rel="preconnect" href="https://fonts.gstatic.com" />
                 <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400&display=swap" rel="stylesheet"></link>
-                <link rel="manifest" href="/manifest.json" />
+                <link rel="manifest" href="/api/manifest.webmanifest" />
                 <meta name="theme-color" content="#1971C2" />
             </Head>
             <body>
