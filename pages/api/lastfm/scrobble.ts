@@ -31,7 +31,6 @@ export default async function handler(
     for (let item in params) {
         urlp.set(item, params[item])
     }
-    console.log(params)
     superagent.post(apiroot)
         .send(urlp.toString())
         .parse(parser)
