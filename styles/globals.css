@@ -12,12 +12,13 @@ a {
 }
 
 
-a:not(.title a, .nodim){
-  opacity: .7;
+a:not(.title a, .nodim),.link{
+  opacity: .9;
   transition: .1s;
+  cursor: pointer;
 }
 
-a:not(.title a, .nodim):hover {
+a:not(.title a, .nodim),.link:hover {
   opacity: .5;
 }
 

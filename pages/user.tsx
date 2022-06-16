@@ -7,6 +7,7 @@ import { getCookie } from 'cookies-next'
 import moment from 'moment'
 import Link from 'next/link'
 import { setSongLfm } from '../functions'
+import { useRouter } from 'next/router'
 
 const LastFM: NextPage = (props: any) => {
 
@@ -29,12 +30,14 @@ const LastFM: NextPage = (props: any) => {
         }
     }, [props.auth.lfm.session, user])
 
+    const router = useRouter()
+
     const clearUser = () => {
         setTimeout(() => {
             setUser(false)
             setFriends([])
             setRecents([])
-        },500)
+        }, 500)
     }
 
     useEffect(() => {
@@ -186,6 +189,7 @@ const LastFM: NextPage = (props: any) => {
 
     return (
         <>
+            {user?.name[0] != props.auth.lfm.session[0].name[0] ? <Text mb='sm' className='link' onClick={()=>{router.push('?');clearUser()}} align='center'>Back to my profile</Text> : <></>}
             <Group mb='md' direction='row'>
                 <Avatar size='xl' radius={100} src={user?.image[currentLQ ? 0 : user?.image.length - 1]['_']} />
                 <Text sx={{ fontSize: '1.5em' }} size='xl'>{user?.realname[0] ? `${user?.realname} (${user?.name})` : user?.name}</Text>
