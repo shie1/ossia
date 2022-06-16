@@ -87,8 +87,8 @@ const LastFM: NextPage = (props: any) => {
         const Friend = ({ friend }: any) => {
             return (
                 <Grid.Col span={2}>
-                    <Link onClick={clearUser} href={`?u=${friend?.name}`}>
-                        <Paper className='nodim menuLink' withBorder p='sm'>
+                    <Link href={`?u=${friend?.name}`}>
+                        <Paper onClick={clearUser} className='nodim menuLink' withBorder p='sm'>
                             <Group m={0} p={0} align='center' direction='column'>
                                 <Avatar src={friend?.image[currentLQ ? 0 : friend.image.length - 1]['_']} radius={0} size='xl' />
                                 <Text sx={{ display: '-webkit-box', textOverflow: 'ellipsis', overflow: 'hidden', WebkitLineClamp: 1, WebkitBoxOrient: 'vertical' }} align='center'>{friend.name}</Text>
@@ -178,10 +178,14 @@ const LastFM: NextPage = (props: any) => {
         )
     }
 
+    if(!user){
+        return <></>
+    }
+
     return (
         <>
             <Group mb='md' direction='row'>
-                <Avatar size='xl' radius={100} src={user?.image[currentLQ ? 0 : user.image.length - 1]['_']} />
+                <Avatar size='xl' radius={100} src={user?.image[currentLQ ? 0 : user?.image.length - 1]['_']} />
                 <Text sx={{ fontSize: '1.5em' }} size='xl'>{user?.realname[0] ? `${user?.realname} (${user?.name})` : user?.name}</Text>
                 <Badge>{user?.country[0]}</Badge>
                 <ActionIcon component='a' target='_blank' href={user?.url[0]}>
