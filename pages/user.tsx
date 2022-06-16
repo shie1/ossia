@@ -6,6 +6,7 @@ import { BrandLastfm, Calendar, Clock, Friends as FriendsIcon, History, Micropho
 import { getCookie } from 'cookies-next'
 import moment from 'moment'
 import Link from 'next/link'
+import { setSongLfm } from '../functions'
 
 const LastFM: NextPage = (props: any) => {
 
@@ -143,7 +144,7 @@ const LastFM: NextPage = (props: any) => {
                         i++
                         const style: any = { 'fontSize': '2vmin' };
                         return (
-                            <tr key={i}>
+                            <tr className='user-recents-tr' onClick={()=>{setSongLfm(song.artist[0]['_'],song.name[0],currentLQ)}} key={i}>
                                 <td style={style}>{song.name[0]}</td>
                                 <td style={style}>{song.artist[0]['_']}</td>
                                 <td style={style}>{moment(moment.utc(song.date[0]['_']).toDate()).local().fromNow()}</td>
