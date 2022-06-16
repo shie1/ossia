@@ -30,6 +30,6 @@ export default async function handler(
         .end((err, resp) => {
             if (err) { return console.log(err); }
             setCookies('auth', resp.body, {req,res,path: '/',maxAge: 365*24*60*60})
-            res.redirect((env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://ossia.ml') + "/lastfm",)
+            res.redirect((env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://ossia.ml') + "/user",)
         })
 }

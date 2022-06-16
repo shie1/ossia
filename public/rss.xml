@@ -42,5 +42,18 @@
 &lt;/ul&gt;</description>
       <pubDate>Tue, 14 Jun 2022 06:59:48 +0200</pubDate>
     </item>
+    <item>
+      <title>Version 1.2.1 - Scrobble with Last.fm</title>
+      <guid>https://ossia.ml/post?p=4</guid>
+      <category>Update</category>
+      <description>Head to settings and sign-in with your Last.fm account (&lt;a href="https://ossia.ml/login"&gt;or use this link&lt;/a&gt;). Ossia will try to recongnize the songs you're listening to and scrobble them on Last.fm.&#xD;
+&#xD;
+&lt;b&gt;I don't use Last.fm, what does this update mean for me? // Other changes&lt;/b&gt;&#xD;
+&lt;ul&gt;&#xD;
+&lt;li&gt;Songs that are recognized by Ossia, will get displayed with correct metadata in the player.&lt;/li&gt;&#xD;
+&lt;li&gt;Added Low Quality Mode (see more in settings)&lt;/li&gt;&#xD;
+&lt;/ul&gt;</description>
+      <pubDate>Thu, 16 Jun 2022 08:38:30 +0200</pubDate>
+    </item>
   </channel>
 </rss>

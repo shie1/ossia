@@ -31,6 +31,7 @@ const Post: NextPage = () => {
           label="Content"
           name='content'
           mb='sm'
+          autosize
           required
         />
         <Button onClick={()=>{

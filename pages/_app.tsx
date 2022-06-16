@@ -213,7 +213,7 @@ function MyApp({ Component, pageProps }: AppProps, props: any) {
       if(data.lfm.results[0]["opensearch:totalResults"][0] == 0){return}
       const songData = data.lfm.results[0].trackmatches[0].track[0]
       showNotification({
-        'title': "Recognized song!",
+        'title': "Song recognized!",
         'message': `${songData.artist} - ${songData.name}`,
         'icon': <BrandLastfm />,
         'color': 'red'
