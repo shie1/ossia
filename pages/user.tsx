@@ -10,7 +10,7 @@ import { setSongLfm } from '../functions'
 
 const LastFM: NextPage = (props: any) => {
 
-    const [user, setUser] = useState<any>()
+    const [user, setUser] = useState<any>(false)
     const [friends, setFriends] = useState<Array<any>>([])
     const [recents, setRecents] = useState<Array<any>>([])
     const [currentLQ, setCurrentLQ] = useLocalStorage<boolean>({
@@ -28,6 +28,12 @@ const LastFM: NextPage = (props: any) => {
             })
         }
     }, [props.auth.lfm.session, user])
+
+    const clearUser = ()=>{
+        setUser(false)
+        setFriends([])
+        setRecents([])
+    }
 
     useEffect(() => {
         if (user && typeof window !== 'undefined' && friends.length == 0) {
@@ -81,7 +87,7 @@ const LastFM: NextPage = (props: any) => {
         const Friend = ({ friend }: any) => {
             return (
                 <Grid.Col span={2}>
-                    <Link href={`?u=${friend?.name}`}>
+                    <Link onClick={clearUser} href={`?u=${friend?.name}`}>
                         <Paper className='nodim menuLink' withBorder p='sm'>
                             <Group m={0} p={0} align='center' direction='column'>
                                 <Avatar src={friend?.image[currentLQ ? 0 : friend.image.length - 1]['_']} radius={0} size='xl' />
