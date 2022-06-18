@@ -1,35 +1,6 @@
 import { unescape } from 'querystring'
 import md5 from 'md5'
 
-export const setSong = async (video: string, lq: boolean) => {
-    const audioE = document.querySelector('audio') as HTMLAudioElement
-    const detailsE = document.querySelector('#songDetails') as HTMLDivElement
-    if (video == detailsE.querySelector('div')?.innerText) { return }
-    audioE.src = `${document.location.origin}/api/stream?v=${video}`
-    const details: any = await (await fetch(`${document.location.origin}/api/details?v=${video}${lq ? '&q=lowestaudio' : ''}`)).json()
-    detailsE.querySelector('h1')!.innerText = details.videoDetails.title
-    detailsE.querySelector('h2')!.innerText = details.videoDetails.author.name
-    detailsE.querySelector('div')!.innerText = video
-    detailsE.querySelector('span')!.innerText = details.videoDetails?.thumbnails[lq ? 0 : details.videoDetails.thumbnails.length - 1].url
-    detailsE.querySelector('p')!.innerText = details.videoDetails?.description
-    detailsE.querySelector('section')!.innerText = JSON.stringify(details)
-}
-
-export const setSongLfm = async (artist: string, track: string, lq: boolean) => {
-    const video: any = await (await fetch(`${document.location.origin}/api/lastfm/youtube?artist=${encodeURIComponent(artist)}&track=${encodeURIComponent(track)}`)).json()
-    const audioE = document.querySelector('audio') as HTMLAudioElement
-    const detailsE = document.querySelector('#songDetails') as HTMLDivElement
-    if (video == detailsE.querySelector('div')?.innerText) { return }
-    audioE.src = `${document.location.origin}/api/stream?v=${video}`
-    const details: any = await (await fetch(`${document.location.origin}/api/details?v=${video}${lq ? '&q=lowestaudio' : ''}`)).json()
-    detailsE.querySelector('h1')!.innerText = details.videoDetails.title
-    detailsE.querySelector('h2')!.innerText = details.videoDetails.author.name
-    detailsE.querySelector('div')!.innerText = video
-    detailsE.querySelector('span')!.innerText = details.videoDetails?.thumbnails[lq ? 0 : details.videoDetails.thumbnails.length - 1].url
-    detailsE.querySelector('p')!.innerText = details.videoDetails?.description
-    detailsE.querySelector('section')!.innerText = JSON.stringify(details)
-}
-
 export const apiroot = "http://ws.audioscrobbler.com/2.0/"
 
 export const genSig = (json: any, env: any) => {

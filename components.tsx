@@ -36,8 +36,8 @@ export const Video = ({ title, thumbnail, author, length, id }: any) => {
         >
             <Card.Section>
                 <BackgroundImage className="image" src={thumbnail}>
-                    <Center sx={{ height: 160, backdropFilter: 'brightness(.9)' }}>
-                        <PlayerPlay className="icon" style={{filter: 'drop-shadow(0 0 5px black) drop-shadow(0 0 5px black)'}} size={40} />
+                    <Center sx={{ height: 160, backdropFilter: 'brightness(.9)', cursor: 'pointer' }}>
+                        <PlayerPlay className="icon" style={{filter: 'drop-shadow(0 0 5px black) drop-shadow(0 0 5px black)', stroke: 'white', strokeWidth: '2px'}} size={40} />
                     </Center>
                 </BackgroundImage>
             </Card.Section>
