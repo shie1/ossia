@@ -1,0 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa&family=Inconsolata&family=Sora&display=swap');
+
+// Unsets
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+// Scrollbar
+body::-webkit-scrollbar {
+  width: 14px;
+  background-color: inherit;
+}
+
+html[data-theme="dark"] {
+  body::-webkit-scrollbar-track {
+    background-color: #0B090A;
+  }
+
+  body::-webkit-scrollbar-thumb {
+    background-color: hsl(210, 8%, 16%);
+  }
+}
+
+// Videocard
+.videoCard .title {
+  display: -webkit-box;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  min-height: 1.6em;
+  max-height: 8em;
+  transition: all .75s ease-in-out;
+}
+
+.videoCard .image {
+  .icon {
+    transition: transform .2s ease-in-out;
+  }
+
+  :hover .icon {
+    transform: scale(1.3);
+  }
+}
+
+// Fixes
+html[data-theme="light"] span:not(.string-value) {
+  color: black !important
+}
+
+// No select
+*:not(.select *) {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}

@@ -1,62 +1,40 @@
-import { Accordion, AccordionItem, Text, Button, SegmentedControl, JsonInput, Modal, TextInput, Textarea, Breadcrumbs, Switch } from '@mantine/core'
-import { useLocalStorage } from '@mantine/hooks';
-import { useModals } from '@mantine/modals';
-import { showNotification } from '@mantine/notifications';
-import type { NextPage } from 'next'
-import { Adjustments, AntennaBars5, Braces, BrandLastfm, CalendarTime, Database, DatabaseExport, DatabaseImport, DatabaseOff, History, Link, Unlink, User, UserOff, X } from 'tabler-icons-react';
-import lzstring from 'lz-string'
-import { useState } from 'react';
-import { getCookie } from 'cookies-next';
+import { Text, Container, Group, Button, SegmentedControl } from "@mantine/core";
+import type { NextPage } from "next";
+import { useCallback, useEffect, useState } from "react";
+import { Database, Network, Palette, SettingsOff } from "tabler-icons-react";
+import { Collapse } from "../components";
+import { getColorScheme } from "../functions";
+import dynamic from 'next/dynamic'
+import { useModals } from "@mantine/modals";
+import { useLocalStorage } from "@mantine/hooks";
+const ReactJson = dynamic(import('react-json-view'), { ssr: false });
 
-const Settings: NextPage = (props: any) => {
+const Settings: NextPage = () => {
+    const [ls, setLs] = useState({})
+    const [colorScheme, setTheColorScheme] = useLocalStorage({ 'key': "color-scheme", 'defaultValue': 'dark' });
+    const [lowQualityMode, setLowQualityMode] = useLocalStorage<number>({ 'key': 'low-quality-mode', 'defaultValue': 1 })
+    const [csm, scsm] = useLocalStorage({ 'key': "color-scheme-mode", 'defaultValue': '0' });
+
+    const setColorScheme = useCallback((value: any) => {
+        if (typeof window === 'undefined') { return }
+        setTheColorScheme(value)
+        if (value) {
+            document.documentElement.setAttribute('data-theme', value)
+        } else {
+            document.documentElement.removeAttribute('data-theme')
+        }
+    }, [setTheColorScheme])
+
+    useEffect(() => {
+        if (typeof window === 'undefined' || Object.keys(ls).length !== 0) { return }
+        let locs: any = {}
+        for (let item of Object.keys(localStorage)) {
+            locs[item] = localStorage[item]
+        }
+        setLs(locs)
+    }, [ls])
+
     const modals = useModals();
-    const [exportModal, setExportModal] = useState(false)
-    const [importModal, setImportModal] = useState(false)
-    const [exportVal, setExportVal] = useState('')
-    const [lqmode, setLQMode] = useLocalStorage({
-        'key': 'lowQualityMode',
-        'defaultValue': 1
-    })
-    const [scrobble, setScrobble] = useLocalStorage({
-        'key': 'scrobble', 'defaultValue': true
-    })
-
-    const comingSoon = () => {
-        showNotification({
-            title: 'Feature coming soon...', message: '', icon: <CalendarTime />,
-        })
-    }
-
-    const userData = ["history", "liked-songs", "lowQualityMode", "loop"]
-
-    const importLocalStorage = () => {
-        setImportModal(true)
-    }
-
-    const ilsModalAction = () => {
-        const input = document?.querySelector("#importInput")! as HTMLInputElement
-        if (!input.value) { return }
-        const json = JSON.parse(lzstring.decompressFromBase64(input.value)!)
-        for (const item in json) {
-            localStorage.setItem(item, json[item])
-        }
-        showNotification({
-            'title': "Successful import",
-            'icon': <DatabaseImport />,
-            'message': '',
-        })
-        setImportModal(false)
-    }
-
-    const exportLocalStorage = () => {
-        if (exportVal) { setExportModal(true); return }
-        let exported: any = {}
-        for (const item of userData) {
-            exported[item] = localStorage.getItem(item)
-        }
-        setExportVal(lzstring.compressToBase64(JSON.stringify(exported)))
-        setExportModal(true)
-    }
 
     const confirm = (callback: any) => {
         modals.openConfirmModal({
@@ -72,127 +50,42 @@ const Settings: NextPage = (props: any) => {
         });
     }
 
-    const clearLocalStorage = () => {
-        const action = () => {
-            if (typeof window !== 'undefined') {
-                for (const item of userData) {
-                    localStorage.removeItem(item)
-                }
-                showNotification({
-                    title: 'User data cleared',
-                    message: '',
-                    icon: <X />,
-                })
-            }
-        }
-        confirm(action)
-    }
-
-    const LSDisp = () => {
-        if (typeof window === 'undefined') { return <></> }
-        let i = 0
-        return (<Accordion>
-            {Object.keys(localStorage).map((item: any) => {
-                i++
-                return (
-                    <AccordionItem label={item} key={i}>
-                        <JsonInput
-                            label={item}
-                            validationError=""
-                            autosize
-                            formatOnBlur
-                            value={localStorage[item]}
-                            minRows={3}
-                        />
-                    </AccordionItem>
-                )
-            })}
-        </Accordion>)
-    }
-
-    return (
-        <>
-            <Modal
-                opened={exportModal}
-                onClose={() => { setExportModal(false) }}
-                title="Export code"
-            >
-                <Text mb='sm'>Paste this code to the other device&apos;s import code field.</Text>
-                <Textarea maxRows={5} onClick={(e: any) => {
-                    e.target.select()
-                }} autosize value={exportVal} />
-            </Modal>
-            <Modal
-                opened={importModal}
-                onClose={() => { setImportModal(false) }}
-                title="Import code"
-            >
-                <Text mb='sm'>Enter the code you generated on the previous device.</Text>
-                <Textarea mb='sm' onSubmit={ilsModalAction} id='importInput' />
-                <Button onClick={ilsModalAction}>Submit</Button>
-            </Modal>
-            <Accordion>
-                <AccordionItem icon={<Database />} label="User Data">
-                    <Accordion>
-                        <AccordionItem icon={<DatabaseOff />} label="Clear User Data">
-                            <Text mb='sm'>Ossia stores liked songs, recents etc. in the browser&apos;s local storage. If you wish to clear this data, press the button.</Text>
-                            <Button onClick={clearLocalStorage}>Clear data</Button>
-                        </AccordionItem>
-                        <AccordionItem icon={<DatabaseImport />} label="Import User Data">
-                            <Text mb='sm'>Ossia stores liked songs, recents etc. in the browser&apos;s local storage. If you wish to import this data from another device, press the button.</Text>
-                            <Button onClick={importLocalStorage}>Import data</Button>
-                        </AccordionItem>
-                        <AccordionItem icon={<DatabaseExport />} label="Export User Data">
-                            <Text mb='sm'>Ossia stores liked songs, recents etc. in the browser&apos;s local storage. If you wish to export this data to another device, press the button.</Text>
-                            <Button onClick={exportLocalStorage}>Export data</Button>
-                        </AccordionItem>
-                    </Accordion>
-                </AccordionItem>
-                <AccordionItem icon={<Adjustments />} label="Behaviour">
-                    <Accordion>
-                        <AccordionItem icon={<AntennaBars5 />} label="Low quality mode">
-                            <Text mb={2}>With low quality mode enabled, Ossia will download songs and thumbnails in the lowest quality possible. This feature is recommended if you&apos;re using mobile data.</Text>
-                            <Text mb='sm'>Auto: Ossia will try to detect when it&apos;s running on mobile data and set the mode accordingly.</Text>
-                            <SegmentedControl onChange={(val) => { setLQMode(Number(val)) }} value={lqmode.toString()} data={[{ 'label': 'Off', 'value': '0' }, { 'label': 'Auto', 'value': '1' }, { 'label': 'On', 'value': '2' }]} />
-                        </AccordionItem>
-                    </Accordion>
-                </AccordionItem>
-                <AccordionItem icon={<BrandLastfm />} label="Last.fm">
-                    <Accordion>
-                        <AccordionItem icon={<Link />} label="Link Last.fm account">
-                            <Text mb='sm'>Connect your Last.fm account to Ossia.</Text>
-                            {
-                                props.auth ?
-                                    <>
-                                        <Text mb='sm' size='sm'>You&apos;re already logged in as {props.auth.lfm.session[0].name[0]}</Text>
-                                        <Button className='nodim' component='a' href={typeof window !== 'undefined' ? `${location.origin}/logout` : ''} leftIcon={<UserOff />}>Sign out</Button>
-                                    </>
-                                    : <Button className='nodim' component='a' href={typeof window !== 'undefined' ? `${location.origin}/login` : ''} leftIcon={<User />}>Sign in</Button>
-                            }
-                        </AccordionItem>
-                        <AccordionItem label="Scrobble" icon={<History />}>
-                            <Text mb='sm'>Scrobble your songs to Last.fm.</Text>
-                            {!props.auth ? <Text mb='sm' size='sm'>You will need to log in, if you want to use this feature!</Text> : <></>}
-                            <Switch disabled={props.auth ? false : true} label="Enable feature" checked={scrobble} onChange={(event) => setScrobble(event.currentTarget.checked)} />
-                        </AccordionItem>
-                    </Accordion>
-                </AccordionItem>
-                <AccordionItem icon={<Braces />} label="Advanced">
-                    <Accordion>
-                        <AccordionItem icon={<Database />} label="Display all data from local storage">
-                            <LSDisp />
-                        </AccordionItem>
-                    </Accordion>
-                </AccordionItem>
-            </Accordion>
-        </>
-    )
-}
-
-export const getServerSideProps = ({ req, res }: any) => {
-    let auth = getCookie('auth', { req, res }) as any || false
-    if (auth) { auth = JSON.parse(auth) }
-    return { props: { 'auth': auth } };
+    return (<Container>
+        <Text size="lg" mb='sm'>Settings</Text>
+        <Group spacing='sm'>
+            <Collapse icon={<Database />} title="Local Storage Inspector Tool">
+                <Button onClick={() => {
+                    confirm(() => {
+                        localStorage.clear();
+                        setLs([])
+                    })
+                }}>Clear all</Button>
+                <ReactJson displayDataTypes={false} style={{ width: "100%", whiteSpace: 'pre-wrap', 'wordWrap': 'break-word', 'background': 'unset' }} collapseStringsAfterLength={50} theme='twilight' src={ls} />
+            </Collapse>
+            <Collapse icon={<Network />} title="Low Quality Mode">
+                <Text mb={2}>With low quality mode enabled, Ossia will download songs and thumbnails in the lowest quality possible. This feature is recommended if your&apos;e using mobile data.</Text>
+                <Text>Auto: Ossia will try to detect when it&apos;s running on mobile data and set the mode accordingly.</Text>
+                <SegmentedControl value={lowQualityMode.toString()} onChange={(val:any)=>{setLowQualityMode(Number(val))}} data={[{'label': 'Off', 'value': '0'}, {'label': 'Auto', 'value': '1'}, {'label': 'On', 'value': '2'}]} />
+            </Collapse>
+            <Collapse icon={<Palette />} title="Color Scheme">
+                <Text>Dark or light mode?</Text>
+                <SegmentedControl onChange={(val) => {
+                    scsm(val)
+                    switch (Number(val)) {
+                        case 0:
+                            setColorScheme('')
+                            break
+                        case 1:
+                            setColorScheme('dark')
+                            break
+                        case 2:
+                            setColorScheme('light')
+                            break
+                    }
+                }} value={csm} data={[{ 'label': 'Dark', 'value': '1' }, { 'label': 'Auto', 'value': '0' }, { 'label': 'Light', 'value': '2' }]} />
+            </Collapse>
+        </Group>
+    </Container>)
 }
 
 export default Settings
