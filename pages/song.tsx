@@ -27,9 +27,6 @@ const Listen: NextPage = (props: any) => {
         <DocumentMeta {...{
             'title': `${songDetails.title} | Ossia`,
             'description': `Listen to ${songDetails.title} on the Ossia Music Player!`,
-            'meta': {
-                'og:image': songDetails.thumbnails[0].url,
-            }
         }} />
     </>)
 }
