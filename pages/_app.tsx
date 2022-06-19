@@ -5,7 +5,7 @@ import { AppProps } from "next/app";
 import { useCallback, useEffect, useState } from "react";
 import { AppShell, Header } from '@mantine/core';
 import Link from 'next/link';
-import { Home, Settings } from 'tabler-icons-react';
+import { Home, PlayerPlay, Settings } from 'tabler-icons-react';
 import { interactivePaper } from '../components';
 import { ModalsProvider } from '@mantine/modals';
 import { NotificationsProvider } from '@mantine/notifications';
@@ -15,7 +15,7 @@ import * as gtag from "../lib/gtag";
 const isProduction = process.env.NODE_ENV === "production";
 
 export default function MyApp({ Component, pageProps }: AppProps) {
-    const [volume, setVolume] = useLocalStorage<number>({'key': 'volume', 'defaultValue': 100})
+    const [volume, setVolume] = useLocalStorage<number>({ 'key': 'volume', 'defaultValue': 100 })
     const [colorScheme, setTheColorScheme] = useLocalStorage<ColorScheme>({ 'key': "color-scheme", 'defaultValue': 'dark' });
     const [lowQualityMode, setLowQualityMode] = useLocalStorage<number>({ 'key': 'low-quality-mode', 'defaultValue': 1 })
     const [currentLQ, setCurrentLQ] = useLocalStorage<boolean>({ 'key': 'current-low-quality-mode', 'defaultValue': false })
@@ -37,10 +37,10 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         };
     }, [router.events]);
 
-    useEffect(()=>{
+    useEffect(() => {
         const player = document.querySelector("audio#mainPlayer") as any
         player.volume = volume / 100
-    },[volume])
+    }, [volume])
 
     const setColorScheme = useCallback((value: any) => {
         if (typeof window === 'undefined') { return }
@@ -140,6 +140,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
             <Text size='lg'>Navigation</Text>
             <Page icon={<Home />} text="Home" link="/" />
             <Page icon={<Settings />} text="Settings" link="/settings" />
+            <Page icon={<PlayerPlay />} text="Player" link="/player" />
         </Group>)
     }
 

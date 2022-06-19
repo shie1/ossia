@@ -12,6 +12,5 @@ export default async function handler(
   query = query.splice(0,query.length >= 10 ? 10 : query.length)
   let results = await yt.search(query.join(" "))
   results = results.filter((result:any) => result.id.videoId != rb.videoId)
-  console.log(query,results)
   res.status(200).json(results.length !== 0 ? results : [false])
 }
