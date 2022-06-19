@@ -27,12 +27,15 @@ const Listen: NextPage = (props: any) => {
         <DocumentMeta {...{
             'title': `${songDetails.title} | Ossia`,
             'description': `Listen to ${songDetails.title} on the Ossia Music Player!`,
+            'meta': {
+                'og:image': songDetails.thumbnails[songDetails.thumbnails.length - 1].url,
+            }
         }} />
     </>)
 }
 
 export async function getServerSideProps(ctx: any) {
-    const protocol = (ctx.req.headers['x-forwarded-proto'] || ctx.req.headers.referer?.split('://')[0])
+    const protocol = (ctx.req.headers['x-forwarded-proto'] || ctx.req.headers.referer?.split('://')[0] || 'http')
     if (ctx.query['v']) {
         return {
             props: {
