@@ -28,7 +28,6 @@ const Listen: NextPage = (props: any) => {
             'title': `${songDetails.title} | Ossia`,
             'description': `Listen to ${songDetails.title} on the Ossia Music Player!`,
             'meta': {
-                'og:image': songDetails.thumbnails[songDetails.thumbnails.length - 1].url,
             }
         }} />
     </>)
