@@ -38,7 +38,7 @@ export default function Document() {
                 <link rel="preconnect" href="https://fonts.googleapis.com" />
                 <link rel="preconnect" href="https://fonts.gstatic.com" />
                 <link rel="manifest" href="/api/manifest.webmanifest" />
-                <meta name="theme-color" content="#1971C2" />
+                <meta name="theme-color" content="#9E5DB9" />
             </Head>
             <body>
                 <title>Ossia</title>

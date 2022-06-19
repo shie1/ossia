@@ -8,7 +8,7 @@ const manifest = {
     "author": pkg.author,
     "version": pkg.version,
     "description": pkg.description,
-    "theme_color": "#1971C2",
+    "theme_color": "#590288",
     "background_color": "#1A1B1E",
     "display": "standalone",
     "orientation": "portrait",
