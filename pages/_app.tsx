@@ -1,5 +1,5 @@
 import '../styles/globals.scss'
-import { ColorScheme, ColorSchemeProvider, Group, MantineProvider, Title, Text, Affix, Burger, Paper, Transition, Collapse, Container, Divider, Box } from "@mantine/core";
+import { ColorScheme, ColorSchemeProvider, Group, MantineProvider, Title, Text, Affix, Burger, Paper, Transition, Collapse, Container, Divider, Box, LoadingOverlay } from "@mantine/core";
 import { useColorScheme, useHotkeys, useLocalStorage } from "@mantine/hooks";
 import { AppProps } from "next/app";
 import { useCallback, useEffect, useState } from "react";
@@ -24,6 +24,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     const [navMode, setNavMode] = useState<boolean>(false)
     const [songDetails, setSongDetails] = useLocalStorage<object>({ 'key': 'song-details', 'defaultValue': {} })
     const [paused, setPaused] = useLocalStorage<boolean>({ 'key': 'paused', 'defaultValue': false })
+    const [loading, setLoading] = useState<boolean>(false)
 
     const router = useRouter()
 
@@ -91,9 +92,11 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         const player = document.querySelector('audio#mainPlayer') as HTMLAudioElement
         if (paused) {
             player.pause()
+            if (paused != player.paused) { setPaused(player.paused) }
             document.documentElement.setAttribute('music-playing', 'false')
         } else {
             player.play()
+            if (paused != player.paused) { setPaused(player.paused) }
             document.documentElement.setAttribute('music-playing', 'true')
         }
     }, [paused])
@@ -150,7 +153,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
             <meta property="og:url" content={typeof window !== 'undefined' ? location.href : 'https://ossia.ml'} />
             <link rel="canonical" href={typeof window !== 'undefined' ? location.href : 'https://ossia.ml'} />0
         </Meta>
-        <audio style={{ display: 'none' }} autoPlay={true} id='mainPlayer' onEnded={() => { setPaused(true) }} onPause={() => { setPaused(true) }} onPlay={() => { setPaused(false) }} />
+        <audio style={{ display: 'none' }} onError={() => { setLoading(false) }} onVolumeChange={(e: any) => { Math.floor(e.target.volume * 100) }} onAbort={() => { setLoading(false) }} autoPlay={true} id='mainPlayer' onLoadStart={() => { setLoading(true) }} onLoadedData={() => { setLoading(false) }} onStalled={() => { setLoading(false) }} onEnded={() => { setPaused(true) }} onPause={() => { setPaused(true) }} onPlay={() => { setPaused(false) }} />
         <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
             <MantineProvider withGlobalStyles withNormalizeCSS theme={{
                 focusRing: 'auto',
@@ -174,6 +177,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
             }}>
                 <ModalsProvider>
                     <NotificationsProvider>
+                        <LoadingOverlay visible={loading} />
                         <AppShell
                             padding="md"
                             header={<AppHeader />}
