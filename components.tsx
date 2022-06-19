@@ -1,4 +1,5 @@
 import { Card, Collapse as MCollapse, Grid, Group, Paper, Text, Image, Badge, ActionIcon, Menu, Box, Button, BackgroundImage, Center } from "@mantine/core";
+import Head from "next/head";
 import Link from "next/link";
 import { useState } from "react";
 import { PlayerPlay } from "tabler-icons-react";
@@ -78,4 +79,36 @@ export const Player = ({ video }: any) => {
     return <>
 
     </>
+}
+
+export const Meta = ({ title, image, description, address, og }: any) => {
+    let moreOgTags = ""
+    if (og) {
+        for (let item in og) {
+            moreOgTags = moreOgTags + `<meta property="${item}" content="${og[item]}">`
+        }
+    }
+    return (<Head>
+        <title>{title}</title>
+        <meta name="description" content={description} />
+        <meta itemProp="name" content={title} />
+        <meta itemProp="description" content={description} />
+
+        <meta property="og:url" content={address} />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
+
+        {image ? <>
+            <meta itemProp="image" content={image} />
+            <meta property="og:image" content={image} />
+            <meta name="twitter:image" content={image} />
+        </> : <></>}
+
+        {og ? <div dangerouslySetInnerHTML={{ __html: moreOgTags }} /> : <></>}
+    </Head>)
 }

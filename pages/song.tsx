@@ -2,7 +2,7 @@ import { useLocalStorage } from "@mantine/hooks";
 import type { NextPage } from "next";
 import { useEffect, useState } from "react";
 import Head from "next/head"
-import { Player } from "../components";
+import { Meta, Player } from "../components";
 import DocumentMeta from "react-document-meta";
 
 const Listen: NextPage = (props: any) => {
@@ -25,10 +25,7 @@ const Listen: NextPage = (props: any) => {
     }, [currentLQ, firstLoad, props.id])
 
     return (<>
-        <Head>
-            <title>{songDetails.title} | Ossia</title>
-            <meta name="description" content={`Listen to ${songDetails.title} on the Ossia Music Player!`} />
-        </Head>
+        <Meta title={`${songDetails.title} | Ossia`} description={`Listen to ${songDetails.title} on the Ossia Music Player!`} />
     </>)
 }
 
