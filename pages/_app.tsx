@@ -146,6 +146,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 
     return (<>
         <Meta pageTitle="Ossia" title="Ossia Music Player" description={manifest?.description} image="/img/preview.png">
+            <meta name='keywords' content="ossia, ossia music, ossia music player, ossia.ml, shie1, free to use youtube client, music, music player, last.fm, last.fm player" />
             <meta property="og:url" content={typeof window !== 'undefined' ? location.href : 'https://ossia.ml'} />
             <link rel="canonical" href={typeof window !== 'undefined' ? location.href : 'https://ossia.ml'} />0
         </Meta>
