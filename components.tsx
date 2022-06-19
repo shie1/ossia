@@ -1,7 +1,7 @@
 import { Card, Collapse as MCollapse, Grid, Group, Paper, Text, Image, Badge, ActionIcon, Menu, Box, Button, BackgroundImage, Center } from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
+import Link from "next/link";
 import { useState } from "react";
-import { Dots, PlayerPlay } from "tabler-icons-react";
+import { PlayerPlay } from "tabler-icons-react";
 
 export const Collapse = ({ icon, title, children }: any) => {
     const [open, setOpen] = useState<boolean>(false)
@@ -26,34 +26,33 @@ export const interactivePaper = (theme: any) => ({ borderRadius: '10px', cursor:
 
 export const Video = ({ title, thumbnail, author, length, id }: any) => {
     return (<>
-        <Card
-            shadow="sm"
-            p="xl"
-            className="videoCard"
-            onClick={(e: any) => { e.preventDefault() }}
-            onMouseDown={(e: any) => { e.preventDefault() }}
-            onSelect={(e: any) => { e.preventDefault() }}
-        >
-            <Card.Section>
-                <BackgroundImage className="image" src={thumbnail}>
-                    <Center sx={{ height: 160, backdropFilter: 'brightness(.9)', cursor: 'pointer' }}>
-                        <PlayerPlay className="icon" style={{filter: 'drop-shadow(0 0 5px black) drop-shadow(0 0 5px black)', stroke: 'white', strokeWidth: '2px'}} size={40} />
-                    </Center>
-                </BackgroundImage>
-            </Card.Section>
+        <Link prefetch={false} href={`/song?v=${id}`}>
+            <Card
+                shadow="sm"
+                p="xl"
+                className="videoCard"
+                onSelect={(e: any) => { e.preventDefault() }}
+            >
+                <Card.Section>
+                    <BackgroundImage className="image" src={thumbnail}>
+                        <Center sx={{ height: 160, backdropFilter: 'brightness(.9)', cursor: 'pointer' }}>
+                            <PlayerPlay className="icon" style={{ filter: 'drop-shadow(0 0 5px black) drop-shadow(0 0 5px black)', stroke: 'white', strokeWidth: '2px' }} size={40} />
+                        </Center>
+                    </BackgroundImage>
+                </Card.Section>
 
-            <Text style={{ position: 'relative' }} mt='sm' weight={500} size="lg">
-                <Group sx={{ left: 0, width: '80%' }} className="title" direction="row">
-                    <span style={{ marginRight: '.4em' }}>{title}</span>
-                    <Badge>{length}</Badge>
-                </Group>
-            </Text>
+                <Text style={{ position: 'relative' }} mt='sm' weight={500} size="lg">
+                    <Group sx={{ left: 0, width: '80%' }} className="title" direction="row">
+                        <span style={{ marginRight: '.4em' }}>{title}</span>
+                        <Badge>{length}</Badge>
+                    </Group>
+                </Text>
 
-            {author ? <Text size="sm">
-                {author}
-            </Text> : <></>}
-
-        </Card>
+                {author ? <Text size="sm">
+                    {author}
+                </Text> : <></>}
+            </Card>
+        </Link>
     </>)
 }
 
@@ -72,4 +71,11 @@ export const VideoGrid = ({ videos }: any) => {
             })}
         </Grid>
     )
+}
+
+export const Player = ({ video }: any) => {
+    if (!video) { return <Text>No video playing!</Text> }
+    return <>
+
+    </>
 }

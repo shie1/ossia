@@ -5,7 +5,6 @@ import { AppProps } from "next/app";
 import { useCallback, useEffect, useState } from "react";
 import { AppShell, Header } from '@mantine/core';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { Home, Settings } from 'tabler-icons-react';
 import { interactivePaper } from '../components';
 import { ModalsProvider } from '@mantine/modals';
@@ -18,6 +17,8 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     const [connType, setConnType] = useLocalStorage({ 'key': 'connection-type', 'defaultValue': 'unknown' })
     const [manifest, setManifest] = useState<any>()
     const [navMode, setNavMode] = useState<boolean>(false)
+    const [songDetails, setSongDetails] = useLocalStorage<object>({'key': 'song-details', 'defaultValue': {}})
+    const [paused, setPaused] = useLocalStorage<boolean>({'key': 'paused', 'defaultValue': false})
 
     const setColorScheme = useCallback((value: any) => {
         if (typeof window === 'undefined') { return }
@@ -27,6 +28,27 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 
     const toggleColorScheme = (value?: ColorScheme) => { setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark')); }
     const clientColor = useColorScheme()
+
+    useEffect(() => {
+        switch (lowQualityMode) {
+          case 0:
+            setCurrentLQ(false)
+            break
+          case 2:
+            setCurrentLQ(true)
+            break
+          case 1:
+            switch (connType) {
+              case 'cellular':
+                setCurrentLQ(true)
+                break
+              default:
+                setCurrentLQ(false)
+                break
+            }
+            break
+        }
+      }, [lowQualityMode, setCurrentLQ, connType])
 
     useEffect(() => { // Set color scheme as html attribute
         if (typeof window !== 'undefined' && !colorScheme) {
@@ -42,13 +64,23 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         }
     }, [manifest])
 
+    useEffect(()=>{
+        if(typeof window === 'undefined') return;
+        const player = document.querySelector('audio#mainPlayer') as HTMLAudioElement
+        if(paused){
+            player.pause()
+        }else{
+            player.play()
+        }
+    },[paused])
+
     if (typeof window !== 'undefined') {
         navigator.connection.addEventListener('typechange', function () {
             setConnType(navigator.connection.type);
         });
     }
 
-    useHotkeys([['ctrl+J', () => { toggleColorScheme() }]])
+    useHotkeys([['ctrl+J', () => { toggleColorScheme() }], ['space', ()=>{setPaused(!paused)}]])
 
     const AppHeader = () => {
         return (
@@ -109,7 +141,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                 dateFormat: "YYYY/MM/DD",
                 colorScheme: colorScheme
             }}>
-                <audio style={{ display: 'none' }} autoPlay id='mainPlayer' />
+                <audio style={{ display: 'none' }} autoPlay id='mainPlayer' onEnded={() => { setPaused(true) }} onPause={() => { setPaused(true) }} onPlay={() => { setPaused(false) }} />
                 <ModalsProvider>
                     <NotificationsProvider>
                         <AppShell

@@ -17,18 +17,18 @@ const SearchSection = () => {
             if (!sq) { return }
             setSearching(true)
             const rb = JSON.stringify({ query: query })
-            fetch(`${document.location.origin}/api/search`, { 'method': 'POST', 'body': rb }).then(async response => {
+            fetch(`${document.location.origin}/api/youtube/search`, { 'method': 'POST', 'body': rb }).then(async response => {
                 let resp = await response.json()
                 let vids: any = []
                 resp.map((video: any) => {
                     if(!video["duration_raw"]){return}
                     vids.push({ 'id': video.id.videoId, 'title': video.title, 'author': '', 'thumbnail': currentLQ ? video.snippet.thumbnails.default.url : video.snippet.thumbnails.high.url, 'length': video["duration_raw"] })
                 })
-                console.log(vids)
                 setResults(vids)
                 setSearching(false)
             })
         }
+        if(!query){setResults([]);return}
         const timeoutId = setTimeout(() => search(query), 1000);
         return () => clearTimeout(timeoutId);
     }, [query, currentLQ])
