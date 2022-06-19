@@ -18,7 +18,7 @@ const manifest = {
     "lang": "en-US",
     "icons": [
         {
-            "src": "/ossia.png",
+            "src": "/ossia_rect.png",
             "sizes": "3000x3000",
             "type": "image/png"
         }

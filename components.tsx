@@ -1,9 +1,27 @@
 import { Card, Collapse as MCollapse, Grid, Group, Paper, Text, Image, Badge, ActionIcon, Menu, Box, Button, BackgroundImage, Center } from "@mantine/core";
+import { useLocalStorage } from "@mantine/hooks";
+import Head from "next/head";
 import Link from "next/link";
 import { useState } from "react";
-import { PlayerPlay } from "tabler-icons-react";
-import Helmet from "react-helmet"
+import { PlayerPause, PlayerPlay } from "tabler-icons-react";
 
+export const SCollapse = ({ icon, title, children, open, set }: any) => {
+    return (<>
+        <Paper sx={{ width: '100%' }}>
+            <Paper onClick={set} className="pagePaper" shadow='lg' withBorder>
+                <Group p='md' sx={interactivePaper}>
+                    {icon}
+                    <Text>{title}</Text>
+                </Group>
+            </Paper>
+            <MCollapse in={open}>
+                <Group direction="column" style={{ width: '100%' }} mx='md' p='md'>
+                    {children}
+                </Group>
+            </MCollapse>
+        </Paper>
+    </>)
+}
 export const Collapse = ({ icon, title, children }: any) => {
     const [open, setOpen] = useState<boolean>(false)
     return (<>
@@ -74,52 +92,39 @@ export const VideoGrid = ({ videos }: any) => {
     )
 }
 
-export const Player = ({ video }: any) => {
-    if (!video) { return <Text>No video playing!</Text> }
-    return <>
-
-    </>
-}
-
-export const Meta = ({ title, image, description, address, og }: any) => {
+export const Meta = ({ pageTitle, title, image, description, type, og, children }: any) => {
     let moreOgTags = ""
     if (og) {
         for (let item in og) {
             moreOgTags = moreOgTags + `<meta property="${item}" content="${og[item]}">`
         }
     }
+    return (<Head>
+        {title || pageTitle ? <title>{pageTitle || title}</title> : <></>}
 
-    const URL = () => {
-        return <meta property="og:url" content={typeof window !== 'undefined' ? location.href : 'https://ossia.ml'} />
-    }
+        {title ? <>
+            <meta itemProp="name" content={title} />
+            <meta property="og:title" content={title} />
+            <meta name="twitter:title" content={title} />
+        </> : <></>}
 
-    const Im = () => {
-        return (
-            <>{image ? <>
-                <meta itemProp="image" content={image} />
-                <meta property="og:image" content={image} />
-                <meta name="twitter:image" content={image} />
-            </> : <></>}</>
-        )
-    }
+        <meta property="og:type" content={type || 'website'} />
 
-    const OG = () => {
-        return <>{og ? <div dangerouslySetInnerHTML={{ __html: moreOgTags }} /> : <></>}</>
-    }
+        {description ? <>
+            <meta name="description" content={description} />
+            <meta itemProp="description" content={description} />
+            <meta property="og:description" content={description} />
+            <meta name="twitter:description" content={description} />
+        </> : <></>}
 
-    return (<Helmet>
-        <title>{title}</title>
-        <meta name="description" content={description} />
-        <meta itemProp="name" content={title} />
-        <meta itemProp="description" content={description} />
+        {image ? <>
+            <meta itemProp="image" content={image} />
+            <meta property="og:image" content={image} />
+            <meta name="twitter:image" content={image} />
+        </> : <></>}
 
-        <meta property="og:type" content="website" />
-        <meta property="og:title" content={title} />
-        <meta property="og:description" content={description} />
+        {og ? <div dangerouslySetInnerHTML={{ __html: moreOgTags }} /> : <></>}
 
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={title} />
-        <meta name="twitter:description" content={description} />
-        <OG/><Im/><URL/>
-    </Helmet>)
+        {children}
+    </Head>)
 }

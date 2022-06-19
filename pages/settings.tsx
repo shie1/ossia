@@ -66,13 +66,13 @@ const Settings: NextPage = () => {
         return <ReactJson onDelete={(e: any) => {
             confirm(() => {
                 localStorage.removeItem(e.name)
+                showNotification({
+                    'title': `Deleted value: ${e.name}`,
+                    'message': `You might need to reload for changes to take effect!`,
+                    'icon': <Database />
+                })
             })
-            showNotification({
-                'title': `Deleted value: ${e.name}`,
-                'message': `You might need to reload for changes to take effect!`,
-                'icon': <Database />
-            })
-        }} onEdit={lsEdit} name="localStorage" iconStyle="triangle" enableClipboard={true} style={{ width: "100%", whiteSpace: 'pre-wrap', 'wordWrap': 'break-word', 'background': 'unset' }} collapsed={true} collapseStringsAfterLength={50} theme='twilight' src={ls} />
+        }}  onEdit={lsEdit} name="localStorage" iconStyle="triangle" enableClipboard={true} style={{ width: "100%", whiteSpace: 'pre-wrap', 'wordWrap': 'break-word', 'background': 'unset' }} collapsed={1} collapseStringsAfterLength={50} theme='twilight' src={ls} />
     }
 
     return (<Container>

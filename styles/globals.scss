@@ -1,5 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa&family=Inconsolata&family=Sora&display=swap');
 
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 // Unsets
 html,
 body {
@@ -66,4 +76,26 @@ html[data-theme="light"] span:not(.string-value) {
   -ms-user-select: none;
   user-select: none;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+// Link
+.link:not(.mantine-Title-root) {
+  transition: .2s;
+  cursor: pointer;
+  color: hsl(282, 30%, 55%);
+}
+
+.link:hover:not(.mantine-Title-root) {
+  color: hsl(282, 50%, 55%);
+}
+
+// Reveal text
+.revealText::before {
+  content: '';
+  pointer-events: none;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
 }

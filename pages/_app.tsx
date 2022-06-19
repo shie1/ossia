@@ -9,16 +9,38 @@ import { Home, Settings } from 'tabler-icons-react';
 import { interactivePaper } from '../components';
 import { ModalsProvider } from '@mantine/modals';
 import { NotificationsProvider } from '@mantine/notifications';
+import { Meta } from '../components';
+import { useRouter } from 'next/router';
+import * as gtag from "../lib/gtag";
+const isProduction = process.env.NODE_ENV === "production";
 
 export default function MyApp({ Component, pageProps }: AppProps) {
+    const [volume, setVolume] = useLocalStorage<number>({'key': 'volume', 'defaultValue': 100})
     const [colorScheme, setTheColorScheme] = useLocalStorage<ColorScheme>({ 'key': "color-scheme", 'defaultValue': 'dark' });
     const [lowQualityMode, setLowQualityMode] = useLocalStorage<number>({ 'key': 'low-quality-mode', 'defaultValue': 1 })
     const [currentLQ, setCurrentLQ] = useLocalStorage<boolean>({ 'key': 'current-low-quality-mode', 'defaultValue': false })
     const [connType, setConnType] = useLocalStorage({ 'key': 'connection-type', 'defaultValue': 'unknown' })
     const [manifest, setManifest] = useState<any>()
     const [navMode, setNavMode] = useState<boolean>(false)
-    const [songDetails, setSongDetails] = useLocalStorage<object>({'key': 'song-details', 'defaultValue': {}})
-    const [paused, setPaused] = useLocalStorage<boolean>({'key': 'paused', 'defaultValue': false})
+    const [songDetails, setSongDetails] = useLocalStorage<object>({ 'key': 'song-details', 'defaultValue': {} })
+    const [paused, setPaused] = useLocalStorage<boolean>({ 'key': 'paused', 'defaultValue': false })
+
+    const router = useRouter()
+
+    useEffect(() => {
+        const handleRouteChange = (url: URL) => {
+            if (isProduction) gtag.pageview(url);
+        };
+        router.events.on("routeChangeComplete", handleRouteChange);
+        return () => {
+            router.events.off("routeChangeComplete", handleRouteChange);
+        };
+    }, [router.events]);
+
+    useEffect(()=>{
+        const player = document.querySelector("audio#mainPlayer") as any
+        player.volume = volume / 100
+    },[volume])
 
     const setColorScheme = useCallback((value: any) => {
         if (typeof window === 'undefined') { return }
@@ -31,24 +53,24 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 
     useEffect(() => {
         switch (lowQualityMode) {
-          case 0:
-            setCurrentLQ(false)
-            break
-          case 2:
-            setCurrentLQ(true)
-            break
-          case 1:
-            switch (connType) {
-              case 'cellular':
-                setCurrentLQ(true)
-                break
-              default:
+            case 0:
                 setCurrentLQ(false)
                 break
-            }
-            break
+            case 2:
+                setCurrentLQ(true)
+                break
+            case 1:
+                switch (connType) {
+                    case 'cellular':
+                        setCurrentLQ(true)
+                        break
+                    default:
+                        setCurrentLQ(false)
+                        break
+                }
+                break
         }
-      }, [lowQualityMode, setCurrentLQ, connType])
+    }, [lowQualityMode, setCurrentLQ, connType])
 
     useEffect(() => { // Set color scheme as html attribute
         if (typeof window !== 'undefined' && !colorScheme) {
@@ -64,15 +86,17 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         }
     }, [manifest])
 
-    useEffect(()=>{
-        if(typeof window === 'undefined') return;
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
         const player = document.querySelector('audio#mainPlayer') as HTMLAudioElement
-        if(paused){
+        if (paused) {
             player.pause()
-        }else{
+            document.documentElement.setAttribute('music-playing', 'false')
+        } else {
             player.play()
+            document.documentElement.setAttribute('music-playing', 'true')
         }
-    },[paused])
+    }, [paused])
 
     if (typeof window !== 'undefined') {
         navigator.connection.addEventListener('typechange', function () {
@@ -80,7 +104,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         });
     }
 
-    useHotkeys([['ctrl+J', () => { toggleColorScheme() }], ['space', ()=>{setPaused(!paused)}]])
+    useHotkeys([['ctrl+J', () => { toggleColorScheme() }], ['space', () => { setPaused(!paused) }]])
 
     const AppHeader = () => {
         return (
@@ -119,7 +143,12 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         </Group>)
     }
 
-    return (
+    return (<>
+        <Meta pageTitle="Ossia" title="Ossia Music Player" description={manifest?.description} image="/img/preview.png">
+            <meta property="og:url" content={typeof window !== 'undefined' ? location.href : 'https://ossia.ml'} />
+            <link rel="canonical" href={typeof window !== 'undefined' ? location.href : 'https://ossia.ml'} />0
+        </Meta>
+        <audio style={{ display: 'none' }} autoPlay={true} id='mainPlayer' onEnded={() => { setPaused(true) }} onPause={() => { setPaused(true) }} onPlay={() => { setPaused(false) }} />
         <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
             <MantineProvider withGlobalStyles withNormalizeCSS theme={{
                 focusRing: 'auto',
@@ -141,7 +170,6 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                 dateFormat: "YYYY/MM/DD",
                 colorScheme: colorScheme
             }}>
-                <audio style={{ display: 'none' }} autoPlay id='mainPlayer' onEnded={() => { setPaused(true) }} onPause={() => { setPaused(true) }} onPlay={() => { setPaused(false) }} />
                 <ModalsProvider>
                     <NotificationsProvider>
                         <AppShell
@@ -166,5 +194,5 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                 </ModalsProvider>
             </MantineProvider>
         </ColorSchemeProvider>
-    )
+    </>)
 }

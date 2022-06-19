@@ -21,14 +21,14 @@ const SearchSection = () => {
                 let resp = await response.json()
                 let vids: any = []
                 resp.map((video: any) => {
-                    if(!video["duration_raw"]){return}
+                    if (!video["duration_raw"]) { return }
                     vids.push({ 'id': video.id.videoId, 'title': video.title, 'author': '', 'thumbnail': currentLQ ? video.snippet.thumbnails.default.url : video.snippet.thumbnails.high.url, 'length': video["duration_raw"] })
                 })
                 setResults(vids)
                 setSearching(false)
             })
         }
-        if(!query){setResults([]);return}
+        if (!query) { setResults([]); return }
         const timeoutId = setTimeout(() => search(query), 1000);
         return () => clearTimeout(timeoutId);
     }, [query, currentLQ])
@@ -53,7 +53,7 @@ const SearchSection = () => {
             value={query}
             onChange={(e) => { setQuery(e.currentTarget.value) }}
         />
-        <Results/>
+        <Results />
     </>)
 }
 

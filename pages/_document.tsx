@@ -1,7 +1,6 @@
 /* eslint-disable @next/next/no-title-in-document-head */
 /* eslint-disable @next/next/next-script-for-ga */
 import { Html, Head, Main, NextScript } from 'next/document'
-import Script from 'next/script'
 import { GA_TRACKING_ID } from "../lib/gtag";
 
 const isProduction = process.env.NODE_ENV === "production";
@@ -38,7 +37,10 @@ export default function Document() {
                 <link rel="preconnect" href="https://fonts.googleapis.com" />
                 <link rel="preconnect" href="https://fonts.gstatic.com" />
                 <link rel="manifest" href="/api/manifest.webmanifest" />
+                <link rel='apple-touch-icon' href='/apple_touch_icon.png' />
+                <link rel='icon' type="image/x-icon" href='/rect.ico' />
                 <meta name="theme-color" content="#9E5DB9" />
+                <meta name="twitter:card" content="summary_large_image" />
             </Head>
             <body>
                 <title>Ossia</title>
