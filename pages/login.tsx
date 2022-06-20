@@ -1,8 +1,8 @@
 import { Anchor, Text } from '@mantine/core'
 import type { NextPage } from 'next'
-import {load} from 'ts-dotenv'
+import { load } from 'ts-dotenv'
 
-const Login: NextPage = (props:any) => {
+const Login: NextPage = (props: any) => {
     const redir = props.env.NODE_ENV === 'production' ? "http://www.last.fm/api/auth/?api_key=070545b595db2dbcacbf07297c2e93e1" : "https://www.last.fm/api/auth?api_key=070545b595db2dbcacbf07297c2e93e1&cb=http%3A%2F%2Flocalhost%3A3000%2Fapi%2Fauth%2Fcallback"
     return (
         <>

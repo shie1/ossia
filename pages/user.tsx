@@ -1,4 +1,4 @@
-import { Accordion, AccordionItem, ActionIcon, Anchor, Avatar, Badge, Grid, Group, Paper, Table, Text } from '@mantine/core'
+import { Accordion, AccordionItem, ActionIcon, Anchor, Avatar, Badge, Container, Grid, Group, Paper, Table, Text } from '@mantine/core'
 import { useLocalStorage } from '@mantine/hooks'
 import type { NextPage } from 'next'
 import { useEffect, useState } from 'react'
@@ -6,8 +6,8 @@ import { BrandLastfm, Calendar, Clock, Friends as FriendsIcon, History, Micropho
 import { getCookie } from 'cookies-next'
 import moment from 'moment'
 import Link from 'next/link'
-import { setSongLfm } from '../functions'
 import { useRouter } from 'next/router'
+import { Collapse, interactivePaper } from '../components'
 
 const LastFM: NextPage = (props: any) => {
 
@@ -28,7 +28,7 @@ const LastFM: NextPage = (props: any) => {
                 setUser((await resp.json()).lfm.user[0])
             })
         }
-    }, [props.auth.lfm.session, user])
+    }, [props.auth, user])
 
     const router = useRouter()
 
@@ -93,9 +93,9 @@ const LastFM: NextPage = (props: any) => {
             return (
                 <Grid.Col span={2}>
                     <Link href={`?u=${friend?.name}`}>
-                        <Paper onClick={clearUser} className='nodim menuLink' withBorder p='sm'>
+                        <Paper shadow='lg' onClick={clearUser} sx={interactivePaper} withBorder p='sm'>
                             <Group m={0} p={0} align='center' direction='column'>
-                                <Avatar src={friend?.image[currentLQ ? 0 : friend.image.length - 1]['_']} radius={0} size='xl' />
+                                <Avatar src={friend?.image[currentLQ ? 0 : friend.image.length - 1]['_']} radius={0} size='xl'>{friend?.name[0].substring(0, 2)}</Avatar>
                                 <Text sx={{ display: '-webkit-box', textOverflow: 'ellipsis', overflow: 'hidden', WebkitLineClamp: 1, WebkitBoxOrient: 'vertical' }} align='center'>{friend.name}</Text>
                             </Group>
                         </Paper>
@@ -105,7 +105,7 @@ const LastFM: NextPage = (props: any) => {
         }
         let i = 0
         return (
-            <Grid grow>
+            <Grid sx={{ width: '98%' }} grow>
                 {friends?.map((friend: any) => {
                     i++
                     return (
@@ -117,33 +117,6 @@ const LastFM: NextPage = (props: any) => {
     }
 
     const Recents = () => {
-        const timeSince = (date: Date) => {
-            var seconds = Math.floor((new Date().getTime() - date.getTime()) / 1000);
-
-            var interval = seconds / 31536000;
-
-            if (interval > 1) {
-                return Math.floor(interval) + " years";
-            }
-            interval = seconds / 2592000;
-            if (interval > 1) {
-                return Math.floor(interval) + " months";
-            }
-            interval = seconds / 86400;
-            if (interval > 1) {
-                return Math.floor(interval) + " days";
-            }
-            interval = seconds / 3600;
-            if (interval > 1) {
-                return Math.floor(interval) + " hours";
-            }
-            interval = seconds / 60;
-            if (interval > 1) {
-                return Math.floor(interval) + " minutes";
-            }
-            return Math.floor(seconds) + " seconds";
-        }
-
         if (recents[0] === false) {
             return <Text align='center'>Nothing here...</Text>
         }
@@ -155,7 +128,10 @@ const LastFM: NextPage = (props: any) => {
                         i++
                         const style: any = { 'fontSize': '2vmin' };
                         return (
-                            <tr className='user-recents-tr' onClick={() => { setSongLfm(song.artist[0]['_'], song.name[0], currentLQ) }} key={i}>
+                            <tr className='user-recents-tr' onClick={async () => {
+                                const vid = await (await fetch(`${document.location.origin}/api/lastfm/youtube?artist=${encodeURIComponent(song.artist[0]['_'])}&track=${encodeURIComponent(song.name[0])}`)).json()
+                                router.push(`/song?v=${vid.split("=")[1]}`)
+                            }} key={i}>
                                 <td style={style}>{song.name[0]}</td>
                                 <td style={style}>{song.artist[0]['_']}</td>
                                 <td style={style}>{moment(moment.utc(song.date[0]['_']).toDate()).local().fromNow()}</td>
@@ -166,7 +142,7 @@ const LastFM: NextPage = (props: any) => {
             )
         }
         return (
-            <Group position='center'>
+            <Group sx={{ width: '96%' }} position='center'>
                 <Table>
                     <thead>
                         <tr>
@@ -188,8 +164,8 @@ const LastFM: NextPage = (props: any) => {
     }
 
     return (
-        <>
-            {user?.name[0] != props.auth.lfm.session[0].name[0] ? <Text mb='sm' className='link' onClick={()=>{router.push('?');clearUser()}} align='center'>Back to my profile</Text> : <></>}
+        <Container>
+            {user?.name[0] != props.auth.lfm.session[0].name[0] ? <Text mb='sm' className='link' onClick={() => { router.push('?'); clearUser() }} align='center'>Back to my profile</Text> : <></>}
             <Group mb='md' direction='row'>
                 <Avatar size='xl' radius={100} src={user?.image[currentLQ ? 0 : user?.image.length - 1]['_']} />
                 <Text sx={{ fontSize: '1.5em' }} size='xl'>{user?.realname[0] ? `${user?.realname} (${user?.name})` : user?.name}</Text>
@@ -198,15 +174,15 @@ const LastFM: NextPage = (props: any) => {
                     <BrandLastfm />
                 </ActionIcon>
             </Group>
-            <Accordion>
-                <AccordionItem label="Friends" icon={<FriendsIcon />}>
+            <Group grow spacing='sm'>
+                <Collapse title="Friends" icon={<FriendsIcon />}>
                     <Friends />
-                </AccordionItem>
-                <AccordionItem label="Recent tracks" icon={<History />}>
+                </Collapse>
+                <Collapse title="Recent tracks" icon={<History />}>
                     <Recents />
-                </AccordionItem>
-            </Accordion>
-        </>
+                </Collapse>
+            </Group>
+        </Container>
     )
 }
 

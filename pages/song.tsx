@@ -13,7 +13,6 @@ const Listen: NextPage = (props: any) => {
     const [currentLQ, setCurrentLQ] = useLocalStorage<boolean>({ 'key': 'current-low-quality-mode', 'defaultValue': false })
     const [firstLoad, setFirstLoad] = useState<boolean>(true)
     const [related, setRelated] = useState<Array<any>>([])
-    const [disp, setDisp] = useState(true)
 
     var autolinker = new Autolinker({
         newWindow: true,
@@ -22,19 +21,26 @@ const Listen: NextPage = (props: any) => {
     });
 
     useEffect(() => {
-        if (related.length === 0) {
-            fetch(`${props.protocol}://${props.host}/api/youtube/related`, { 'method': 'POST', body: JSON.stringify(songDetails) }).then(async (resp) => {
+        if (props.details) {
+            if (props.details == songDetails) { return }
+            setSongDetails(props.details)
+        }
+    }, [songDetails, props.details, setSongDetails])
+
+    useEffect(()=>{
+        if(related.length === 0){
+            fetch(`${props.protocol}://${props.host}/api/youtube/related`, {'method': 'POST', body: JSON.stringify(props.details)}).then(async (resp) => {
                 const result = await resp.json()
                 let vids: any = []
                 result.map((video: any) => {
-                    if (video === false) { vids.push(video) }
+                    if(video === false){vids.push(video)}
                     if (!video["duration_raw"]) { return }
                     vids.push({ 'id': video.id.videoId, 'title': video.title, 'author': '', 'thumbnail': currentLQ ? video.snippet.thumbnails.default.url : video.snippet.thumbnails.high.url, 'length': video["duration_raw"] })
                 })
                 setRelated(vids)
             })
         }
-    }, [currentLQ, props.details, props.host, props.protocol, related, songDetails])
+    },[currentLQ, props.details, props.host, props.protocol, related])
 
     useEffect(() => {
         if (typeof window !== 'undefined' && firstLoad && props.id) {
@@ -47,32 +53,23 @@ const Listen: NextPage = (props: any) => {
     const Description = () => {
         const [reveal, setReveal] = useState(false)
         return (<>
-            <Text className="revealText" sx={(theme) => ({ transition: '3.5s', position: 'relative', whiteSpace: 'pre-wrap', wordWrap: 'break-word', maxHeight: (!reveal ? '10.6em' : '500em'), overflow: 'hidden', '::before': { background: (!reveal ? `linear-gradient(transparent 0, ${theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.light[2]})` : 'unset') } })} dangerouslySetInnerHTML={{ __html: autolinker.link(songDetails?.description) }} />
+            <Text className="revealText" sx={(theme) => ({ transition: '3.5s', position: 'relative', whiteSpace: 'pre-wrap', wordWrap: 'break-word', maxHeight: (!reveal ? '10.6em' : '500em'), overflow: 'hidden', '::before': { background: (!reveal ? `linear-gradient(transparent 0, ${theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.light[2]})` : 'unset') } })} dangerouslySetInnerHTML={{ __html: autolinker.link(props.details.description) }} />
             <Collapse in={!reveal}>
                 <Text onClick={() => { setReveal(true) }} className="link">Read more...</Text>
             </Collapse>
         </>)
     }
 
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-            if (!(document.querySelector("audio#mainPlayer") as HTMLAudioElement).src) {
-                setDisp(false)
-            }
-        }
-    }, [])
-
-    if (!disp) { return <></> }
     return (<>
-        <Meta pageTitle={songDetails?.title ? `${songDetails?.title} | Ossia` : 'Ossia'} />
+        <Meta pageTitle={props.details.title ? `${props.details.title} | Ossia` : 'Ossia'} />
         <Container>
             <Text mb='md' size='lg'>Player</Text>
             <Center>
-                <Image className="rnd" alt={songDetails?.title} sx={{ maxWidth: '80vh' }} mb='md' src={songDetails?.thumbnails[currentLQ ? 0 : songDetails?.thumbnails.length - 1].url} />
+                <Image className="rnd" alt={props.details.title} sx={{ maxWidth: '80vh' }} mb='md' src={props.details.thumbnails[currentLQ ? 0 : props.details.thumbnails.length - 1].url} />
             </Center>
             <Group mb='sm' direction="column" spacing={2}>
-                <Text size="xl">{songDetails?.title}</Text>
-                <Text size="md">{songDetails?.author.name}</Text>
+                <Text size="xl">{props.details.title}</Text>
+                <Text size="md">{props.details.author.name}</Text>
             </Group>
             <Group position="center">
                 <ActionIcon size='xl' onClick={() => { setPaused(!paused) }}>
@@ -97,10 +94,21 @@ const Listen: NextPage = (props: any) => {
 
 export async function getServerSideProps(ctx: any) {
     const protocol = (ctx.req.headers['x-forwarded-proto'] || ctx.req.headers.referer?.split('://')[0] || 'http')
-    return {
-        props: {
-            host: ctx.req.headers.host,
-            'protocol': protocol
+    if (ctx.query['v']) {
+        return {
+            props: {
+                host: ctx.req.headers.host,
+                'protocol': protocol,
+                id: ctx.query['v'],
+                details: (await (await fetch(`${protocol}://${ctx.req.headers.host}/api/youtube/details?v=${ctx.query['v']}`)).json())['videoDetails'],
+            },
+        }
+    } else {
+        return {
+            props: {
+                host: ctx.req.headers.host,
+                'protocol': protocol
+            }
         }
     }
 }

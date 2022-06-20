@@ -18,6 +18,7 @@ export default async function handler(
     req: any,
     res: NextApiResponse<any>
 ) {
+    console.log(JSON.parse(req.body))
     superagent.get(apiroot)
         .query({
             'method': 'track.search',
@@ -25,6 +26,7 @@ export default async function handler(
             ...JSON.parse(req.body)
         })
         .parse(parser)
+        .buffer(true)
         .end((err,resp) => {
             if(err){console.log(err)}
             res.status(200).json(resp.body)

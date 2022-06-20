@@ -1,0 +1,141 @@
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa&family=Inconsolata&family=Sora&display=swap');
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Unsets
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+// Scrollbar
+body::-webkit-scrollbar {
+  width: 14px;
+  background-color: inherit;
+}
+
+html[data-theme="dark"] {
+  body::-webkit-scrollbar-track {
+    background-color: #0B090A;
+  }
+
+  body::-webkit-scrollbar-thumb {
+    background-color: #26292c;
+  }
+}
+
+html[data-theme="light"] {
+  body::-webkit-scrollbar-track {
+    background-color: #DBDBDB;
+  }
+
+  body::-webkit-scrollbar-thumb {
+    background-color: #A4A4A4;
+  }
+}
+
+// Videocard
+.videoCard .title {
+  display: -webkit-box;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  min-height: 1.6em;
+  max-height: 8em;
+  transition: all .75s ease-in-out;
+}
+
+.videoCard .image {
+  .icon {
+    transition: transform .2s ease-in-out;
+  }
+
+  :hover .icon {
+    transform: scale(1.3);
+  }
+}
+
+// Fixes
+html[data-theme="light"] span:not(.string-value) {
+  color: black !important
+}
+
+// No select
+*:not(.select *) {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+// Link
+.link:not(.mantine-Title-root) {
+  transition: .2s;
+  cursor: pointer;
+  color: hsl(282, 30%, 55%);
+}
+
+.link:hover:not(.mantine-Title-root) {
+  color: hsl(282, 50%, 55%);
+}
+
+// Reveal text
+.revealText::before {
+  content: '';
+  pointer-events: none;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.rnd img {
+  border-radius: 20px;
+}
+
+.shadow-lg {
+  box-shadow: 0 1px 3px rgb(0 0 0 / 5%), rgb(0 0 0 / 5%) 0px 10px 15px -5px, rgb(0 0 0 / 4%) 0px 7px 7px -5px;
+}
+
+// Avatar placeholder
+.mantine-Avatar-placeholder{
+  border-radius: 50%;
+}
+
+html[data-theme="light"]{
+  .mantine-Avatar-placeholder{
+    background: black;
+  }
+}
+
+// User recents lastfm
+.user-recents-tr{
+  font-size: 2vmin;
+  cursor: pointer;
+  transition: 100ms;
+}
+
+.user-recents-tr:hover{
+  background: rgba(0, 0, 0, .25);
+}

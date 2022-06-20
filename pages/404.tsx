@@ -1,12 +1,10 @@
-import { Text } from '@mantine/core'
-import type { NextPage } from 'next'
+import type { NextPage } from "next";
+import { useEffect, useState } from "react";
 
-const page404: NextPage = () => {
-  return (
-    <>
-        <Text size='xl' align='center'>Page not found...</Text>
-    </>
-  )
+const Page404: NextPage = () => {
+    const [redir, setRedir] = useState("") 
+    useEffect(()=>{if(typeof window !== 'undefined'){setRedir(location.origin)}},[setRedir])
+    return <meta httpEquiv="refresh" content={`0;URL='${redir}'`} />
 }
 
-export default page404
+export default Page404

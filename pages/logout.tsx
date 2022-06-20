@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { removeCookies } from 'cookies-next'
 import { useLocalStorage } from '@mantine/hooks'
 
-const Login: NextPage = () => {
+const Logout: NextPage = () => {
     const [redir, setRedir] = useState("")
     const [logged, setLogged] = useLocalStorage({
         'key': 'logged', 'defaultValue': false
@@ -32,4 +32,4 @@ export const getServerSideProps = ({ req, res }: any) => {
     return { 'props': {} }
 }
 
-export default Login
+export default Logout
