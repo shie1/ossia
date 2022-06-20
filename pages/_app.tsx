@@ -215,7 +215,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         </Meta>
         <audio style={{ display: 'none' }} onError={() => { setLoading(false) }} onVolumeChange={(e: any) => { Math.floor(e.target.volume * 100) }} onAbort={() => { setLoading(false) }} autoPlay={true} id='mainPlayer' onLoadStart={() => { setLoading(true) }} onLoadedData={() => { setLoading(false) }} onStalled={() => { setLoading(false) }} onEnded={() => { setPaused(true) }} onPause={() => { setPaused(true) }} onPlay={(e) => {
             setPaused(false)
-            if (e.currentTarget.currentTime === 0) {
+            if (e.currentTarget.currentTime === 0) { // First play
                 scrobble()
             }
         }} />
