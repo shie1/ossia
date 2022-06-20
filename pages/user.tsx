@@ -109,14 +109,16 @@ const LastFM: NextPage = (props: any) => {
         }
         let i = 0
         return (
-            <Grid sx={{ width: '98%' }} grow>
-                {friends?.map((friend: any) => {
-                    i++
-                    return (
-                        <Friend key={i} friend={friend} />
-                    )
-                })}
-            </Grid>
+            <Group position='center' sx={{width: '100%'}}>
+                <Grid sx={{width: '100%'}} grow>
+                    {friends?.map((friend: any) => {
+                        i++
+                        return (
+                            <Friend key={i} friend={friend} />
+                        )
+                    })}
+                </Grid>
+            </Group>
         )
     }
 
@@ -148,7 +150,7 @@ const LastFM: NextPage = (props: any) => {
             )
         }
         return (
-            <Group sx={{ width: '96%' }} position='center'>
+            <Group sx={{ width: '100%' }} position='center'>
                 <Table>
                     <thead>
                         <tr>

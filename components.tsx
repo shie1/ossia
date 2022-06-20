@@ -5,23 +5,6 @@ import Link from "next/link";
 import { useState } from "react";
 import { PlayerPause, PlayerPlay } from "tabler-icons-react";
 
-export const SCollapse = ({ icon, title, children, open, set }: any) => {
-    return (<>
-        <Paper sx={{ width: '100%' }}>
-            <Paper onClick={set} className="pagePaper" shadow='lg' withBorder>
-                <Group p='md' sx={interactivePaper}>
-                    {icon}
-                    <Text>{title}</Text>
-                </Group>
-            </Paper>
-            <MCollapse in={open}>
-                <Group direction="column" style={{ width: '100%' }} mx='md' p='md'>
-                    {children}
-                </Group>
-            </MCollapse>
-        </Paper>
-    </>)
-}
 export const Collapse = ({ icon, title, children }: any) => {
     const [open, setOpen] = useState<boolean>(false)
     return (<>
@@ -33,9 +16,11 @@ export const Collapse = ({ icon, title, children }: any) => {
                 </Group>
             </Paper>
             <MCollapse in={open}>
-                <Group direction="column" style={{ width: '100%' }} mx='md' p='md'>
-                    {children}
-                </Group>
+                <Center>
+                    <Group direction="column" style={{ width: '100%' }} mx='md' p='md'>
+                        {children}
+                    </Group>
+                </Center>
             </MCollapse>
         </Paper>
     </>)
