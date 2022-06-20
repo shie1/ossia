@@ -137,7 +137,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
             data = await getData()
         }
         if (!data) {
-            title = `${videoAuthor} ${videoTitle.replace(prR, '')}`
+            title = title.search("//") != -1 ? (`${videoAuthor} ${videoTitle.replace(prR, '')}`).split("//") : `${videoAuthor} ${videoTitle.replace(prR, '')}`           
             artist = ""
             data = await getData()
         }
