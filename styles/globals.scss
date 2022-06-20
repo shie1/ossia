@@ -36,7 +36,17 @@ html[data-theme="dark"] {
   }
 
   body::-webkit-scrollbar-thumb {
-    background-color: hsl(210, 8%, 16%);
+    background-color: #26292c;
+  }
+}
+
+html[data-theme="light"] {
+  body::-webkit-scrollbar-track {
+    background-color: #DBDBDB;
+  }
+
+  body::-webkit-scrollbar-thumb {
+    background-color: #A4A4A4;
   }
 }
 
@@ -100,10 +110,32 @@ html[data-theme="light"] span:not(.string-value) {
   top: 0;
 }
 
-.rnd img{
+.rnd img {
   border-radius: 20px;
 }
 
-.shadow-lg{
+.shadow-lg {
   box-shadow: 0 1px 3px rgb(0 0 0 / 5%), rgb(0 0 0 / 5%) 0px 10px 15px -5px, rgb(0 0 0 / 4%) 0px 7px 7px -5px;
+}
+
+// Avatar placeholder
+.mantine-Avatar-placeholder{
+  border-radius: 50%;
+}
+
+html[data-theme="light"]{
+  .mantine-Avatar-placeholder{
+    background: black;
+  }
+}
+
+// User recents lastfm
+.user-recents-tr{
+  font-size: 2vmin;
+  cursor: pointer;
+  transition: 100ms;
+}
+
+.user-recents-tr:hover{
+  background: rgba(0, 0, 0, .25);
 }

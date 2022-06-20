@@ -56,10 +56,10 @@ const SearchSection = () => {
     />
     <Results />
     <Divider my='md' size='xl' />
-    <Paper className='about' withBorder p='sm' mt='sm'>
+    <Paper shadow='lg' className='about' withBorder p='sm' mt='sm'>
       <Text mb='sm' size="xl" align="center">About Ossia</Text>
       <Text>Ossia is a free to use YouTube client designed for listening to music.</Text>
-      <Text>This indie project is being made and maintained by Shie1 and it&apos;in it&apos;s early access stage since 2022-06-05.</Text>
+      <Text>This indie project is being made and maintained by Shie1 since 2022-05-30.</Text>
       <Text mt='md' sx={{ fontWeight: 600 }} size='lg'>Why you should use Ossia:</Text>
       <ul>
         <li>There are no ads on our site.</li>
