@@ -1,7 +1,7 @@
 import { useLocalStorage } from "@mantine/hooks";
 import type { NextPage } from "next";
 import { useEffect, useState } from "react";
-import { interactivePaper, Meta, SCollapse, VideoGrid } from "../components";
+import { interactivePaper, Meta, VideoGrid } from "../components";
 import { Container, Text, ActionIcon, Group, Divider, Center, Image, InputWrapper, Slider, Space, Paper, Collapse } from "@mantine/core";
 import { PlayerPlay, PlayerPause, InfoCircle, ListDetails } from "tabler-icons-react";
 import Autolinker from "autolinker";
