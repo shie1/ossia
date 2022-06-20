@@ -228,7 +228,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
             }}>
                 <ModalsProvider>
                     <NotificationsProvider>
-                        <LoadingOverlay visible={loading} />
+                        <LoadingOverlay visible={loading} sx={{position: "fixed"}}/>
                         <Burger style={{ position: 'absolute', top: 0, left: 0, }} className='navBurger' mx='sm' my={10} size={30} opened={navMode} onClick={() => { setNavMode(!navMode) }} />
                         <AppShell
                             padding="md"
