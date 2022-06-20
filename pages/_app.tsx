@@ -24,12 +24,16 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     const [navMode, setNavMode] = useState<boolean>(false)
     const [songDetails, setSongDetails] = useLocalStorage<any>({ 'key': 'song-details', 'defaultValue': {} })
     const [paused, setPaused] = useLocalStorage<boolean>({ 'key': 'paused', 'defaultValue': false })
-    const [loading, setLoading] = useState<boolean>(false)
+    const [loading, setLoading] = useLocalStorage<boolean>({ 'key': 'loading', 'defaultValue': false })
     const [csm, scsm] = useLocalStorage({ 'key': "color-scheme-mode", 'defaultValue': '0' });
     const [logged, setLogged] = useLocalStorage({ 'key': 'logged', 'defaultValue': false })
     const [scrobbleF, setScrobble] = useLocalStorage({ 'key': 'scrobble', 'defaultValue': true })
 
     const router = useRouter()
+
+    useEffect(() => {
+        setLoading(false)
+    }, [setLoading])
 
     useEffect(() => {
         const handleRouteChange = (url: URL) => {
@@ -105,8 +109,8 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     }, [paused, setPaused])
 
     if (typeof window !== 'undefined') {
-        navigator.connection.addEventListener('typechange', function () {
-            setConnType(navigator.connection.type);
+        (navigator as any).connection.addEventListener('typechange', function () {
+            setConnType((navigator as any).connection.type);
         });
     }
 
@@ -188,7 +192,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         return (<Group direction='column' grow spacing='sm'>
             <Text size='lg'>Navigation</Text>
             <Page icon={<Home />} text="Home" link="/" />
-            <Page icon={<PlayerPlay />} text="Player" link="/player" />
+            {songDetails.title ? <Page icon={<PlayerPlay />} text="Player" link="/player" /> : <></>}
             <Page icon={<BrandLastfm />} text="Last.fm" link={logged ? '/user?' : '/login'} />
             <Page icon={<Settings />} text="Settings" link="/settings" />
         </Group>)

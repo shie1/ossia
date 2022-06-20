@@ -10,7 +10,6 @@ import { useRouter } from 'next/router'
 import { Collapse, interactivePaper } from '../components'
 
 const LastFM: NextPage = (props: any) => {
-
     const [user, setUser] = useState<any>(false)
     const [friends, setFriends] = useState<Array<any>>([])
     const [recents, setRecents] = useState<Array<any>>([])
@@ -20,15 +19,18 @@ const LastFM: NextPage = (props: any) => {
     const [logged, setLogged] = useLocalStorage({
         'key': 'logged', 'defaultValue': false
     })
+    const [loading, setLoading] = useLocalStorage<boolean>({ 'key': 'loading', 'defaultValue': false })
 
     useEffect(() => {
         if (!user && typeof window !== 'undefined') {
+            setLoading(true)
             const user = (new URLSearchParams(location.search)).get("u")
             fetch(`${document.location.origin}/api/lastfm/api`, { method: 'POST', body: JSON.stringify({ 'method': 'user.getInfo', ...(user ? { 'user': user } : { 'user': props.auth.lfm.session[0].name[0] }) }) }).then(async (resp: any) => {
                 setUser((await resp.json()).lfm.user[0])
+                setLoading(false)
             })
         }
-    }, [props.auth, user])
+    }, [props.auth, setLoading, user])
 
     const router = useRouter()
 
@@ -42,8 +44,10 @@ const LastFM: NextPage = (props: any) => {
 
     useEffect(() => {
         if (user && typeof window !== 'undefined' && friends.length == 0) {
+            setLoading(true)
             fetch(`${document.location.origin}/api/lastfm/api`, { method: 'POST', body: JSON.stringify({ 'method': 'user.getFriends', 'user': user?.name }) }).then(async (resp: any) => {
                 const json = await resp.json()
+                setLoading(false)
                 if (json.lfm.error) {
                     setFriends([false])
                 } else {
@@ -51,7 +55,7 @@ const LastFM: NextPage = (props: any) => {
                 }
             })
         }
-    }, [user, friends])
+    }, [user, friends, setLoading])
 
     useEffect(() => {
         if (user && typeof window !== 'undefined' && recents.length == 0) {
@@ -129,7 +133,9 @@ const LastFM: NextPage = (props: any) => {
                         const style: any = { 'fontSize': '2vmin' };
                         return (
                             <tr className='user-recents-tr' onClick={async () => {
+                                setLoading(true)
                                 const vid = await (await fetch(`${document.location.origin}/api/lastfm/youtube?artist=${encodeURIComponent(song.artist[0]['_'])}&track=${encodeURIComponent(song.name[0])}`)).json()
+                                setLoading(false)
                                 router.push(`/song?v=${vid.split("=")[1]}`)
                             }} key={i}>
                                 <td style={style}>{song.name[0]}</td>
@@ -166,13 +172,15 @@ const LastFM: NextPage = (props: any) => {
     return (
         <Container>
             {user?.name[0] != props.auth.lfm.session[0].name[0] ? <Text mb='sm' className='link' onClick={() => { router.push('?'); clearUser() }} align='center'>Back to my profile</Text> : <></>}
-            <Group mb='md' direction='row'>
+            <Group spacing='sm' mb='md' direction='row'>
                 <Avatar size='xl' radius={100} src={user?.image[currentLQ ? 0 : user?.image.length - 1]['_']} />
                 <Text sx={{ fontSize: '1.5em' }} size='xl'>{user?.realname[0] ? `${user?.realname} (${user?.name})` : user?.name}</Text>
-                <Badge>{user?.country[0]}</Badge>
-                <ActionIcon component='a' target='_blank' href={user?.url[0]}>
-                    <BrandLastfm />
-                </ActionIcon>
+                <Group spacing='sm'>
+                    <Badge size='lg'>{user?.country[0]}</Badge>
+                    <ActionIcon size='lg' component='a' target='_blank' href={user?.url[0]}>
+                        <BrandLastfm />
+                    </ActionIcon>
+                </Group>
             </Group>
             <Group grow spacing='sm'>
                 <Collapse title="Friends" icon={<FriendsIcon />}>
