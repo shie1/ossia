@@ -13,6 +13,7 @@ const Listen: NextPage = (props: any) => {
     const [currentLQ, setCurrentLQ] = useLocalStorage<boolean>({ 'key': 'current-low-quality-mode', 'defaultValue': false })
     const [firstLoad, setFirstLoad] = useState<boolean>(true)
     const [related, setRelated] = useState<Array<any>>([])
+    const [sliderVal, setSliderVal] = useState(volume)
 
     var autolinker = new Autolinker({
         newWindow: true,
@@ -27,20 +28,25 @@ const Listen: NextPage = (props: any) => {
         }
     }, [songDetails, props.details, setSongDetails])
 
-    useEffect(()=>{
-        if(related.length === 0){
-            fetch(`${props.protocol}://${props.host}/api/youtube/related`, {'method': 'POST', body: JSON.stringify(props.details)}).then(async (resp) => {
+    useEffect(() => {
+        const timeoutId = setTimeout(() => setVolume(sliderVal), 1000);
+        return () => clearTimeout(timeoutId);
+    }, [setVolume, sliderVal])
+
+    useEffect(() => {
+        if (related.length === 0) {
+            fetch(`${props.protocol}://${props.host}/api/youtube/related`, { 'method': 'POST', body: JSON.stringify(props.details) }).then(async (resp) => {
                 const result = await resp.json()
                 let vids: any = []
                 result.map((video: any) => {
-                    if(video === false){vids.push(video)}
+                    if (video === false) { vids.push(video) }
                     if (!video["duration_raw"]) { return }
                     vids.push({ 'id': video.id.videoId, 'title': video.title, 'author': '', 'thumbnail': currentLQ ? video.snippet.thumbnails.default.url : video.snippet.thumbnails.high.url, 'length': video["duration_raw"] })
                 })
                 setRelated(vids)
             })
         }
-    },[currentLQ, props.details, props.host, props.protocol, related])
+    }, [currentLQ, props.details, props.host, props.protocol, related])
 
     useEffect(() => {
         if (typeof window !== 'undefined' && firstLoad && props.id) {
@@ -77,7 +83,7 @@ const Listen: NextPage = (props: any) => {
                 </ActionIcon>
             </Group>
             <InputWrapper label="Volume">
-                <Slider value={volume} onChange={setVolume} marks={[
+                <Slider value={sliderVal} onChange={setSliderVal} marks={[
                     { value: 0, label: '0%' },
                     { value: 50, label: '50%' },
                     { value: 100, label: '100%' },
