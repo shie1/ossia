@@ -47,7 +47,7 @@ const Listen: NextPage = (props: any) => {
     const Description = () => {
         const [reveal, setReveal] = useState(false)
         return (<>
-            <Text className="revealText" sx={(theme) => ({ transition: '3.5s', position: 'relative', whiteSpace: 'pre-wrap', wordWrap: 'break-word', maxHeight: (!reveal ? '10.6em' : '500em'), overflow: 'hidden', '::before': { background: (!reveal ? `linear-gradient(transparent 0, ${theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.light[1]})` : 'unset') } })} dangerouslySetInnerHTML={{ __html: autolinker.link(songDetails?.description) }} />
+            <Text className="revealText" sx={(theme) => ({ transition: '3.5s', position: 'relative', whiteSpace: 'pre-wrap', wordWrap: 'break-word', maxHeight: (!reveal ? '10.6em' : '500em'), overflow: 'hidden', '::before': { background: (!reveal ? `linear-gradient(transparent 0, ${theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.light[2]})` : 'unset') } })} dangerouslySetInnerHTML={{ __html: autolinker.link(songDetails?.description) }} />
             <Collapse in={!reveal}>
                 <Text onClick={() => { setReveal(true) }} className="link">Read more...</Text>
             </Collapse>
@@ -66,7 +66,7 @@ const Listen: NextPage = (props: any) => {
     return (<>
         <Meta pageTitle={songDetails?.title ? `${songDetails?.title} | Ossia` : 'Ossia'} />
         <Container>
-            <Text size='lg'>Player</Text>
+            <Text mb='md' size='lg'>Player</Text>
             <Center>
                 <Image className="rnd" alt={songDetails?.title} sx={{ maxWidth: '80vh' }} mb='md' src={songDetails?.thumbnails[currentLQ ? 0 : songDetails?.thumbnails.length - 1].url} />
             </Center>
