@@ -1,8 +1,8 @@
-import { Accordion, AccordionItem, ActionIcon, Anchor, Avatar, Badge, Container, Grid, Group, Paper, Table, Text } from '@mantine/core'
+import { Accordion, AccordionItem, ActionIcon, Anchor, Avatar, Badge, Container, Grid, Group, Pagination, Paper, Table, Text } from '@mantine/core'
 import { useLocalStorage } from '@mantine/hooks'
 import type { NextPage } from 'next'
 import { useEffect, useState } from 'react'
-import { BrandLastfm, Calendar, Clock, Friends as FriendsIcon, History, Microphone, Music } from 'tabler-icons-react'
+import { BrandLastfm, Calendar, Clock, Friends as FriendsIcon, History, Microphone, Music, PlayerPlay, Trophy } from 'tabler-icons-react'
 import { getCookie } from 'cookies-next'
 import moment from 'moment'
 import Link from 'next/link'
@@ -13,6 +13,7 @@ const LastFM: NextPage = (props: any) => {
     const [user, setUser] = useState<any>(false)
     const [friends, setFriends] = useState<Array<any>>([])
     const [recents, setRecents] = useState<Array<any>>([])
+    const [toptracks, setTopTracks] = useState<Array<any>>([])
     const [currentLQ, setCurrentLQ] = useLocalStorage<boolean>({
         'key': 'currentLQ', 'defaultValue': false
     })
@@ -59,7 +60,7 @@ const LastFM: NextPage = (props: any) => {
 
     useEffect(() => {
         if (user && typeof window !== 'undefined' && recents.length == 0) {
-            fetch(`${document.location.origin}/api/lastfm/api`, { method: 'POST', body: JSON.stringify({ 'method': 'user.getRecentTracks', 'user': user?.name }) }).then(async (resp: any) => {
+            fetch(`${document.location.origin}/api/lastfm/api`, { method: 'POST', body: JSON.stringify({ 'method': 'user.getRecentTracks', 'user': user?.name, 'limit': 200 }) }).then(async (resp: any) => {
                 const json = await resp.json()
                 if (json.lfm.error) {
                     setRecents([false])
@@ -69,6 +70,19 @@ const LastFM: NextPage = (props: any) => {
             })
         }
     }, [user, recents])
+
+    useEffect(() => {
+        if (user && typeof window !== 'undefined' && toptracks.length == 0) {
+            fetch(`${document.location.origin}/api/lastfm/api`, { method: 'POST', body: JSON.stringify({ 'method': 'user.getTopTracks', 'user': user?.name, 'limit': 200 }) }).then(async (resp: any) => {
+                const json = await resp.json()
+                if (json.lfm.error) {
+                    setTopTracks([false])
+                } else {
+                    setTopTracks(json.lfm.toptracks[0].track)
+                }
+            })
+        }
+    }, [user, toptracks])
 
     useEffect(() => {
         setLogged(props.auth !== false)
@@ -109,8 +123,8 @@ const LastFM: NextPage = (props: any) => {
         }
         let i = 0
         return (
-            <Group position='center' sx={{width: '100%'}}>
-                <Grid sx={{width: '100%'}} grow>
+            <Group position='center' sx={{ width: '100%' }}>
+                <Grid sx={{ width: '100%' }} grow>
                     {friends?.map((friend: any) => {
                         i++
                         return (
@@ -123,6 +137,7 @@ const LastFM: NextPage = (props: any) => {
     }
 
     const Recents = () => {
+        const [page, setPage] = useState(1)
         if (recents[0] === false) {
             return <Text align='center'>Nothing here...</Text>
         }
@@ -132,17 +147,18 @@ const LastFM: NextPage = (props: any) => {
                 <>
                     {recents.map((song) => {
                         i++
+                        const ipage = Math.floor(i / 50) + 1
                         const style: any = { 'fontSize': '2vmin' };
                         return (
-                            <tr className='user-recents-tr' onClick={async () => {
+                            <tr style={{ display: page === ipage ? '' : 'none' }} key={i} className='user-recents-tr' onClick={async () => {
                                 setLoading(true)
                                 const vid = await (await fetch(`${document.location.origin}/api/lastfm/youtube?artist=${encodeURIComponent(song.artist[0]['_'])}&track=${encodeURIComponent(song.name[0])}`)).json()
                                 setLoading(false)
                                 router.push(`/song?v=${vid.split("=")[1]}`)
-                            }} key={i}>
+                            }}>
                                 <td style={style}>{song.name[0]}</td>
                                 <td style={style}>{song.artist[0]['_']}</td>
-                                <td style={style}>{moment(moment.utc(song.date[0]['_']).toDate()).local().fromNow()}</td>
+                                <td style={style}>{song.date ? (moment(moment.utc(song.date[0]['_']).toDate()).local().fromNow()) : 'Now playing'}</td>
                             </tr>
                         )
                     })}
@@ -151,6 +167,7 @@ const LastFM: NextPage = (props: any) => {
         }
         return (
             <Group sx={{ width: '100%' }} position='center'>
+                <Pagination total={recents.length / 50} onChange={setPage} page={page} />
                 <Table>
                     <thead>
                         <tr>
@@ -163,6 +180,56 @@ const LastFM: NextPage = (props: any) => {
                         <Rows />
                     </tbody>
                 </Table>
+                <Pagination total={recents.length / 50} onChange={setPage} page={page} />
+            </Group>
+        )
+    }
+
+    const TopTracks = () => {
+        const [page, setPage] = useState(1)
+        if (recents[0] === false) {
+            return <Text align='center'>Nothing here...</Text>
+        }
+        const Rows = () => {
+            let i = 0
+            return (
+                <>
+                    {toptracks.map((song) => {
+                        i++
+                        const ipage = Math.floor(i / 50) + 1
+                        const style: any = { 'fontSize': '2vmin' };
+                        return (
+                            <tr style={{ display: page === ipage ? '' : 'none' }} key={i} className='user-recents-tr' onClick={async () => {
+                                setLoading(true)
+                                const vid = await (await fetch(`${document.location.origin}/api/lastfm/youtube?artist=${encodeURIComponent(song.artist[0]['_'])}&track=${encodeURIComponent(song.name[0])}`)).json()
+                                setLoading(false)
+                                router.push(`/song?v=${vid.split("=")[1]}`)
+                            }}>
+                                <td style={style}>{song.name[0]}</td>
+                                <td style={style}>{song.artist[0].name}</td>
+                                <td style={style}>{song.playcount[0]} plays</td>
+                            </tr>
+                        )
+                    })}
+                </>
+            )
+        }
+        return (
+            <Group sx={{ width: '100%' }} position='center'>
+                <Pagination total={toptracks.length / 50} onChange={setPage} page={page} />
+                <Table>
+                    <thead>
+                        <tr>
+                            <th><Music /></th>
+                            <th><Microphone /></th>
+                            <th><PlayerPlay /></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <Rows />
+                    </tbody>
+                </Table>
+                <Pagination total={toptracks.length / 50} onChange={setPage} page={page} />
             </Group>
         )
     }
@@ -190,6 +257,9 @@ const LastFM: NextPage = (props: any) => {
                 </Collapse>
                 <Collapse title="Recent tracks" icon={<History />}>
                     <Recents />
+                </Collapse>
+                <Collapse title="Top tracks" icon={<Trophy />}>
+                    <TopTracks />
                 </Collapse>
             </Group>
         </Container>

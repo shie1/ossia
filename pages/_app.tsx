@@ -5,13 +5,14 @@ import { AppProps } from "next/app";
 import { useCallback, useEffect, useState } from "react";
 import { AppShell, Header } from '@mantine/core';
 import Link from 'next/link';
-import { BrandLastfm, Home, PlayerPlay, Settings } from 'tabler-icons-react';
+import { BrandLastfm, Disc, Home, PlayerPlay, Settings } from 'tabler-icons-react';
 import { interactivePaper } from '../components';
 import { ModalsProvider } from '@mantine/modals';
 import { NotificationsProvider, showNotification } from '@mantine/notifications';
 import { Meta } from '../components';
 import { useRouter } from 'next/router';
 import * as gtag from "../lib/gtag";
+import { isFunction } from 'util';
 const isProduction = process.env.NODE_ENV === "production";
 
 export default function MyApp({ Component, pageProps }: AppProps) {
@@ -28,6 +29,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     const [csm, scsm] = useLocalStorage({ 'key': "color-scheme-mode", 'defaultValue': '0' });
     const [logged, setLogged] = useLocalStorage({ 'key': 'logged', 'defaultValue': false })
     const [scrobbleF, setScrobble] = useLocalStorage({ 'key': 'scrobble', 'defaultValue': true })
+    const [lastScrobble, setLastScrobble] = useState()
 
     const router = useRouter()
 
@@ -141,22 +143,29 @@ export default function MyApp({ Component, pageProps }: AppProps) {
             data = await getData()
         }
         if (!data) {
-            title = title.search("//") != -1 ? (`${videoAuthor} ${videoTitle.replace(prR, '')}`).split("//") : `${videoAuthor} ${videoTitle.replace(prR, '')}`           
+            title = title.search("//") != -1 ? (`${videoAuthor} ${videoTitle.replace(prR, '')}`).split("//") : `${videoAuthor} ${videoTitle.replace(prR, '')}`
             artist = ""
             data = await getData()
         }
         if (title) {
             if (!data) { return }
             const songData = data.lfm.results[0].trackmatches[0].track[0]
-            showNotification({
-                'title': "Song recognized!",
-                'message': `${songData.artist} - ${songData.name}`,
-                'icon': <BrandLastfm />,
-                'color': 'red'
-            })
+            if (!scrobbleF) {
+                showNotification({
+                    'title': "Song recognized!",
+                    'message': `${songData.artist} - ${songData.name}`,
+                    'icon': <Disc />,
+                    'color': 'red'
+                })
+            }
             setSongDetails({ 'title': songData.name, 'author': songData.artist, ...songDetails })
             if (!scrobbleF || !logged) { return }
             fetch(`${document.location.origin}/api/lastfm/scrobble`, { 'method': 'POST', body: JSON.stringify({ 'track': songData.name[0], 'artist': songData.artist[0] }) })
+            showNotification({
+                'title': "Scrobble!",
+                'icon': <BrandLastfm />,
+                'message': `${songData.artist} - ${songData.name}`,
+            })
         }
     }
 
@@ -192,7 +201,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         return (<Group direction='column' grow spacing='sm'>
             <Text size='lg'>Navigation</Text>
             <Page icon={<Home />} text="Home" link="/" />
-            {songDetails.title ? <Page icon={<PlayerPlay />} text="Player" link="/player" /> : <></>}
+            {songDetails ? <Page icon={<PlayerPlay />} text="Player" link="/player" /> : <></>}
             <Page icon={<BrandLastfm />} text="Last.fm" link={logged ? '/user?' : '/login'} />
             <Page icon={<Settings />} text="Settings" link="/settings" />
         </Group>)
@@ -204,7 +213,12 @@ export default function MyApp({ Component, pageProps }: AppProps) {
             <meta property="og:url" content={typeof window !== 'undefined' ? location.href : 'https://ossia.ml'} />
             <link rel="canonical" href={typeof window !== 'undefined' ? location.href : 'https://ossia.ml'} />0
         </Meta>
-        <audio style={{ display: 'none' }} onError={() => { setLoading(false) }} onVolumeChange={(e: any) => { Math.floor(e.target.volume * 100) }} onAbort={() => { setLoading(false) }} autoPlay={true} id='mainPlayer' onLoadStart={() => { setLoading(true) }} onLoadedData={() => { setLoading(false); scrobble() }} onStalled={() => { setLoading(false) }} onEnded={() => { setPaused(true) }} onPause={() => { setPaused(true) }} onPlay={() => { setPaused(false) }} />
+        <audio style={{ display: 'none' }} onError={() => { setLoading(false) }} onVolumeChange={(e: any) => { Math.floor(e.target.volume * 100) }} onAbort={() => { setLoading(false) }} autoPlay={true} id='mainPlayer' onLoadStart={() => { setLoading(true) }} onLoadedData={() => { setLoading(false) }} onStalled={() => { setLoading(false) }} onEnded={() => { setPaused(true) }} onPause={() => { setPaused(true) }} onPlay={(e) => {
+            setPaused(false)
+            if (e.currentTarget.currentTime === 0) {
+                scrobble()
+            }
+        }} />
         <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
             <MantineProvider withGlobalStyles withNormalizeCSS theme={{
                 focusRing: 'auto',
@@ -228,7 +242,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
             }}>
                 <ModalsProvider>
                     <NotificationsProvider>
-                        <LoadingOverlay visible={loading} sx={{position: "fixed"}}/>
+                        <LoadingOverlay visible={loading} sx={{ position: "fixed" }} />
                         <Burger style={{ position: 'absolute', top: 0, left: 0, }} className='navBurger' mx='sm' my={10} size={30} opened={navMode} onClick={() => { setNavMode(!navMode) }} />
                         <AppShell
                             padding="md"
