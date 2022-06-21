@@ -1,5 +1,6 @@
-import { Card, Collapse as MCollapse, Grid, Group, Paper, Text, Image, Badge, ActionIcon, Menu, Box, Button, BackgroundImage, Center } from "@mantine/core";
+import { Card, Collapse as MCollapse, Grid, Group, Paper, Text, Image, Badge, ActionIcon, Menu, Box, Button, BackgroundImage, Center, Avatar, Space } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
+import moment from "moment";
 import Head from "next/head";
 import Link from "next/link";
 import { useState } from "react";
@@ -112,4 +113,39 @@ export const Meta = ({ pageTitle, title, image, description, type, og, children 
 
         {children}
     </Head>)
+}
+
+export const LFMSong = ({ song, type }: any) => {
+    const More = () => {
+        switch (type) {
+            case 'recents':
+                return <>
+                    <Group position="right" pt='sm' sx={(theme) => ({ borderTop: `1px solid ${theme.colorScheme === 'dark' ? theme.white : theme.black}` })}>
+                        <Text size="sm">{song.date ? (moment(moment.utc(song.date[0]['_']).toDate()).local().fromNow()) : 'Now playing'}</Text>
+                    </Group>
+                </>
+            case 'top':
+                return <>
+                    <Group position="right" pt='sm' direction="row" sx={(theme) => ({ borderTop: `1px solid ${theme.colorScheme === 'dark' ? theme.white : theme.black}` })}>
+                        <Text size="sm">{song.playcount[0]} plays</Text>
+                    </Group>
+                </>
+            default:
+                return <></>
+        }
+    }
+    const [currentLQ, setCurrentLQ] = useLocalStorage<boolean>({ 'key': 'current-low-quality-mode', 'defaultValue': false })
+    if (!song) { return <></> }
+    return (<>
+        <Paper sx={interactivePaper} m={-6} p='sm'>
+            <Group mb='sm' direction="row">
+                <Avatar>{song.name[0].substring(0, 2)}</Avatar>
+                <Group style={{ maxWidth: '80%' }} spacing={0} direction="column">
+                    <Text sx={{ WebkitBoxOrient: 'vertical', WebkitLineClamp: 1, overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box' }} size="lg">{song.name[0]}</Text>
+                    <Text sx={{ WebkitBoxOrient: 'vertical', WebkitLineClamp: 1, overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box' }} size="md">{song.artist[0].name ? song.artist[0].name : (song.artist[0] as any)['_']}</Text>
+                </Group>
+            </Group>
+            <More/>
+        </Paper>
+    </>)
 }

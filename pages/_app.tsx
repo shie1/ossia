@@ -12,7 +12,6 @@ import { NotificationsProvider, showNotification } from '@mantine/notifications'
 import { Meta } from '../components';
 import { useRouter } from 'next/router';
 import * as gtag from "../lib/gtag";
-import { isFunction } from 'util';
 const isProduction = process.env.NODE_ENV === "production";
 
 export default function MyApp({ Component, pageProps }: AppProps) {
@@ -29,7 +28,6 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     const [csm, scsm] = useLocalStorage({ 'key': "color-scheme-mode", 'defaultValue': '0' });
     const [logged, setLogged] = useLocalStorage({ 'key': 'logged', 'defaultValue': false })
     const [scrobbleF, setScrobble] = useLocalStorage({ 'key': 'scrobble', 'defaultValue': true })
-    const [lastScrobble, setLastScrobble] = useState()
 
     const router = useRouter()
 
@@ -59,7 +57,6 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     }, [setTheColorScheme])
 
     const toggleColorScheme = (value?: ColorScheme) => { setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark')); }
-    const clientColor = useColorScheme()
 
     useEffect(() => {
         switch (lowQualityMode) {
@@ -84,9 +81,9 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 
     useEffect(() => { // Set color scheme as html attribute
         if (typeof window !== 'undefined' && csm === '0') {
-            setColorScheme(clientColor)
+            setColorScheme(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
         }
-    }, [setColorScheme, clientColor, colorScheme, csm])
+    }, [setColorScheme, colorScheme, csm])
 
     useEffect(() => { // Get Manifest
         if (!manifest && typeof window !== 'undefined') {
@@ -155,7 +152,6 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                     'title': "Song recognized!",
                     'message': `${songData.artist} - ${songData.name}`,
                     'icon': <Disc />,
-                    'color': 'red'
                 })
             }
             setSongDetails({ 'title': songData.name, 'author': songData.artist, ...songDetails })
@@ -165,6 +161,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
                 'title': "Scrobble!",
                 'icon': <BrandLastfm />,
                 'message': `${songData.artist} - ${songData.name}`,
+                'color': 'red'
             })
         }
     }
