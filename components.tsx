@@ -137,7 +137,7 @@ export const LFMSong = ({ song, type }: any) => {
     const [currentLQ, setCurrentLQ] = useLocalStorage<boolean>({ 'key': 'current-low-quality-mode', 'defaultValue': false })
     if (!song) { return <></> }
     return (<>
-        <Paper sx={interactivePaper} m={-6} p='sm'>
+        <Paper withBorder sx={interactivePaper} m={-2} p='sm'>
             <Group mb='sm' direction="row">
                 <Avatar>{song.name[0].substring(0, 2)}</Avatar>
                 <Group style={{ maxWidth: '80%' }} spacing={0} direction="column">
