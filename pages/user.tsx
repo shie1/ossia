@@ -180,7 +180,7 @@ const LastFM: NextPage = (props: any) => {
                         return (
                             <Grid.Col onClick={async () => {
                                 setLoading(true)
-                                const vid = await (await fetch(`${document.location.origin}/api/lastfm/youtube?artist=${encodeURIComponent(song.artist[0]['_'])}&track=${encodeURIComponent(song.name[0])}`)).json()
+                                const vid = await (await fetch(`${document.location.origin}/api/lastfm/youtube?artist=${encodeURIComponent(song.artist[0].name)}&track=${encodeURIComponent(song.name[0])}`)).json()
                                 setLoading(false)
                                 router.push(`/song?v=${vid.split("=")[1]}`)
                             }} key={i} span={8} sm={6}>
