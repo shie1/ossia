@@ -56,8 +56,8 @@ const Index: NextPage = (props: any) => {
         onChange={(e) => { setQuery(e.currentTarget.value) }}
       />
       <Results />
-      <Divider my='md' size='xl' />
       {!props.auth ? <>
+        <Divider my='md' size='xl' />
         <Paper shadow='lg' className='about' withBorder p='sm' mt='sm'>
           <Text mb='sm' size="xl" align="center">About Ossia</Text>
           <Text>The Ossia Music Player is a free to use YouTube client designed for listening to music.</Text>
