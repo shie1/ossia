@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<rss version="2.0">
+  <channel>
+    <title>Ossia.ml</title>
+    <link>https://ossia.ml</link>
+    <language>en-US</language>
+    <item>
+      <title>Version 1.0.3 - Experimental Updates feed</title>
+      <guid>https://ossia.ml/post?p=0</guid>
+      <category>Update</category>
+      <description>Version 1.0.3 is released, it includes a news feed on the main page.</description>
+      <pubDate>Wed, 08 Jun 2022 16:57:01 +0200</pubDate>
+    </item>
+    <item>
+      <title>Removed live streams from search - A quick fix</title>
+      <guid>https://ossia.ml/post?p=1</guid>
+      <category>Update</category>
+      <description>The title sums it up... I removed live streams (previously seen as videos with no length) from the search page because Ossia can't actually play them.</description>
+      <pubDate>Wed, 08 Jun 2022 17:55:20 +0200</pubDate>
+    </item>
+    <item>
+      <title>Version 1.1.0 - The new and improved sidebar</title>
+      <guid>https://ossia.ml/post?p=2</guid>
+      <category>Update</category>
+      <description>Version 1.1.0 is released. Say goodbye to the old player, say hello to the sidebar! Seamlessly switch between songs without the silence. Search for song while listening and just press the song for autoplay! (I also fixed the player's pause/play state, so no more double pressing.)</description>
+      <pubDate>Thu, 09 Jun 2022 21:07:31 +0200</pubDate>
+    </item>
+    <item>
+      <title>Version 1.2.0 - The Big PWA Update</title>
+      <guid>https://ossia.ml/post?p=3</guid>
+      <category>Update</category>
+      <description>This update makes Ossia a Progressive Web Application (PWA), this means that you can download Ossia to your phone and you can ditch the browser completely.&#xD;
+&#xD;
+&lt;b&gt;Major changes:&lt;/b&gt;&#xD;
+&lt;ul&gt;&#xD;
+&lt;li&gt;Sidebar repurposed for navigation&lt;/li&gt;&#xD;
+&lt;li&gt;Added settings menu&lt;/li&gt;&#xD;
+&lt;li&gt;Added song library&lt;/li&gt;&#xD;
+&lt;li&gt;Added related songs to player&lt;/li&gt;&#xD;
+&lt;li&gt;Volume controls are back&lt;/li&gt;&#xD;
+&lt;li&gt;The website now has a low effort logo&lt;/li&gt;&#xD;
+&lt;/ul&gt;</description>
+      <pubDate>Tue, 14 Jun 2022 06:59:48 +0200</pubDate>
+    </item>
+    <item>
+      <title>Version 1.2.1 - Scrobble with Last.fm</title>
+      <guid>https://ossia.ml/post?p=4</guid>
+      <category>Update</category>
+      <description>Head to settings and sign-in with your Last.fm account (&lt;a href="https://ossia.ml/login"&gt;or use this link&lt;/a&gt;). Ossia will try to recongnize the songs you're listening to and scrobble them on Last.fm.&#xD;
+&#xD;
+&lt;b&gt;I don't use Last.fm, what does this update mean for me? // Other changes&lt;/b&gt;&#xD;
+&lt;ul&gt;&#xD;
+&lt;li&gt;Songs that are recognized by Ossia, will get displayed with correct metadata in the player.&lt;/li&gt;&#xD;
+&lt;li&gt;Added Low Quality Mode (see more in settings)&lt;/li&gt;&#xD;
+&lt;/ul&gt;</description>
+      <pubDate>Thu, 16 Jun 2022 08:38:30 +0200</pubDate>
+    </item>
+  </channel>
+</rss>
