@@ -1,7 +1,9 @@
 {
-  "name": "ossia-app",
-  "version": "0.1.0",
+  "name": "ossia",
+  "version": "3.0.0",
   "private": true,
+  "author": "Shie1",
+  "description": "Ossia is a free to use YouTube client designed for listening to music.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -16,7 +18,8 @@
     "@mantine/notifications": "^4.2.11",
     "next": "12.2.0",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "swr": "^1.3.0"
   },
   "devDependencies": {
     "@types/node": "18.0.0",

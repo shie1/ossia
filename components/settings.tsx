@@ -3,7 +3,6 @@ import { useEffect } from "react"
 import { hashKeys } from "../functions"
 
 export const defaultSettings: any = {
-    "piped_host": "https://pipedapi.moomoo.me/"
 }
 
 export const useSettings = () => {
