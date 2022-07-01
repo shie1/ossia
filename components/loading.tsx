@@ -1,8 +1,11 @@
 export const useLoading = () => {
-    function start(){
-
+    function start() {
+        if (typeof window === 'undefined') return
+        document.documentElement.setAttribute('data-loading', "true")
     }
-    function stop(){
-        
+    function stop() {
+        if (typeof window === 'undefined') return
+        document.documentElement.setAttribute('data-loading', "false")
     }
+    return {'start': start, 'stop': stop}
 }
