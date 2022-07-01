@@ -27,6 +27,7 @@ export const usePiped = () => {
     const [apiRoot, setTheApiRoot] = useState<any>("https://pipedapi.moomoo.me")
 
     async function api(method: "streams" | "search", options: any) {
+        const [result, setResult] = useState<any>()
         switch (method) {
             case 'search':
                 return await (await fetch(`${apiRoot}/search?q=${encodeURIComponent(options["q"])}&filter=all`)).json()
@@ -35,5 +36,5 @@ export const usePiped = () => {
         }
     }
 
-    return {'api': api}
+    return { 'api': api }
 }
