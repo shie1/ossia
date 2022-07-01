@@ -24,13 +24,17 @@ const fetchApiRoots: any = async () => {
 }
 
 export const usePiped = () => {
-    const [apiRoot, setTheApiRoot] = useState<any>("https://pipedapi.moomoo.me")
+    const [apiRoot, setApiRoot] = useState<any>("https://pipedapi.moomoo.me")
 
     async function api(method: "streams" | "search", options: any) {
-        const [result, setResult] = useState<any>()
+        let np = ""
+        if (options["nextpage"]) {
+            np = "nextpage/"
+        }
+        const params = (new URLSearchParams(options)).toString()
         switch (method) {
             case 'search':
-                return await (await fetch(`${apiRoot}/search?q=${encodeURIComponent(options["q"])}&filter=all`)).json()
+                return await (await fetch(`${apiRoot}/${np}search?${params}&filter=videos`)).json()
             case 'streams':
                 return await (await fetch(`${apiRoot}/streams/${options["v"]}`)).json()
         }

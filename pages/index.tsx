@@ -1,56 +1,77 @@
-import { Container, Group, Loader, TextInput, Text, Paper, Center, Divider } from '@mantine/core'
+import { Container, Group, Loader, TextInput, Text, Paper, Center, Divider, ActionIcon, Button, Affix } from '@mantine/core'
 import { useWindowScroll } from '@mantine/hooks'
 import type { NextPage } from 'next'
-import { useEffect, useRef, useState } from 'react'
-import { Search } from 'tabler-icons-react'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { ArrowUp, Dots, Search } from 'tabler-icons-react'
 import { useLoading } from '../components/loading'
 import { usePiped } from '../components/piped'
 import { VideoGrid } from '../components/video'
 
 const Home: NextPage = () => {
   const [searchInput, setSearchInput] = useState("")
-  const [results, setResults] = useState<Array<any>>([])
+  const [results, setResults] = useState<any>({})
   const [searching, setSearching] = useState(false)
+  const sie = useRef<HTMLInputElement | null>(null)
   const [scroll, scrollTo] = useWindowScroll()
   const loading = useLoading()
   const piped = usePiped()
-  const resultsRef = useRef<null | HTMLDivElement>(null)
+
+  const search = (e: any) => {
+    e.preventDefault()
+    if (!searchInput) { return }
+    loading.start()
+    piped.api("search", { 'q': searchInput }).then(resp => {
+      setResults(resp)
+      sie.current!.blur()
+      loading.stop()
+    })
+  }
+
+  const loadMore = useCallback(() => {
+    if (!searchInput) { return }
+    loading.start()
+    piped.api("search", { 'q': searchInput, "nextpage": results.nextpage }).then(resp => {
+      let newResults = resp
+      newResults.items = [...results.items, ...resp.items]
+      setResults(newResults)
+      loading.stop()
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loading, results, searchInput])
 
   useEffect(() => {
-    const search = (sq: string) => {
-      if (!searchInput) { return }
-      piped.api("search", { 'q': searchInput }).then(resp => {
-        setResults(resp.items)
-      })
+    if (results.items && (Math.round(scroll.y) + document.documentElement.clientHeight >= document.documentElement.offsetHeight)) {
+      loadMore()
     }
-    if (!searchInput) { setResults([]); return }
-    const timeoutId = setTimeout(() => search(searchInput), 1000);
-    return () => clearTimeout(timeoutId);
-  }, [searchInput, searching])
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      if (((window.innerHeight + scroll.y) >= document.body.offsetHeight) && (results.length !== 0)) {
-        console.log("bottom")
-      }
-    }
-  }, [scroll, results])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [scroll])
 
   const SearchResults = () => {
-    if (!results) return <></>
-    return (<div ref={resultsRef}>
+    if (!results.items) return <></>
+    return (<div>
       <Divider size="lg" my="md" />
-      <VideoGrid videos={results} />
+      <VideoGrid videos={results.items} />
     </div>)
   }
 
   return (<>
     <Container>
       <Center>
-        <TextInput size='lg' value={searchInput} onChange={(e) => { setSearchInput(e.currentTarget.value) }} sx={{ width: '100%' }} variant='filled' rightSection={searching && <Loader size='xs' />} />
+        <form style={{ 'width': '100%' }} onSubmit={search}>
+          <TextInput ref={sie} onClick={() => { setResults([]) }} size='lg' value={searchInput} onChange={(e) => { setSearchInput(e.currentTarget.value) }} sx={{ width: '100%' }} variant='filled' rightSection={
+            <ActionIcon onClick={() => { search(new Event("")) }} size="lg" mr="md">
+              <Search />
+            </ActionIcon>
+          } />
+        </form>
       </Center>
       <SearchResults />
     </Container>
+    {scroll.y > 500 && <Affix>
+      <ActionIcon onClick={() => { scrollTo({ x: 0, y: 0 }) }} size="xl" variant='outline' mb={70} m="sm">
+        <ArrowUp />
+      </ActionIcon>
+    </Affix>}
   </>)
 }
 
