@@ -1,12 +1,18 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
-import { LoadingOverlay, MantineProvider } from '@mantine/core'
+import { AppShell, Text, Burger, Center, Footer, Group, Header, LoadingOverlay, MantineProvider, MediaQuery, Navbar, Paper, Title } from '@mantine/core'
 import { ModalsProvider } from '@mantine/modals'
 import { NotificationsProvider } from '@mantine/notifications'
 import { useState } from 'react'
+import Link from 'next/link'
+import { Home, Search } from "tabler-icons-react"
+import { useManifest } from '../components/manifest'
+import { interactive } from '../components/styles'
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [loading, setLoading] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const manifest = useManifest()
 
   setInterval(() => {
     if (typeof window !== 'undefined' && document.documentElement.hasAttribute('data-loading')) {
@@ -16,6 +22,53 @@ function MyApp({ Component, pageProps }: AppProps) {
       }
     }
   }, 200)
+
+  const NavLink = ({ link, icon, label }: any) => {
+    return (<Link href={link}>
+      <Paper sx={interactive} p='sm' withBorder>
+        <Group direction='row'> 
+          {icon}
+          <Text>{label}</Text>
+        </Group>
+      </Paper>
+    </Link>)
+  }
+
+  const AppHeader = () => {
+    return (<Header height={70} p="md">
+      <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
+        <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
+          <Burger
+            title="Navigation"
+            opened={sidebarOpen}
+            onClick={() => setSidebarOpen((o) => !o)}
+            size="sm"
+            mr="xl"
+          />
+        </MediaQuery>
+
+        <Center>
+          <Link href="/"><Title className='click'>{manifest?.short_name}</Title></Link>
+        </Center>
+      </div>
+    </Header>)
+  }
+
+  const AppFooter = () => {
+    return (<Footer height={60} p="md">
+      <Center>
+        <Text>{manifest?.name}{manifest?.version ? ` v${manifest.version}` : ''}</Text>
+      </Center>
+    </Footer>)
+  }
+
+  const AppNavbar = () => {
+    return (<Navbar p="md" hiddenBreakpoint="sm" hidden={!sidebarOpen} width={{ sm: 200, lg: 300 }}>
+      <Group grow direction='column' spacing='sm'>
+        <NavLink icon={<Search />} label="Search" link="/" />
+      </Group>
+    </Navbar>)
+  }
 
   return (<>
     <MantineProvider withGlobalStyles withNormalizeCSS theme={{
@@ -38,13 +91,25 @@ function MyApp({ Component, pageProps }: AppProps) {
       dateFormat: "YYYY/MM/DD",
       colorScheme: "dark"
     }}>
-      <ModalsProvider>
-        <NotificationsProvider>
-          <LoadingOverlay visible={loading} sx={{ position: 'fixed' }} />
-          <audio id='ossia-main-player' onLoadStart={() => { document.documentElement.setAttribute('data-loading', 'true') }} onLoadedData={() => { document.documentElement.setAttribute('data-loading', 'false') }} />
-          <Component {...pageProps} />
-        </NotificationsProvider>
-      </ModalsProvider>
+      <AppShell
+        navbarOffsetBreakpoint="sm"
+        asideOffsetBreakpoint="sm"
+        fixed
+        navbar={<AppNavbar />}
+        footer={<AppFooter />}
+        header={<AppHeader />}
+        styles={(theme) => ({
+          main: { backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0] },
+        })}
+      >
+        <ModalsProvider>
+          <NotificationsProvider>
+            <LoadingOverlay visible={loading} sx={{ position: 'fixed' }} />
+            <audio id='ossia-main-player' onLoadStart={() => { document.documentElement.setAttribute('data-loading', 'true') }} onLoadedData={() => { document.documentElement.setAttribute('data-loading', 'false') }} />
+            <Component {...pageProps} />
+          </NotificationsProvider>
+        </ModalsProvider>
+      </AppShell>
     </MantineProvider>
   </>)
 }

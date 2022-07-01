@@ -9,6 +9,11 @@ const Document: NextPage = () => {
             <link rel='apple-touch-icon' href='/apple_touch_icon.png' />
             <link rel='icon' type="image/x-icon" href='/rect.ico' />
             <meta name="twitter:card" content="summary_large_image" />
+            <link rel="preconnect" href="https://fonts.googleapis.com" />
+            <link rel="preconnect" href="https://fonts.gstatic.com" />
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
+            <link href="https://fonts.googleapis.com/css2?family=Comfortaa&family=Inconsolata&family=Sora&display=swap" rel="stylesheet" />
+            <link rel="manifest" href="/api/manifest.webmanifest" />
         </Head>
         <body>
             <Main />

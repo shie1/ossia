@@ -1,0 +1,1 @@
+export const interactive = (theme: any) => ({ transition: '.2s', cursor: 'pointer', '&:hover *': { color: theme.colors[theme.primaryColor][Number(theme.primaryShade)] } })
