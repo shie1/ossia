@@ -5,7 +5,7 @@ import { useEffect, useState } from "react"
 export const usePlayer = () => {
     const [element, setElement] = useState<HTMLAudioElement | null>(null)
     const [streamDetails, setStreamDetails] = useLocalStorage({ 'key': 'stream-details', 'defaultValue': {} })
-    const [paused, setPaused] = useState<boolean>(false)
+    const [paused, setPaused] = useLocalStorage({'key': 'player-paused', 'defaultValue': false})
     const router = useRouter()
     const isPlaying = () => {
         return element!.currentTime > 0 && !element!.paused && !element!.ended
@@ -19,7 +19,6 @@ export const usePlayer = () => {
     function play(stream: any) {
         element!.src = stream.audioStreams[stream.audioStreams.length - 1].url
         if (!isPlaying()) { element!.play() }
-        console.log(isPlaying())
         setStreamDetails(stream)
     }
     function toggleState() {
