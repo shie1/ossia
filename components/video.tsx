@@ -1,6 +1,11 @@
 import { Card, Grid, Image, Text, AspectRatio } from "@mantine/core"
+import { usePiped } from "./piped"
+import { usePlayer } from "./player"
+import { interactive } from "./styles"
 
 export const Video = ({ video }: any) => {
+    const player = usePlayer()
+    const piped = usePiped()
     if (!video) { return <></> }
     let type = ""
     if (video.title) {
@@ -8,10 +13,17 @@ export const Video = ({ video }: any) => {
     } else {
         type = "channel"
     }
+    const play = () => {
+        piped.api("streams", { 'v': video.url.split("?v=")[1] }).then(resp => {
+            player.play(resp)
+        })
+    }
     return <>
-        <Card>
+        <Card sx={interactive} onClick={play}>
             <Card.Section mb="sm">
-                <Image height={160} src={video.thumbnail} alt={video.title} />
+                <div style={{ display: 'inline-block', overflow: 'hidden', width: '100%' }} className="img-wrapper">
+                    <Image height={160} src={video.thumbnail} alt={video.title} />
+                </div>
             </Card.Section>
             <Text mb={2} weight={500} size="lg">
                 {video.title ? video.title : video.name}
