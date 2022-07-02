@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { ActionIcon, Center, Container, Group, Image, Text } from "@mantine/core";
 import { usePlayer } from "../components/player";
 import { PlayerPause, PlayerPlay } from "tabler-icons-react";
-import { useRouter } from "next/router";
 
 const Player: NextPage = () => {
     const [streamDetails, setStreamDetails] = useLocalStorage<any>({ 'key': 'stream-details', 'defaultValue': {} })
