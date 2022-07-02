@@ -5,7 +5,7 @@ import { ModalsProvider } from '@mantine/modals'
 import { NotificationsProvider } from '@mantine/notifications'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { Home, PlayerPlay, Search } from "tabler-icons-react"
+import { Books, Home, PlayerPlay, Search } from "tabler-icons-react"
 import { useManifest } from '../components/manifest'
 import { interactive } from '../components/styles'
 import { useHotkeys, useLocalStorage } from '@mantine/hooks'
@@ -39,7 +39,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   const NavLink = ({ link, icon, label }: any) => {
     return (<Link href={link}>
-      <Paper onClick={() => { setSidebarOpen(false) }} sx={interactive} p='sm' withBorder>
+      <Paper style={{background: 'rgba(0,0,0,.2)'}} radius="lg" onClick={() => { setSidebarOpen(false) }} sx={interactive} p='md' withBorder>
         <Group direction='row'>
           {icon}
           <Text>{label}</Text>
@@ -81,6 +81,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Group grow direction='column' spacing='sm'>
         <NavLink icon={<Search />} label="Search" link="/" />
         {Object.keys(streamDetails).length !== 0 && <NavLink icon={<PlayerPlay />} label="Player" link="/player" />}
+        <NavLink icon={<Books />} label="Library" link="/library" />
       </Group>
     </Navbar>)
   }
@@ -103,7 +104,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       dir: 'ltr',
       loader: 'bars',
       dateFormat: "YYYY/MM/DD",
-      colorScheme: "dark"
+      colorScheme: "dark",
     }}>
       <AppShell
         navbarOffsetBreakpoint="sm"

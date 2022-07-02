@@ -19,5 +19,13 @@ export const useLibrary = () => {
         }
         compressedLocalStorage.setItem(`playlist-${encodeURIComponent(playlist)}`, [...pl, songObject])
     }
-    return {'createPlaylist': createPlaylist, 'removePlaylist': removePlaylist, 'addSong': addSong}
+    function playlists() {
+        if (typeof window === 'undefined') return []
+        return Object.keys(localStorage).filter(item => item.startsWith("playlist-"))
+    }
+    function playlistExists(playlist: string) {
+        if (typeof window === 'undefined') return true
+        return localStorage.getItem(playlist) !== null
+    }
+    return { 'createPlaylist': createPlaylist, 'removePlaylist': removePlaylist, 'addSong': addSong, 'playlists': playlists, "playlistExists": playlistExists }
 }

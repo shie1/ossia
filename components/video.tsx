@@ -19,7 +19,7 @@ export const Video = ({ video }: any) => {
         })
     }
     return <>
-        <Card sx={interactive} onClick={play}>
+        <Card radius="lg" sx={interactive} onClick={play}>
             <Card.Section mb="sm">
                 <div style={{ display: 'inline-block', overflow: 'hidden', width: '100%' }} className="img-wrapper">
                     <Image height={160} src={video.thumbnail} alt={video.title} />

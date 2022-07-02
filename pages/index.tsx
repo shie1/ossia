@@ -58,8 +58,8 @@ const Home: NextPage = () => {
     <Container>
       <Center>
         <form style={{ 'width': '100%' }} onSubmit={search}>
-          <TextInput ref={sie} onClick={() => { setResults([]) }} size='lg' value={searchInput} onChange={(e) => { setSearchInput(e.currentTarget.value) }} sx={{ width: '100%' }} variant='filled' rightSection={
-            <ActionIcon onClick={() => { search(new Event("")) }} size="lg" mr="md">
+          <TextInput radius="lg" ref={sie} onClick={() => { setResults([]) }} size='lg' value={searchInput} onChange={(e) => { setSearchInput(e.currentTarget.value) }} sx={{ width: '100%' }} variant='filled' rightSection={
+            <ActionIcon onClick={() => { search(new Event("")) }} size="lg" radius="xl" mr="md">
               <Search />
             </ActionIcon>
           } />
@@ -68,7 +68,7 @@ const Home: NextPage = () => {
       <SearchResults />
     </Container>
     {scroll.y > 500 && <Affix>
-      <ActionIcon onClick={() => { scrollTo({ x: 0, y: 0 }) }} size="xl" variant='outline' mb={70} m="sm">
+      <ActionIcon radius="lg" onClick={() => { scrollTo({ x: 0, y: 0 }) }} size="xl" variant='outline' mb={70} m="sm">
         <ArrowUp />
       </ActionIcon>
     </Affix>}
