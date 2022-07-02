@@ -2,18 +2,13 @@ import type { NextPage } from "next";
 import { usePlayer } from "../components/player";
 import { usePiped } from "../components/piped";
 import { useEffect, useState } from "react";
+import { useCompressedLocalStorage } from "../components/storage";
 
 const Test: NextPage = () => {
-    const [r, sr] = useState<any>()
-    const player = usePlayer()
-    const piped = usePiped()
-    useEffect(() => {
-        if (!r) {
-            piped.api("search", { "q": "hello" }).then(data => { sr(data) })
-        }
-    })
+    const cls = useCompressedLocalStorage()
+    cls.setItem("test", {'a':'b'})
     return (<>
-        {JSON.stringify(r)}
+        {JSON.stringify(cls.getItem("test"))}
     </>)
 }
 

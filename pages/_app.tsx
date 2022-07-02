@@ -39,7 +39,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   const NavLink = ({ link, icon, label }: any) => {
     return (<Link href={link}>
-      <Paper sx={interactive} p='sm' withBorder>
+      <Paper onClick={() => { setSidebarOpen(false) }} sx={interactive} p='sm' withBorder>
         <Group direction='row'>
           {icon}
           <Text>{label}</Text>
