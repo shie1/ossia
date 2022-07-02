@@ -19,4 +19,5 @@ export const useLibrary = () => {
         }
         compressedLocalStorage.setItem(`playlist-${encodeURIComponent(playlist)}`, [...pl, songObject])
     }
+    return {'createPlaylist': createPlaylist, 'removePlaylist': removePlaylist, 'addSong': addSong}
 }
