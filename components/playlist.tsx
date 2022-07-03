@@ -4,7 +4,7 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import { useRef, useState } from "react"
 import { Pencil, Plus } from "tabler-icons-react"
-import { addSong, inPlaylist, removeSong, songPlaylists, usePlaylist, usePlaylists } from "./library"
+import { addSong, inPlaylist, playlistExists, removeSong, songPlaylists, usePlaylist, usePlaylists } from "./library"
 import { localized } from "./localization"
 import { interactive } from "./styles"
 
@@ -48,8 +48,12 @@ export const CreatePlaylist = ({ opened, onClose }: any) => {
                     setError(localized.createPlaylistModalNameError0)
                     return false
                 }
-                if (input.match(/^[a-zA-Z\s]*$/) === null) {
+                if (input.match(/^[a-zA-Z0-9\s]*$/) === null) {
                     setError(localized.createPlaylistModalNameError1)
+                    return false
+                }
+                if(playlistExists(input)){
+                    setError(localized.createPlaylistModalNameError2)
                     return false
                 }
                 setError(false)
@@ -84,6 +88,10 @@ export const RenamePlaylist = ({ opened, onClose, playlist }: any) => {
                 }
                 if (input.match(/^[a-zA-Z0-9\s]*$/) === null) {
                     setError(localized.createPlaylistModalNameError1)
+                    return false
+                }
+                if(playlistExists(input)){
+                    setError(localized.createPlaylistModalNameError2)
                     return false
                 }
                 setError(false)
