@@ -54,11 +54,11 @@ const Home: NextPage = () => {
     </div>)
   }
 
-  if(typeof window !== 'undefined'){
-    window.addEventListener("ossia-title-click", ()=>{
+  if (typeof window !== 'undefined') {
+    window.addEventListener("ossia-title-click", () => {
       setSearchInput("")
     })
-    window.addEventListener("ossia-nav-click", ()=>{
+    window.addEventListener("ossia-nav-click", () => {
       setSearchInput("")
     })
   }
