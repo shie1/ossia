@@ -39,7 +39,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   const NavLink = ({ link, icon, label }: any) => {
     return (<Link href={link}>
-      <Paper component='button' style={{background: 'rgba(0,0,0,.2)'}} tabIndex={0} radius="lg" onClick={() => { setSidebarOpen(false);window.dispatchEvent(new Event("ossia-nav-click")) }} sx={interactive} p='md' withBorder>
+      <Paper component='button' style={{ background: 'rgba(0,0,0,.2)' }} tabIndex={0} radius="lg" onClick={() => { setSidebarOpen(false); window.dispatchEvent(new Event("ossia-nav-click")) }} sx={interactive} p='md' withBorder>
         <Group direction='row'>
           {icon}
           <Text>{label}</Text>
@@ -62,7 +62,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         </MediaQuery>
 
         <Center>
-          <Link href="/"><Title onClick={()=>{
+          <Link href="/"><Title onClick={() => {
             window.dispatchEvent(new Event("ossia-title-click"))
           }} className='click'>{manifest?.short_name}</Title></Link>
         </Center>
@@ -122,7 +122,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         <ModalsProvider>
           <NotificationsProvider>
             <LoadingOverlay visible={loading} sx={{ position: 'fixed' }} />
-            <audio autoPlay id='ossia-main-player' onLoadStart={() => { document.documentElement.setAttribute('data-loading', 'true') }} onLoadedData={() => { document.documentElement.setAttribute('data-loading', 'false') }} />
+            <audio autoPlay id='ossia-main-player' onLoadStart={(e) => {
+              if (!e.currentTarget.src.startsWith(document.location.origin)) document.documentElement.setAttribute('data-loading', 'true')
+            }} onLoadedData={() => { document.documentElement.setAttribute('data-loading', 'false') }} />
             <Component {...pageProps} />
           </NotificationsProvider>
         </ModalsProvider>

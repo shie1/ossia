@@ -31,8 +31,9 @@ export const usePlayer = () => {
         setPaused(!isPlaying())
     }
     function pop() {
-        element!.load()
+        element!.src = ""
         setStreamDetails({})
+        document.documentElement.setAttribute('data-loading','false')
     }
     return { 'paused': paused, 'play': play, 'toggleState': toggleState, 'pop': pop }
 }
