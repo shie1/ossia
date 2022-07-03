@@ -52,15 +52,15 @@ export const CreatePlaylist = ({ opened, onClose }: any) => {
                     setError(localized.createPlaylistModalNameError1)
                     return false
                 }
-                if(playlistExists(input)){
+                if (playlistExists(input)) {
                     setError(localized.createPlaylistModalNameError2)
                     return false
                 }
                 setError(false)
-                playlists.createPlaylist(input)
+                playlists.createPlaylist(input.replace(/\s*$/, ''))
                 onClose()
             }}>
-                <TextInput aria-required error={error} required size="lg" value={input} onChange={(e) => { setInput(e.currentTarget.value) }} rightSection={<ActionIcon onClick={() => { form.current!.submit() }} mr="sm" radius="xl" size="lg"><Plus /></ActionIcon>} />
+                <TextInput aria-required error={error} required size="lg" value={input} onChange={(e) => { setInput(e.currentTarget.value.replace(/[\s*]{2,}/g, ' ').replace(/^\s*/, '')) }} rightSection={<ActionIcon onClick={() => { form.current!.submit() }} mr="sm" radius="xl" size="lg"><Plus /></ActionIcon>} />
             </form>
         </Modal>
     </>)
@@ -90,15 +90,15 @@ export const RenamePlaylist = ({ opened, onClose, playlist }: any) => {
                     setError(localized.createPlaylistModalNameError1)
                     return false
                 }
-                if(playlistExists(input)){
+                if (playlistExists(input)) {
                     setError(localized.createPlaylistModalNameError2)
                     return false
                 }
                 setError(false)
-                playlists.renamePlaylist(playlist, input)
+                playlists.renamePlaylist(playlist, input.replace(/\s*$/, ''))
                 onClose()
             }}>
-                <TextInput aria-required error={error} required size="lg" value={input} onChange={(e) => { setInput(e.currentTarget.value) }} rightSection={<ActionIcon onClick={() => { form.current!.submit() }} mr="sm" radius="xl" size="lg"><Pencil /></ActionIcon>} />
+                <TextInput aria-required error={error} required size="lg" value={input} onChange={(e) => { setInput(e.currentTarget.value.replace(/[\s*]{2,}/g, ' ').replace(/^\s*/, '')) }} rightSection={<ActionIcon onClick={() => { form.current!.submit() }} mr="sm" radius="xl" size="lg"><Pencil /></ActionIcon>} />
             </form>
         </Modal>
     </>)
