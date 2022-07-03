@@ -5,11 +5,12 @@ import { ModalsProvider } from '@mantine/modals'
 import { NotificationsProvider } from '@mantine/notifications'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { Books, Home, PlayerPlay, Search } from "tabler-icons-react"
+import { Books, Home, PlayerPlay, Search, Settings } from "tabler-icons-react"
 import { useManifest } from '../components/manifest'
 import { interactive } from '../components/styles'
 import { useHotkeys, useLocalStorage } from '@mantine/hooks'
 import { usePlayer } from '../components/player'
+import { localized } from '../components/localization'
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [loading, setLoading] = useState(false)
@@ -73,7 +74,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   const AppFooter = () => {
     return (<Footer height={60} p="md">
       <Center>
-        <Text>{manifest?.name}{manifest?.version ? ` v${manifest.version}` : ''}</Text>
+        <Text>{manifest?.short_name} {localized.appNameAppend}{manifest?.version ? ` v${manifest.version}` : ''}</Text>
       </Center>
     </Footer>)
   }
@@ -81,9 +82,10 @@ function MyApp({ Component, pageProps }: AppProps) {
   const AppNavbar = () => {
     return (<Navbar p="md" hiddenBreakpoint="sm" hidden={!sidebarOpen} width={{ sm: 200, lg: 300 }}>
       <Group grow direction='column' spacing='sm'>
-        <NavLink icon={<Search />} label="Search" link="/" />
-        {Object.keys(streamDetails).length !== 0 && <NavLink icon={<PlayerPlay />} label="Player" link="/player" />}
-        <NavLink icon={<Books />} label="Library" link="/library" />
+        <NavLink icon={<Search />} label={localized.navSearch} link="/" />
+        {Object.keys(streamDetails).length !== 0 && <NavLink icon={<PlayerPlay />} label={localized.navPlayer} link="/player" />}
+        <NavLink icon={<Books />} label={localized.navLibrary} link="/library" />
+        <NavLink icon={<Settings />} label={localized.settings} link="/settings" />
       </Group>
     </Navbar>)
   }
@@ -95,7 +97,6 @@ function MyApp({ Component, pageProps }: AppProps) {
       white: "#F5F3F4",
       black: "#0B090A",
       colors: {
-        "red": ['#A4161A', '#961419', '#8A1317', '#7F1115', '#731013', '#680E11', '#5C0D0F', '#510B0D', '#45090B', '#3A080A'],
         "indigo": ['#590288', '#53027E', '#4C0274', '#46026B', '#3F0161', '#390157', '#33014E', '#2C0144', '#26013A', '#200130'],
         "purple_plum": ['#9E5DB9', '#9650B4', '#8C48A9', '#81439C', '#773D8F', '#6C3882', '#613275', '#562D68', '#4B275B', '#41214E'],
       },

@@ -1,0 +1,52 @@
+import LocalizedStrings from 'react-localization';
+
+export const localized = new LocalizedStrings({
+    en: {
+        navSearch: "Search",
+        navPlayer: "Player",
+        navLibrary: "Library",
+        createPlaylist: "Create playlist",
+        createPlaylistModalNameError0: "Playlist name can not be empty!",
+        createPlaylistModalNameError1: "Playlist name can not contain special characters!",
+        deletePlaylist: "Delete playlist",
+        deletePlaylistModalText: "Are you sure you want to delete this playlist? This action can not be undone.",
+        renamePlaylist: "Rename playlist",
+        endPlayback: "End playback",
+        addToPlaylist: "Add to playlist",
+        confirm: "Confirm",
+        cancel: "Cancel",
+        create: "Create",
+        delete: "Delete",
+        rename: "Rename",
+        playlist: "Playlist",
+        play: "Play",
+        pause: "Pause",
+        settings: "Settings",
+        lang: "Language",
+        appNameAppend: `Music Player`
+    },
+    hu: {
+        navSearch: "Keresés",
+        navPlayer: "Lejátszó",
+        navLibrary: "Könyvtár",
+        createPlaylist: "Lejátszási lista létrehozása",
+        createPlaylistModalNameError0: "A lejátszási lista neve nem lehet üres!",
+        createPlaylistModalNameError1: "A lejátszási lista neve nem tartalmazhat speciális karaktereket!",
+        deletePlaylist: "Lejátszási lista törlése",
+        deletePlaylistModalText: "Biztos törölni szeretnéd ezt a lejátszási listát? Ezt a műveletet nem tudod utólag visszavonni.",
+        renamePlaylist: "Lejátszási lista átnevezése",
+        endPlayback: "Megszakítás",
+        addToPlaylist: "Hozzáadás listához",
+        confirm: "Megerősítés",
+        cancel: "Mégse",
+        create: "Létrehozás",
+        delete: "Törlés",
+        rename: "Átnevezés",
+        playlist: "Lejátszási lista",
+        play: "Lejátszás",
+        pause: "Szünet",
+        settings: "Beállítások",
+        lang: "Nyelv",
+        appNameAppend: "Zenelejátszó"
+    }
+});

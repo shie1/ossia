@@ -3,8 +3,9 @@ import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { Plus } from "tabler-icons-react";
-import { ActionGroup } from "../components/action";
+import { Action, ActionGroup } from "../components/action";
 import { usePlaylists } from "../components/library";
+import { localized } from "../components/localization";
 import { PlaylistGrid, CreatePlaylist } from "../components/playlist";
 
 const Library: NextPage = () => {
@@ -16,9 +17,9 @@ const Library: NextPage = () => {
         <CreatePlaylist opened={crModal} onClose={() => { setCrModal(false) }} />
         <Container>
             <ActionGroup>
-                <ActionIcon radius="xl" size="xl" variant="default" onClick={() => { setCrModal(true) }}>
+                <Action onClick={() => { setCrModal(true) }} label={localized.create}>
                     <Plus />
-                </ActionIcon>
+                </Action>
             </ActionGroup>
             <Space h="sm" />
             <PlaylistGrid playlists={playlists.all} />

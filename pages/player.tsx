@@ -4,9 +4,10 @@ import { useEffect, useState } from "react";
 import { ActionIcon, Center, Container, Group, Image, Paper, Text } from "@mantine/core";
 import { usePlayer } from "../components/player";
 import { PlayerPause, PlayerPlay, Playlist, X } from "tabler-icons-react";
-import { ActionGroup } from "../components/action";
+import { Action, ActionGroup } from "../components/action";
 import { AddToPlaylist } from "../components/playlist";
 import { useRouter } from "next/router";
+import { localized } from "../components/localization";
 
 const Player: NextPage = () => {
     const [streamDetails, setStreamDetails] = useLocalStorage<any>({ 'key': 'stream-details', 'defaultValue': {} })
@@ -14,7 +15,7 @@ const Player: NextPage = () => {
     const player = usePlayer()
     const router = useRouter()
     if (Object.keys(streamDetails).length === 0) {
-        router.push("/")
+        router.replace("/")
         return <></>
     }
     return (<Container>
@@ -25,15 +26,15 @@ const Player: NextPage = () => {
         <Text mb={2} size="xl" dangerouslySetInnerHTML={{ __html: streamDetails.title }} />
         <Text mb="sm" dangerouslySetInnerHTML={{ __html: streamDetails.uploader }} />
         <ActionGroup>
-            <ActionIcon radius="xl" size="xl" variant="default" onClick={() => { player.pop() }} >
+            <Action onClick={() => { player.pop() }} label={localized.endPlayback}>
                 <X />
-            </ActionIcon>
-            <ActionIcon radius="xl" size="xl" variant="default" onClick={player.toggleState}>
+            </Action>
+            <Action onClick={() => { player.toggleState() }} label={player?.paused ? localized.play : localized.pause}>
                 {player?.paused ? <PlayerPlay /> : <PlayerPause />}
-            </ActionIcon>
-            <ActionIcon radius="xl" size="xl" variant="default" onClick={() => { setAtp(true) }} >
+            </Action>
+            <Action onClick={() => { setAtp(true) }} label={localized.addToPlaylist}>
                 <Playlist />
-            </ActionIcon>
+            </Action>
         </ActionGroup>
     </Container>)
 }

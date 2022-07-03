@@ -3,8 +3,9 @@ import { useLocalStorage } from "@mantine/hooks"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import { useRef, useState } from "react"
-import { Plus } from "tabler-icons-react"
+import { Pencil, Plus } from "tabler-icons-react"
 import { addSong, inPlaylist, removeSong, songPlaylists, usePlaylist, usePlaylists } from "./library"
+import { localized } from "./localization"
 import { interactive } from "./styles"
 
 export const PlaylistGrid = ({ playlists }: any) => {
@@ -30,18 +31,66 @@ export const PlaylistGrid = ({ playlists }: any) => {
 export const CreatePlaylist = ({ opened, onClose }: any) => {
     const [input, setInput] = useState("")
     const form = useRef<null | HTMLFormElement>(null)
+    const [error, setError] = useState<boolean | string>(false)
     const router = useRouter()
     const playlists = usePlaylists()
     return (<>
         <Modal
             opened={opened}
             onClose={onClose}
-            title="Create playlist"
+            title={localized.createPlaylist}
             size="lg"
             radius="lg"
         >
-            <form ref={form} onSubmit={(e) => { e.preventDefault(); playlists.createPlaylist(input); onClose() }}>
-                <TextInput required size="lg" value={input} onChange={(e) => { setInput(e.currentTarget.value) }} rightSection={<ActionIcon onClick={() => { form.current!.submit() }} mr="sm" radius="xl" size="lg"><Plus /></ActionIcon>} />
+            <form ref={form} onSubmit={(e) => {
+                e.preventDefault()
+                if (!input || (input.match(/^\s*$/) !== null)) {
+                    setError(localized.createPlaylistModalNameError0)
+                    return false
+                }
+                if (input.match(/^[a-zA-Z\s]*$/) === null) {
+                    setError(localized.createPlaylistModalNameError1)
+                    return false
+                }
+                setError(false)
+                playlists.createPlaylist(input)
+                onClose()
+            }}>
+                <TextInput aria-required error={error} required size="lg" value={input} onChange={(e) => { setInput(e.currentTarget.value) }} rightSection={<ActionIcon onClick={() => { form.current!.submit() }} mr="sm" radius="xl" size="lg"><Plus /></ActionIcon>} />
+            </form>
+        </Modal>
+    </>)
+}
+
+export const RenamePlaylist = ({ opened, onClose, playlist }: any) => {
+    const [input, setInput] = useState("")
+    const form = useRef<null | HTMLFormElement>(null)
+    const [error, setError] = useState<boolean | string>(false)
+    const router = useRouter()
+    const playlists = usePlaylists()
+    return (<>
+        <Modal
+            opened={opened}
+            onClose={onClose}
+            title={localized.renamePlaylist}
+            size="lg"
+            radius="lg"
+        >
+            <form ref={form} onSubmit={(e) => {
+                e.preventDefault()
+                if (!input || (input.match(/^\s*$/) !== null)) {
+                    setError(localized.createPlaylistModalNameError0)
+                    return false
+                }
+                if (input.match(/^[a-zA-Z\s]*$/) === null) {
+                    setError(localized.createPlaylistModalNameError1)
+                    return false
+                }
+                setError(false)
+                playlists.renamePlaylist(playlist, input)
+                onClose()
+            }}>
+                <TextInput aria-required error={error} required size="lg" value={input} onChange={(e) => { setInput(e.currentTarget.value) }} rightSection={<ActionIcon onClick={() => { form.current!.submit() }} mr="sm" radius="xl" size="lg"><Pencil /></ActionIcon>} />
             </form>
         </Modal>
     </>)
@@ -63,7 +112,7 @@ export const AddToPlaylist = ({ opened, onClose }: any) => {
         <Modal
             opened={opened}
             onClose={onClose}
-            title="Add song to playlist"
+            title={localized.addToPlaylist}
             size="lg"
             radius="lg"
         >

@@ -8,7 +8,6 @@ import { TextInput } from "@mantine/core";
 const Test: NextPage = () => {
     const [test, setTest] = useCompressedLocalStorage({ 'key': 'test', 'defaultValue': "asda" })
     return (<>
-    <TextInput value={test} onChange={(e) => {setTest(e.currentTarget.value)}}/>
     </>)
 }
 

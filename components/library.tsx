@@ -1,5 +1,6 @@
 import { useLocalStorage } from "@mantine/hooks"
 import LZString from "lz-string"
+import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { compressedLocalStorage, useCompressedLocalStorage } from "./storage"
 
@@ -43,6 +44,7 @@ export const songPlaylists = (streamDetails: any) => {
 
 export const usePlaylists = () => {
     const [playlists, setPlaylists] = useLocalStorage<any>({ 'key': 'playlists', 'defaultValue': [] })
+    const router = useRouter()
     const createPlaylist = (playlist: string) => {
         compressedLocalStorage.setItem(`playlist-${encodeURIComponent(playlist)}`, [])
         setPlaylists((old: any) => [...old, playlist])
@@ -51,7 +53,13 @@ export const usePlaylists = () => {
         localStorage.removeItem(`playlist-${encodeURIComponent(playlist)}`)
         setPlaylists(playlists.filter((item: any) => item !== playlist))
     }
-    return { all: playlists, createPlaylist: createPlaylist, removePlaylist: removePlaylist }
+    const renamePlaylist = (oldName: string, newName: string) => {
+        if (router.pathname === "/playlist") { router.replace(`/playlist?p=${encodeURIComponent(newName)}`) }
+        localStorage.setItem(`playlist-${encodeURIComponent(newName)}`, localStorage.getItem(`playlist-${encodeURIComponent(oldName)}`)!)
+        localStorage.removeItem(`playlist-${encodeURIComponent(oldName)}`)
+        setPlaylists((old: Array<any>) => [...old.filter((item: string) => item !== oldName), newName])
+    }
+    return { all: playlists, createPlaylist: createPlaylist, removePlaylist: removePlaylist, renamePlaylist: renamePlaylist }
 }
 
 export const usePlaylist = (playlist: string) => {
