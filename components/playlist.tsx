@@ -82,7 +82,7 @@ export const RenamePlaylist = ({ opened, onClose, playlist }: any) => {
                     setError(localized.createPlaylistModalNameError0)
                     return false
                 }
-                if (input.match(/^[a-zA-Z\s]*$/) === null) {
+                if (input.match(/^[a-zA-Z0-9\s]*$/) === null) {
                     setError(localized.createPlaylistModalNameError1)
                     return false
                 }
