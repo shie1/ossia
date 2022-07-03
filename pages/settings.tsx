@@ -1,12 +1,14 @@
-import { Accordion, AccordionItem, Chip, Chips, Container, Text } from "@mantine/core";
+import { Accordion, AccordionItem, Chip, Chips, Container, Text, Button } from "@mantine/core";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { World } from "tabler-icons-react";
+import { BrandLastfm, Link, World } from "tabler-icons-react";
+import { useLastFM } from "../components/lastfm";
 import { localized } from "../components/localization";
 
 export const Settings: NextPage = () => {
     const router = useRouter()
+    const lastfm = useLastFM()
     const Languages = () => {
         let i = 0
         const [selected, setSelected] = useState<string>(() => {
@@ -19,7 +21,7 @@ export const Settings: NextPage = () => {
             <Chips value={selected}>
                 {localized.getAvailableLanguages().map((lang: string) => {
                     i++
-                    return <Chip onClick={() => { localized.setLanguage(lang); setSelected(lang); router.replace(router.asPath) }} key={i} value={lang}>{languageNames.of(lang)?.substring(0,1).toUpperCase()+languageNames.of(lang)?.substring(1)!}</Chip>
+                    return <Chip onClick={() => { localized.setLanguage(lang); setSelected(lang); router.replace(router.asPath) }} key={i} value={lang}>{languageNames.of(lang)?.substring(0, 1).toUpperCase() + languageNames.of(lang)?.substring(1)!}</Chip>
                 })}
             </Chips>
         </>)
@@ -29,6 +31,10 @@ export const Settings: NextPage = () => {
             <AccordionItem label={localized.lang} icon={<World />}>
                 <Text mb="sm">{localized.setLang}</Text>
                 <Languages />
+            </AccordionItem>
+            <AccordionItem label={!lastfm.cookie ? localized.linkLastFM : localized.unlinkLastFM} icon={<BrandLastfm />}>
+                <Text mb="sm">{!lastfm.cookie ? localized.linkLastFMText : localized.unlinkLastFMText}</Text>
+                <Button onClick={()=>{router.push(!lastfm.cookie ? "/login" : "/logout")}} variant="light" leftIcon={<Link />}>{!lastfm.cookie ? localized.linkLastFMButton : localized.unlinkLastFMBUtton}</Button>
             </AccordionItem>
         </Accordion>
     </Container>)

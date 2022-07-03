@@ -27,7 +27,13 @@ export const localized = new LocalizedStrings({
         lang: "Language",
         appNameAppend: `Music Player`,
         description: "Description",
-        related: "Related"
+        related: "Related",
+        linkLastFM: "Link Last.FM",
+        unlinkLastFM: "Unlink Last.FM",
+        linkLastFMText: "Link your Last.FM account with Ossia and scrobble your songs.",
+        unlinkLastFMText: "Unlink your Last.FM account.",
+        linkLastFMButton: "Link Account",
+        unlinkLastFMBUtton: "Unlink account"
     },
     hu: {
         navSearch: "Keresés",
@@ -55,6 +61,12 @@ export const localized = new LocalizedStrings({
         lang: "Nyelv",
         appNameAppend: "Zenelejátszó",
         description: "Leírás",
-        related: "Javaslatok"
+        related: "Javaslatok",
+        linkLastFM: "Last.FM csatolása",
+        unlinkLastFM: "Last.FM leválasztása",
+        linkLastFMText: "Csatold a Last.FM fiókodat az Ossia-hoz és naplózd a hallgatási előzményeidet.",
+        unlinkLastFMText: "Last.FM fiók leválasztása",
+        linkLastFMButton: "Fiók csatolása",
+        unlinkLastFMBUtton: "Fiók leválasztása"
     }
 });
