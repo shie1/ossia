@@ -44,7 +44,7 @@ const Player: NextPage = () => {
         </ActionGroup>
         <Accordion mt="sm">
             <AccordionItem icon={<Notes />} label={localized.description}>
-                <Text dangerouslySetInnerHTML={{__html: Autolinker.link(streamDetails.description)}} />
+                <Text sx={{wordBreak: 'break-word', 'whiteSpace': 'pre-wrap'}} dangerouslySetInnerHTML={{__html: Autolinker.link(streamDetails.description, {email:true,className:"autolinker click"})}} />
             </AccordionItem>
             <AccordionItem icon={<LayoutList />} label={localized.related}>
                 <VideoGrid videos={streamDetails.relatedStreams} />

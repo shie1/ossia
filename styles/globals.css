@@ -18,3 +18,12 @@ a {
 .click {
   cursor: pointer;
 }
+
+.autolinker {
+  transition: .2s;
+  color: hsl(284, 39%, 65%)
+}
+
+.autolinker:hover {
+  color: #9E5DB9
+}
