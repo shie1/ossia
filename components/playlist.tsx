@@ -8,6 +8,23 @@ import { addSong, inPlaylist, playlistExists, removeSong, songPlaylists, usePlay
 import { localized } from "./localization"
 import { interactive } from "./styles"
 
+export const validatePlaylistName = (input: string) => {
+    let error: any = false
+    if (!input || (input.match(/^\s*$/) !== null)) {
+        error = localized.createPlaylistModalNameError0
+        return false
+    }
+    if (input.match(/^[a-zA-Z0-9\s]*$/) === null) {
+        error = localized.createPlaylistModalNameError1
+        return false
+    }
+    if (playlistExists(input)) {
+        error = localized.createPlaylistModalNameError2
+        return false
+    }
+    return error
+}
+
 export const PlaylistGrid = ({ playlists }: any) => {
     if (playlists === null) { return <></> }
     if (playlists.length === 0) { return <></> }
@@ -44,19 +61,8 @@ export const CreatePlaylist = ({ opened, onClose }: any) => {
         >
             <form ref={form} onSubmit={(e) => {
                 e.preventDefault()
-                if (!input || (input.match(/^\s*$/) !== null)) {
-                    setError(localized.createPlaylistModalNameError0)
-                    return false
-                }
-                if (input.match(/^[a-zA-Z0-9\s]*$/) === null) {
-                    setError(localized.createPlaylistModalNameError1)
-                    return false
-                }
-                if (playlistExists(input)) {
-                    setError(localized.createPlaylistModalNameError2)
-                    return false
-                }
-                setError(false)
+                setError(validatePlaylistName(input))
+                if (error) { return false }
                 playlists.createPlaylist(input.replace(/\s*$/, ''))
                 onClose()
             }}>
@@ -82,19 +88,8 @@ export const RenamePlaylist = ({ opened, onClose, playlist }: any) => {
         >
             <form ref={form} onSubmit={(e) => {
                 e.preventDefault()
-                if (!input || (input.match(/^\s*$/) !== null)) {
-                    setError(localized.createPlaylistModalNameError0)
-                    return false
-                }
-                if (input.match(/^[a-zA-Z0-9\s]*$/) === null) {
-                    setError(localized.createPlaylistModalNameError1)
-                    return false
-                }
-                if (playlistExists(input)) {
-                    setError(localized.createPlaylistModalNameError2)
-                    return false
-                }
-                setError(false)
+                setError(validatePlaylistName(input))
+                if (error) { return false }
                 playlists.renamePlaylist(playlist, input.replace(/\s*$/, ''))
                 onClose()
             }}>

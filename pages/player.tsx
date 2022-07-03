@@ -1,21 +1,27 @@
 import { useLocalStorage } from "@mantine/hooks";
 import type { NextPage } from "next";
 import { useEffect, useState } from "react";
-import { ActionIcon, Center, Container, Group, Image, Paper, Text } from "@mantine/core";
+import { Accordion, AccordionItem, ActionIcon, Center, Container, Group, Image, Paper, Text } from "@mantine/core";
 import { usePlayer } from "../components/player";
-import { PlayerPause, PlayerPlay, Playlist, X } from "tabler-icons-react";
+import { InfoCircle, LayoutList, Notes, PlayerPause, PlayerPlay, Playlist, X } from "tabler-icons-react";
 import { Action, ActionGroup } from "../components/action";
 import { AddToPlaylist } from "../components/playlist";
 import { useRouter } from "next/router";
 import { localized } from "../components/localization";
+import { VideoGrid } from "../components/video";
+import Autolinker from 'autolinker';
 
 const Player: NextPage = () => {
     const [streamDetails, setStreamDetails] = useLocalStorage<any>({ 'key': 'stream-details', 'defaultValue': {} })
+    const router = useRouter()
     const [atp, setAtp] = useState(false)
     const player = usePlayer()
-    const router = useRouter()
+    useEffect(() => {
+        if (Object.keys(streamDetails).length === 0) {
+            router.replace("/")
+        }
+    }, [router, streamDetails])
     if (Object.keys(streamDetails).length === 0) {
-        router.replace("/")
         return <></>
     }
     return (<Container>
@@ -36,6 +42,14 @@ const Player: NextPage = () => {
                 <Playlist />
             </Action>
         </ActionGroup>
+        <Accordion mt="sm">
+            <AccordionItem icon={<Notes />} label={localized.description}>
+                <Text dangerouslySetInnerHTML={{__html: Autolinker.link(streamDetails.description)}} />
+            </AccordionItem>
+            <AccordionItem icon={<LayoutList />} label={localized.related}>
+                <VideoGrid videos={streamDetails.relatedStreams} />
+            </AccordionItem>
+        </Accordion>
     </Container>)
 }
 

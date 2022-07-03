@@ -1,4 +1,4 @@
-import { Accordion, AccordionItem, Chip, Chips, Container, ThemeIcon } from "@mantine/core";
+import { Accordion, AccordionItem, Chip, Chips, Container, Text } from "@mantine/core";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -27,6 +27,7 @@ export const Settings: NextPage = () => {
     return (<Container>
         <Accordion>
             <AccordionItem label={localized.lang} icon={<World />}>
+                <Text mb="sm">{localized.setLang}</Text>
                 <Languages />
             </AccordionItem>
         </Accordion>

@@ -11,6 +11,7 @@ export const localized = new LocalizedStrings({
         createPlaylistModalNameError2: "This playlist already exists!",
         deletePlaylist: "Delete playlist",
         deletePlaylistModalText: "Are you sure you want to delete this playlist? This action can not be undone.",
+        setLang: "Change the application's display language.",
         renamePlaylist: "Rename playlist",
         endPlayback: "End playback",
         addToPlaylist: "Add to playlist",
@@ -24,7 +25,9 @@ export const localized = new LocalizedStrings({
         pause: "Pause",
         settings: "Settings",
         lang: "Language",
-        appNameAppend: `Music Player`
+        appNameAppend: `Music Player`,
+        description: "Description",
+        related: "Related"
     },
     hu: {
         navSearch: "Keresés",
@@ -36,6 +39,7 @@ export const localized = new LocalizedStrings({
         createPlaylistModalNameError2: "Ez a lejátszási lista már létezik!",
         deletePlaylist: "Lejátszási lista törlése",
         deletePlaylistModalText: "Biztos törölni szeretnéd ezt a lejátszási listát? Ezt a műveletet nem tudod utólag visszavonni.",
+        setLang: "Az alkalmazás megjelenítési nyelvének megváltoztatása.",
         renamePlaylist: "Lejátszási lista átnevezése",
         endPlayback: "Megszakítás",
         addToPlaylist: "Hozzáadás listához",
@@ -49,6 +53,8 @@ export const localized = new LocalizedStrings({
         pause: "Szünet",
         settings: "Beállítások",
         lang: "Nyelv",
-        appNameAppend: "Zenelejátszó"
+        appNameAppend: "Zenelejátszó",
+        description: "Leírás",
+        related: "Javaslatok"
     }
 });
