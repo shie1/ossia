@@ -13,6 +13,7 @@ export const useApi = (method: "GET" | "POST", url: string, body: any) => {
                     break
             }
         }
-    }, [body, method, resp, url])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[])
     return resp
 }

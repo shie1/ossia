@@ -5,10 +5,12 @@ import { useState } from "react";
 import { BrandLastfm, Link, World } from "tabler-icons-react";
 import { useLastFM } from "../components/lastfm";
 import { localized } from "../components/localization";
+import {useCookies} from "react-cookie"
 
 export const Settings: NextPage = () => {
     const router = useRouter()
     const lastfm = useLastFM()
+    const [cookies, setCookies, removeCookies] = useCookies(["lang"])
     const Languages = () => {
         let i = 0
         const [selected, setSelected] = useState<string>(() => {
@@ -21,7 +23,7 @@ export const Settings: NextPage = () => {
             <Chips value={selected}>
                 {localized.getAvailableLanguages().map((lang: string) => {
                     i++
-                    return <Chip onClick={() => { localized.setLanguage(lang); setSelected(lang); router.replace(router.asPath) }} key={i} value={lang}>{languageNames.of(lang)?.substring(0, 1).toUpperCase() + languageNames.of(lang)?.substring(1)!}</Chip>
+                    return <Chip onClick={() => { setCookies("lang",lang); setSelected(lang); router.replace(router.asPath) }} key={i} value={lang}>{languageNames.of(lang)?.substring(0, 1).toUpperCase() + languageNames.of(lang)?.substring(1)!}</Chip>
                 })}
             </Chips>
         </>)

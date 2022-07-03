@@ -1,3 +1,4 @@
+import { useLocalStorage } from '@mantine/hooks';
 import LocalizedStrings from 'react-localization';
 
 export const localized = new LocalizedStrings({
@@ -33,7 +34,12 @@ export const localized = new LocalizedStrings({
         linkLastFMText: "Link your Last.FM account with Ossia and scrobble your songs.",
         unlinkLastFMText: "Unlink your Last.FM account.",
         linkLastFMButton: "Link Account",
-        unlinkLastFMBUtton: "Unlink account"
+        unlinkLastFMBUtton: "Unlink account",
+        openInLastFM: "Open in Last.FM",
+        friends: "Friends",
+        recentTracks: "Recent tracks",
+        topTracks: "Top tracks",
+        nothingHere: "Nothing here..."
     },
     hu: {
         navSearch: "Keresés",
@@ -67,6 +73,11 @@ export const localized = new LocalizedStrings({
         linkLastFMText: "Csatold a Last.FM fiókodat az Ossia-hoz és naplózd a hallgatási előzményeidet.",
         unlinkLastFMText: "Last.FM fiók leválasztása",
         linkLastFMButton: "Fiók csatolása",
-        unlinkLastFMBUtton: "Fiók leválasztása"
+        unlinkLastFMBUtton: "Fiók leválasztása",
+        openInLastFM: "Megnyitás Last.FM-ben.",
+        friends: "Barátok",
+        recentTracks: "Korábbi dalok",
+        topTracks: "Legyakoribb dalok",
+        nothingHere: "Ez üres..."
     }
 });

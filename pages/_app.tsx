@@ -5,12 +5,13 @@ import { ModalsProvider } from '@mantine/modals'
 import { NotificationsProvider } from '@mantine/notifications'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { Books, Home, PlayerPlay, Search, Settings } from "tabler-icons-react"
+import { Books, BrandLastfm, Home, PlayerPlay, Search, Settings } from "tabler-icons-react"
 import { useManifest } from '../components/manifest'
 import { interactive } from '../components/styles'
 import { useHotkeys, useLocalStorage } from '@mantine/hooks'
 import { usePlayer } from '../components/player'
 import { localized } from '../components/localization'
+import { useCookies } from "react-cookie"
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [loading, setLoading] = useState(false)
@@ -18,6 +19,14 @@ function MyApp({ Component, pageProps }: AppProps) {
   const [streamDetails, setStreamDetails] = useLocalStorage({ 'key': 'stream-details', 'defaultValue': {} })
   const manifest = useManifest()
   const player = usePlayer()
+  const [cookies, setCookies, removeCookies] = useCookies(["lang", "auth"])
+  useEffect(() => {
+    if (!cookies.lang) {
+      setCookies("lang", localized.getInterfaceLanguage())
+    } else {
+      localized.setLanguage(cookies.lang)
+    }
+  }, [cookies.lang, setCookies])
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -85,6 +94,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <NavLink icon={<Search />} label={localized.navSearch} link="/" />
         {Object.keys(streamDetails).length !== 0 && <NavLink icon={<PlayerPlay />} label={localized.navPlayer} link="/player" />}
         <NavLink icon={<Books />} label={localized.navLibrary} link="/library" />
+        {cookies.auth && <NavLink icon={<BrandLastfm />} label="Last.FM" link="/user" />}
         <NavLink icon={<Settings />} label={localized.settings} link="/settings" />
       </Group>
     </Navbar>)
