@@ -3,16 +3,19 @@ import type { NextPage } from "next";
 import { useEffect, useState } from "react";
 import { ActionIcon, Center, Container, Group, Image, Paper, Text } from "@mantine/core";
 import { usePlayer } from "../components/player";
-import { PlayerPause, PlayerPlay, Playlist } from "tabler-icons-react";
+import { PlayerPause, PlayerPlay, Playlist, X } from "tabler-icons-react";
 import { ActionGroup } from "../components/action";
 import { AddToPlaylist } from "../components/playlist";
+import { useRouter } from "next/router";
 
 const Player: NextPage = () => {
     const [streamDetails, setStreamDetails] = useLocalStorage<any>({ 'key': 'stream-details', 'defaultValue': {} })
     const [atp, setAtp] = useState(false)
     const player = usePlayer()
+    const router = useRouter()
     if (Object.keys(streamDetails).length === 0) {
-        return <meta httpEquiv="refresh" content="0;URL=/" />
+        router.push("/")
+        return <></>
     }
     return (<Container>
         <AddToPlaylist songId={streamDetails.thumbnailUrl.split("/")[4]} opened={atp} onClose={() => { setAtp(false) }} />
@@ -22,11 +25,14 @@ const Player: NextPage = () => {
         <Text mb={2} size="xl" dangerouslySetInnerHTML={{ __html: streamDetails.title }} />
         <Text mb="sm" dangerouslySetInnerHTML={{ __html: streamDetails.uploader }} />
         <ActionGroup>
-            <ActionIcon radius="xl" size="xl" variant="default" onClick={() => { setAtp(true) }} >
-                <Playlist />
+            <ActionIcon radius="xl" size="xl" variant="default" onClick={() => { player.pop() }} >
+                <X />
             </ActionIcon>
             <ActionIcon radius="xl" size="xl" variant="default" onClick={player.toggleState}>
                 {player?.paused ? <PlayerPlay /> : <PlayerPause />}
+            </ActionIcon>
+            <ActionIcon radius="xl" size="xl" variant="default" onClick={() => { setAtp(true) }} >
+                <Playlist />
             </ActionIcon>
         </ActionGroup>
     </Container>)

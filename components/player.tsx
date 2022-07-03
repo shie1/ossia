@@ -31,11 +31,8 @@ export const usePlayer = () => {
         setPaused(!isPlaying())
     }
     function pop() {
-        element!.src = ""
+        element!.load()
         setStreamDetails({})
-        if (router.pathname == "/player") {
-            router.push("/")
-        }
     }
     return { 'paused': paused, 'play': play, 'toggleState': toggleState, 'pop': pop }
 }

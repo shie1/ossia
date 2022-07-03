@@ -1,5 +1,5 @@
 import { Container, Group, Loader, TextInput, Text, Paper, Center, Divider, ActionIcon, Button, Affix } from '@mantine/core'
-import { useWindowScroll } from '@mantine/hooks'
+import { useEventListener, useWindowScroll } from '@mantine/hooks'
 import type { NextPage } from 'next'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { ArrowUp, Dots, Search } from 'tabler-icons-react'
@@ -52,6 +52,15 @@ const Home: NextPage = () => {
       <Divider size="lg" my="md" />
       <VideoGrid videos={results.items} />
     </div>)
+  }
+
+  if(typeof window !== 'undefined'){
+    window.addEventListener("ossia-title-click", ()=>{
+      setSearchInput("")
+    })
+    window.addEventListener("ossia-nav-click", ()=>{
+      setSearchInput("")
+    })
   }
 
   return (<>
