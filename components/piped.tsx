@@ -24,7 +24,7 @@ const fetchApiRoots: any = async () => {
 }
 
 export const usePiped = () => {
-    const [apiRoot, setApiRoot] = useState<any>("https://pipedapi.moomoo.me")
+    const [apiRoot, setApiRoot] = useState<any>("https://pipedapi.tokhmi.xyz")
 
     async function api(method: "streams" | "search", options: any) {
         let np = ""

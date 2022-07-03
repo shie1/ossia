@@ -4,33 +4,16 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { Plus } from "tabler-icons-react";
 import { ActionGroup } from "../components/action";
-import { useLibrary } from "../components/library";
-import { PlaylistGrid } from "../components/playlist";
+import { usePlaylists } from "../components/library";
+import { PlaylistGrid, CreatePlaylist } from "../components/playlist";
 
 const Library: NextPage = () => {
-    const library = useLibrary()
+    const playlists = usePlaylists()
     const router = useRouter()
     const [crModal, setCrModal] = useState(false)
 
-    const CreatePlaylist = () => {
-        const [input, setInput] = useState("")
-        return (<>
-            <Modal
-                opened={crModal}
-                onClose={() => setCrModal(false)}
-                title="Create playlist"
-                size="lg"
-                radius="lg"
-            >
-                <form onSubmit={(e) => { e.preventDefault(); library.createPlaylist(input); router.push(`/playlist?p=${encodeURIComponent(input)}`) }}>
-                    <TextInput required size="lg" value={input} onChange={(e) => { setInput(e.currentTarget.value) }} rightSection={<ActionIcon mr="sm" radius="xl" size="lg"><Plus /></ActionIcon>} />
-                </form>
-            </Modal>
-        </>)
-    }
-
     return (<>
-        <CreatePlaylist />
+        <CreatePlaylist opened={crModal} onClose={() => { setCrModal(false) }} />
         <Container>
             <ActionGroup>
                 <ActionIcon radius="xl" size="xl" variant="default" onClick={() => { setCrModal(true) }}>
@@ -38,7 +21,7 @@ const Library: NextPage = () => {
                 </ActionIcon>
             </ActionGroup>
             <Space h="sm" />
-            <PlaylistGrid playlists={library.playlists()} />
+            <PlaylistGrid playlists={playlists.all} />
         </Container>
     </>)
 }

@@ -14,7 +14,7 @@ export const Video = ({ video }: any) => {
         type = "channel"
     }
     const play = () => {
-        piped.api("streams", { 'v': video.url.split("?v=")[1] }).then(resp => {
+        piped.api("streams", { 'v': video.url ? video.url.split("?v=")[1] : video.id }).then(resp => {
             player.play(resp)
         })
     }
@@ -22,14 +22,14 @@ export const Video = ({ video }: any) => {
         <Card radius="lg" sx={interactive} onClick={play}>
             <Card.Section mb="sm">
                 <div style={{ display: 'inline-block', overflow: 'hidden', width: '100%' }} className="img-wrapper">
-                    <Image height={160} src={video.thumbnail} alt={video.title} />
+                    <Image height={160} src={video.thumbnail || video.thumbnailUrl} alt={video.title} />
                 </div>
             </Card.Section>
             <Text mb={2} weight={500} size="lg">
                 {video.title ? video.title : video.name}
             </Text>
-            {video.uploaderName && <Text size="sm">
-                {video.uploaderName}
+            {video.uploaderName || video.uploader && <Text size="sm">
+                {video.uploaderName || video.uploader}
             </Text>}
         </Card>
     </>

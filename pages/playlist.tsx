@@ -1,23 +1,18 @@
-import { ActionIcon, Center, Text } from "@mantine/core";
+import { ActionIcon, Center, Container, Space, Text } from "@mantine/core";
 import { useModals } from "@mantine/modals";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { Trash } from "tabler-icons-react";
 import { ActionGroup } from "../components/action";
-import { useLibrary } from "../components/library";
-
+import { usePlaylist, usePlaylists } from "../components/library";
+import { VideoGrid } from "../components/video";
 
 const Playlist: NextPage = (props: any) => {
     const modals = useModals()
-    const library = useLibrary()
     const router = useRouter()
-    console.log(props)
-    if (!props.playlistId) {
-        return <meta httpEquiv="refresh" content="0;URL=/library" />
-    }
-    if (!library.playlistExists(props.playlistId)) {
-        return <meta httpEquiv="refresh" content="0;URL=/library" />
-    }
+    const playlists = usePlaylists()
+    const pl = usePlaylist(router.query['p'] as any)
+    console.log(pl.state[0])
     const confirm = (callback: any) => {
         modals.openConfirmModal({
             title: 'Please confirm your action',
@@ -31,21 +26,20 @@ const Playlist: NextPage = (props: any) => {
             onConfirm: callback,
         });
     }
-    return (<>
+    return (<Container>
         <ActionGroup>
             <ActionIcon radius="xl" onClick={() => {
                 confirm(() => {
-                    library.removePlaylist(props.playlistName)
+                    playlists.removePlaylist(router.query['p'] as any)
+                    router.push("/library")
                 })
             }} size="xl" variant="default">
                 <Trash />
             </ActionIcon>
         </ActionGroup>
-    </>)
-}
-
-Playlist.getInitialProps = async (ctx) => {
-    return { playlistName: ctx.query["p"] || false, playlistId: ctx.query["p"] ? `playlist-${encodeURIComponent(ctx.query["p"] as any)}` : false }
+        <Space h='md' />
+        <VideoGrid videos={pl.state[0]} />
+    </Container>)
 }
 
 export default Playlist

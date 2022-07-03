@@ -3,12 +3,12 @@ import { usePlayer } from "../components/player";
 import { usePiped } from "../components/piped";
 import { useEffect, useState } from "react";
 import { useCompressedLocalStorage } from "../components/storage";
+import { TextInput } from "@mantine/core";
 
 const Test: NextPage = () => {
-    const cls = useCompressedLocalStorage()
-    cls.setItem("test", {'a':'b'})
+    const [test, setTest] = useCompressedLocalStorage({ 'key': 'test', 'defaultValue': "asda" })
     return (<>
-        {JSON.stringify(cls.getItem("test"))}
+    <TextInput value={test} onChange={(e) => {setTest(e.currentTarget.value)}}/>
     </>)
 }
 

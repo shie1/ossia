@@ -39,7 +39,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   const NavLink = ({ link, icon, label }: any) => {
     return (<Link href={link}>
-      <Paper style={{background: 'rgba(0,0,0,.2)'}} radius="lg" onClick={() => { setSidebarOpen(false) }} sx={interactive} p='md' withBorder>
+      <Paper component='button' style={{background: 'rgba(0,0,0,.2)'}} tabIndex={0} radius="lg" onClick={() => { setSidebarOpen(false) }} sx={interactive} p='md' withBorder>
         <Group direction='row'>
           {icon}
           <Text>{label}</Text>
