@@ -13,15 +13,8 @@ export const Login: NextPage = (props: any) => {
 }
 
 export const getServerSideProps = ({ req, res }: any) => {
-    const env = load({
-        LASTFM_KEY: String,
-        LASTFM_SECRET: String,
-        NODE_ENV: [
-            'production' as const,
-            'development' as const,
-        ],
-    })
-    return { props: { 'env': env } };
+    require('dotenv').config()
+    return { props: { 'env': process.env } };
 }
 
 export default Login
