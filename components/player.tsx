@@ -42,7 +42,7 @@ export const usePlayer = () => {
         element!.src = stream.audioStreams[stream.audioStreams.length - 1].url
         setStreamDetails(stream)
         setPaused(false)
-        if (openPlayer){ if(router.pathname === "/player"{router.replace(router.asPath)}else{router.push("/player")}
+        if (openPlayer){ if(router.pathname === "/player"){router.replace(router.asPath)}else{router.push("/player")}
         if (scrobbleVal) { scrobble(stream) }
     }
     function pop() {
