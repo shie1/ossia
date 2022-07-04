@@ -1,7 +1,6 @@
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { Anchor, Text } from "@mantine/core";
-import { load } from "ts-dotenv"
 
 export const Login: NextPage = (props: any) => {
     const router = useRouter()
