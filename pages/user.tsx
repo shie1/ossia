@@ -10,6 +10,7 @@ import { interactive } from "../components/styles";
 import { LFMSong } from "../components/lastfm";
 import { useEffect, useState } from "react";
 import { useLoading } from "../components/loading";
+import { useCustomRouter } from "../components/redirect";
 
 export const User: NextPage = () => {
     const router = useRouter()
@@ -19,6 +20,7 @@ export const User: NextPage = () => {
     const [topTracks, setTopTracks] = useState<any>()
     const [friends, setFriends] = useState<any>()
     const loading = useLoading()
+    const customRouter = useCustomRouter()
     useEffect(() => {
         loading.start()
         const userId = router.query['u'] ? router.query['u'] : cookies.auth?.lfm.session[0].name[0]
@@ -128,7 +130,7 @@ export const User: NextPage = () => {
             <Text sx={{ fontSize: '1.5em' }} size='xl'>{user?.lfm.user[0].realname[0] ? `${user?.lfm.user[0].realname} (${user?.lfm.user[0].name})` : user?.lfm.user[0].name}</Text>
             <Group spacing='sm'>
                 {user?.lfm.user[0].country[0] !== 'None' && <Badge size='lg'>{user?.lfm.user[0].country[0]}</Badge>}
-                <Action label={localized.openInLastFM} onClick={() => { window.open(user?.lfm.user[0].url[0]) }}>
+                <Action label={localized.openInLastFM} onClick={() => { customRouter.newTab(user?.lfm.user[0].url[0]) }}>
                     <BrandLastfm />
                 </Action>
             </Group>

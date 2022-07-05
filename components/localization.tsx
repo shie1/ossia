@@ -47,7 +47,11 @@ export const localized = new LocalizedStrings({
         aboutText: "The Ossia Music player is an open source project, made by Shie1.\nThe project has started {time}.",
         plays: "plays",
         nowPlaying: "Now playing",
-        dependencies: "Dependencies"
+        dependencies: "Dependencies",
+        contributors: "Contributors",
+        germanContrib: "German translations",
+        newTabTitle: "Open URL in new tab",
+        newTabText: "You're about to open a link from {href} in a new tab.\nAre you sure? This page is not related to Ossia."
     },
     hu: {
         navSearch: "Keresés",
@@ -94,6 +98,10 @@ export const localized = new LocalizedStrings({
         aboutText: "Az Ossia Zenelejátszó egy nyílt forráskódú projekt, amit Shie1 készít.\nA projekt {time} kezdődött.",
         plays: "hallgatás",
         nowPlaying: "Lejátszás alatt",
-        dependencies: "Függelékek"
+        dependencies: "Függelékek",
+        contributors: "Közreműködők",
+        germanContrib: "Almalmazás lefordítása német nyelvre",
+        newTabTitle: "Link megnyitása új lapon",
+        newTabText: "Új lapon készülsz megnyitni egy linket innen: {href}\nBiztos vagy benne? Ez az oldal nem kapcsolódik az Ossia-hoz."
     }
 });

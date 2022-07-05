@@ -17,7 +17,7 @@ const manifest = {
     "id": "/",
     "icons": [
         {
-            "src": "/ossia_rect.png",
+            "src": "/ossia_circle.png",
             "sizes": "3000x3000",
             "type": "image/png"
         }

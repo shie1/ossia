@@ -1,24 +1,28 @@
-import { Container, Title, Text, Group, Accordion, AccordionItem, Paper, Avatar } from "@mantine/core";
+import { Container, Title, Text, Group, Accordion, AccordionItem, Paper, Avatar, Table, TypographyStylesProvider, Badge, useMantineTheme } from "@mantine/core";
 import type { NextPage } from "next";
 import useSWR from "swr";
 import moment from "moment/min/moment-with-locales";
-import { FileCode, Hierarchy } from "tabler-icons-react";
+import { Affiliate, FileCode, Hierarchy, Users } from "tabler-icons-react";
 import { interactive } from "../components/styles";
 import { useManifest } from "../components/manifest";
 import { Prism } from "@mantine/prism"
 import { localized } from "../components/localization";
+import Link from "next/link";
+import { useCustomRouter } from "../components/redirect";
 
 const About: NextPage = () => {
     const fetcher = (url: string) => fetch(url).then((res) => res.json());
     const deps = useSWR("/api/deps", fetcher)
     const manifest = useManifest()
+    const theme = useMantineTheme()
+    const customRouter = useCustomRouter()
 
     const Dep = ({ name, url }: { name: string, url: string }) => {
-        return (<a rel="noreferrer" target="_blank" href={url}>
-            <Paper withBorder p="sm" sx={interactive}>
+        return (
+            <Paper onClick={()=>{customRouter.newTab(url)}} withBorder p="sm" sx={interactive}>
                 <Text>{name}</Text>
             </Paper>
-        </a>)
+        )
     }
 
     moment.locale(localized.getLanguage())
@@ -32,20 +36,42 @@ const About: NextPage = () => {
             </Group>
         </Group>
         <Paper p="sm" withBorder shadow="lg" radius="lg">
-            <Group direction="row">
-                <Avatar size="xl" src="/ossia_circle.png">Ossia</Avatar>
-                <Group spacing={2} direction="column">
-                    <Text size="xl">{manifest?.short_name}</Text>
-                    <Text size="sm">{manifest?.name}</Text>
+            <a rel="noreferrer" target="_blank" href="https://github.com/shie1/ossia">
+                <Group sx={interactive} direction="row">
+                    <Avatar radius={100} size="xl" src="/ossia_circle.png">Ossia</Avatar>
+                    <Group spacing={2} direction="column">
+                        <Text size="xl">{manifest?.short_name}</Text>
+                        <Text size="sm">{manifest?.name}</Text>
+                    </Group>
                 </Group>
-            </Group>
+            </a>
             <Accordion mt="sm">
                 <AccordionItem label="manifest.json" icon={<FileCode />}>
                     {manifest && <Prism noCopy language="json">{JSON.stringify(manifest, null, 4)}</Prism>}
                 </AccordionItem>
-                <AccordionItem label={localized.dependencies} icon={<Hierarchy />}>
+                <AccordionItem label={localized.contributors} icon={<Users />}>
+                    <Table>
+                        <tr>
+                            <Group grow>
+                                <Paper onClick={() => { customRouter.newTab("https://www.youtube.com/channel/UC_osfKm8TMv6_kzuhdp_vGg") }} sx={interactive} p="sm" pb={0} withBorder>
+                                    <Group mb="sm" direction="row">
+                                        <Avatar src="https://yt3.ggpht.com/ytc/AKedOLQUwERYNidMP7NkgHmpxeT6JE2JXhOUfWEkihvM=s88-c-k-c0x00ffffff-no-rj" radius="xl" size="lg">Wl</Avatar>
+                                        <Text size="lg">Wladynosz</Text>
+                                    </Group>
+                                    <TypographyStylesProvider>
+                                        <ul>
+                                            <li>{localized.germanContrib}</li>
+                                        </ul>
+                                    </TypographyStylesProvider>
+                                </Paper>
+                            </Group>
+                        </tr>
+                    </Table>
+                </AccordionItem>
+                <AccordionItem label={<Group spacing={6}><Text>{localized.dependencies}</Text> <Badge gradient={{ to: theme.colors[theme.primaryColor][theme.primaryShade as any], from: "indigo" }} variant="gradient">{typeof window !== 'undefined' && document.querySelector(".mantine-1lumg83")?.children.length}</Badge></Group>} icon={<Affiliate />}>
                     <Group spacing="sm" direction="row">
                         <Dep name="Next.JS" url="https://nextjs.org/" />
+                        <Dep name="Vercel" url="https://vercel.com" />
                         <Dep name="React" url="https://reactjs.org" />
                         <Dep name="Typescript" url="https://www.typescriptlang.org/" />
                         <Dep name="Mantine" url="https://mantine.dev" />
