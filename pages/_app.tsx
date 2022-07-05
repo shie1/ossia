@@ -81,7 +81,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <Center>
           <Link href="/"><Title onClick={() => {
             window.dispatchEvent(new Event("ossia-title-click"))
-          }} className='click'>{manifest?.short_name}</Title></Link>
+          }} onMouseDown={(e)=>{e.preventDefault()}} className='click'>{manifest?.short_name}</Title></Link>
         </Center>
       </div>
     </Header>)

@@ -3,7 +3,9 @@ import { useEventListener, useWindowScroll } from '@mantine/hooks'
 import type { NextPage } from 'next'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { ArrowUp, Dots, Search } from 'tabler-icons-react'
+import { Action } from '../components/action'
 import { useLoading } from '../components/loading'
+import { localized } from '../components/localization'
 import { usePiped } from '../components/piped'
 import { VideoGrid } from '../components/video'
 
@@ -57,9 +59,11 @@ const Home: NextPage = () => {
   if (typeof window !== 'undefined') {
     window.addEventListener("ossia-title-click", () => {
       setSearchInput("")
+      setResults([])
     })
     window.addEventListener("ossia-nav-click", () => {
       setSearchInput("")
+      setResults([])
     })
   }
 
@@ -67,10 +71,12 @@ const Home: NextPage = () => {
     <Container>
       <Center>
         <form style={{ 'width': '100%' }} onSubmit={search}>
-          <TextInput radius="lg" ref={sie} onClick={() => { setResults([]) }} size='lg' value={searchInput} onChange={(e) => { setSearchInput(e.currentTarget.value) }} sx={{ width: '100%' }} variant='filled' rightSection={
-            <ActionIcon onClick={() => { search(new Event("")) }} size="lg" radius="xl" mr="md">
-              <Search />
-            </ActionIcon>
+          <TextInput placeholder={localized.navSearch + "..."} radius="lg" ref={sie} onClick={() => { setResults([]) }} size='lg' value={searchInput} onChange={(e) => { setSearchInput(e.currentTarget.value) }} sx={{ width: '100%' }} variant='filled' rightSection={
+            <Group mr="md">
+              <Action label={localized.navSearch} onClick={() => { search(new Event("")) }} >
+                <Search />
+              </Action>
+            </Group>
           } />
         </form>
       </Center>

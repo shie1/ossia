@@ -9,6 +9,7 @@ import { Prism } from "@mantine/prism"
 import { localized } from "../components/localization";
 import Link from "next/link";
 import { useCustomRouter } from "../components/redirect";
+import { useRef } from "react";
 
 const About: NextPage = () => {
     const fetcher = (url: string) => fetch(url).then((res) => res.json());
@@ -16,6 +17,7 @@ const About: NextPage = () => {
     const manifest = useManifest()
     const theme = useMantineTheme()
     const customRouter = useCustomRouter()
+    const depsE = useRef<HTMLDivElement | null>(null)
 
     const Dep = ({ name, url }: { name: string, url: string }) => {
         return (
@@ -68,8 +70,8 @@ const About: NextPage = () => {
                         </tr>
                     </Table>
                 </AccordionItem>
-                <AccordionItem label={<Group spacing={6}><Text>{localized.dependencies}</Text> <Badge gradient={{ to: theme.colors[theme.primaryColor][theme.primaryShade as any], from: "indigo" }} variant="gradient">{typeof window !== 'undefined' && document.querySelector(".mantine-1lumg83")?.children.length}</Badge></Group>} icon={<Affiliate />}>
-                    <Group spacing="sm" direction="row">
+                <AccordionItem label={<Group spacing={6}><Text>{localized.dependencies}</Text> <Badge gradient={{ to: theme.colors[theme.primaryColor][theme.primaryShade as any], from: "indigo" }} variant="gradient">{depsE.current?.children.length}</Badge></Group>} icon={<Affiliate />}>
+                    <Group ref={depsE} spacing="sm" direction="row">
                         <Dep name="Next.JS" url="https://nextjs.org/" />
                         <Dep name="Vercel" url="https://vercel.com" />
                         <Dep name="React" url="https://reactjs.org" />
