@@ -23,7 +23,7 @@ const fetchApiRoots: any = async () => {
     return instances
 }
 
-export const apiRoot = "https://pipedapi.kavin.rocks/"
+export const apiRoot = "https://pipedapi.moomoo.me"
 
 export const usePiped = () => {
     async function api(method: "streams" | "search", options: any) {
