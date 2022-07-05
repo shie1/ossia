@@ -2,7 +2,7 @@ import { ActionIcon, Chip, Chips, Grid, Modal, Paper, Text, TextInput } from "@m
 import { useLocalStorage } from "@mantine/hooks"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Pencil, Plus } from "tabler-icons-react"
 import { addSong, inPlaylist, playlistExists, removeSong, songPlaylists, usePlaylist, usePlaylists } from "./library"
 import { localized } from "./localization"
@@ -109,6 +109,9 @@ export const AddToPlaylist = ({ opened, onClose }: any) => {
         }
         return songPlaylists(streamDetails)
     })
+    useEffect(() => {
+        setChecked(songPlaylists(streamDetails))
+    }, [streamDetails])
     const playlists = usePlaylists()
     let i = 0
     return (<>
