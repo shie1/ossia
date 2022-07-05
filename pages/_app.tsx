@@ -21,7 +21,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   const manifest = useManifest()
   const player = usePlayer()
   const playerRef = useRef<HTMLAudioElement | null>(null)
-  const [volume, setVolume] = useLocalStorage<number>({ 'key': 'volume', 'defaultValue': 100 })
+  const [volume, setVolume] = useLocalStorage<number>({ 'key': 'volume', 'defaultValue': 90 })
   const [cookies, setCookies, removeCookies] = useCookies(["lang", "auth"])
   useEffect(() => {
     if (!cookies.lang) {

@@ -13,7 +13,7 @@ import { wip } from "../components/notifications";
 
 const Player: NextPage = () => {
     const [streamDetails, setStreamDetails] = useLocalStorage<any>({ 'key': 'stream-details', 'defaultValue': {} })
-    const [volume, setVolume] = useLocalStorage<number>({ 'key': 'volume', 'defaultValue': 100 })
+    const [volume, setVolume] = useLocalStorage<number>({ 'key': 'volume', 'defaultValue': 90 })
     const router = useRouter()
     const player = usePlayer()
     useEffect(() => {
