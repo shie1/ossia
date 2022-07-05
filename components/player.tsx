@@ -36,8 +36,9 @@ export const usePlayer = () => {
     }
     function play(stream: any, openPlayer = true) {
         if (element!.src == stream.audioStreams[stream.audioStreams.length - 1].url) {
-            if (!isPlaying()) toggleState()
-            router.push("/player"); return
+            if (!isPlaying()) { toggleState() }
+            if (openPlayer) { router.push("/player") }
+            return
         }
         element!.src = stream.audioStreams[stream.audioStreams.length - 1].url
         setStreamDetails(stream)

@@ -27,3 +27,15 @@ a {
 .autolinker:hover {
   color: #9E5DB9
 }
+
+.oneliner .mantine-Text-root {
+  max-height: 1.6em;
+  overflow: hidden;
+  display: -webkit-inline;
+  text-overflow: ellipsis;
+  transition: .5s;
+}
+
+.oneliner:hover .mantine-Text-root {
+  max-height: 8em;
+}

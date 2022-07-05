@@ -39,7 +39,8 @@ export const localized = new LocalizedStrings({
         friends: "Friends",
         recentTracks: "Recent tracks",
         topTracks: "Top tracks",
-        nothingHere: "Nothing here..."
+        nothingHere: "Nothing here...",
+        selectIcon: "Select icon"
     },
     hu: {
         navSearch: "Keresés",
@@ -78,6 +79,7 @@ export const localized = new LocalizedStrings({
         friends: "Barátok",
         recentTracks: "Korábbi dalok",
         topTracks: "Legyakoribb dalok",
-        nothingHere: "Ez üres..."
+        nothingHere: "Ez üres...",
+        selectIcon: "Ikon kiválasztása"
     }
 });

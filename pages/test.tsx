@@ -1,14 +1,15 @@
+import { Button, Center, Group } from "@mantine/core";
 import type { NextPage } from "next";
-import { usePlayer } from "../components/player";
-import { usePiped } from "../components/piped";
-import { useEffect, useState } from "react";
-import { useCompressedLocalStorage } from "../components/storage";
-import { TextInput } from "@mantine/core";
+import { useEffect } from "react";
+import { Home } from "tabler-icons-react";
+import { useIconSelector } from "../components/icons";
 
 const Test: NextPage = () => {
-    const [test, setTest] = useCompressedLocalStorage({ 'key': 'test', 'defaultValue': "asda" })
-    return (<>
-    </>)
+    const iSel = useIconSelector()
+    return (<Group position="center" direction="column">
+        {iSel.modal}
+        <Button leftIcon={iSel.icon} onClick={() => { iSel.open() }}>Open icon selector</Button>
+    </Group>)
 }
 
 export default Test
