@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { apiCall } from "../components/api";
 import { useCookies } from "react-cookie"
-import { Avatar, Container, Group, Text, Badge, Grid, Paper, Accordion, AccordionItem } from "@mantine/core";
+import { Avatar, Container, Group, Text, Badge, Grid, Paper, Accordion, AccordionItem, useMantineTheme } from "@mantine/core";
 import { Action } from "../components/action";
 import { BrandLastfm, Disc, Friends as FriendsIcon, Trophy } from "tabler-icons-react";
 import { localized } from "../components/localization";
@@ -21,6 +21,7 @@ export const User: NextPage = () => {
     const [friends, setFriends] = useState<any>()
     const loading = useLoading()
     const customRouter = useCustomRouter()
+    const theme = useMantineTheme()
     useEffect(() => {
         loading.start()
         const userId = router.query['u'] ? router.query['u'] : cookies.auth?.lfm.session[0].name[0]
@@ -129,7 +130,7 @@ export const User: NextPage = () => {
             <Avatar size="xl" src={user?.lfm.user[0].image[user?.lfm.user[0].image.length - 1]['_']}>{user?.lfm.user[0].realname[0].substring(0, 2)}</Avatar>
             <Text sx={{ fontSize: '1.5em' }} size='xl'>{user?.lfm.user[0].realname[0] ? `${user?.lfm.user[0].realname} (${user?.lfm.user[0].name})` : user?.lfm.user[0].name}</Text>
             <Group spacing='sm'>
-                {user?.lfm.user[0].country[0] !== 'None' && <Badge size='lg'>{user?.lfm.user[0].country[0]}</Badge>}
+                {user?.lfm.user[0].country[0] !== 'None' && <Badge gradient={{ to: theme.colors[theme.primaryColor][theme.primaryShade as any], from: "indigo" }} variant="gradient" size='lg'>{user?.lfm.user[0].country[0]}</Badge>}
                 <Action label={localized.openInLastFM} onClick={() => { customRouter.newTab(user?.lfm.user[0].url[0]) }}>
                     <BrandLastfm />
                 </Action>
