@@ -4,7 +4,10 @@ import { useCookies } from "react-cookie"
 import superagent from "superagent"
 import { interactive } from './styles'
 import { Group, Paper, Avatar, Text } from '@mantine/core'
-import moment from "moment"
+import moment from "moment/min/moment-with-locales"
+import { localized } from './localization'
+import { usePlayer } from './player'
+import { useLoading } from './loading'
 const parser = require('superagent-xml2jsparser')
 
 export const fetcher = (url: string) => fetch(url).then((res) => res.json());
@@ -29,18 +32,21 @@ export const useLastFM = () => {
 }
 
 export const LFMSong = ({ song, type }: any) => {
+    const player = usePlayer()
+    const loading = useLoading()
+    moment.locale(localized.getLanguage())
     const More = () => {
         switch (type) {
             case 'recents':
                 return <>
                     <Group position="right" pt='sm' sx={(theme) => ({ borderTop: `1px solid ${theme.colorScheme === 'dark' ? theme.white : theme.black}` })}>
-                        <Text size="sm">{song.date ? (moment(moment.utc(song.date[0]['_']).toDate()).local().fromNow()) : 'Now playing'}</Text>
+                        <Text size="sm">{song.date ? (moment(moment.utc(song.date[0]['_']).toDate()).local().fromNow()) : localized.nowPlaying}</Text>
                     </Group>
                 </>
             case 'top':
                 return <>
                     <Group position="right" pt='sm' direction="row" sx={(theme) => ({ borderTop: `1px solid ${theme.colorScheme === 'dark' ? theme.white : theme.black}` })}>
-                        <Text size="sm">{song.playcount[0]} plays</Text>
+                        <Text size="sm">{song.playcount[0]} {localized.plays}</Text>
                     </Group>
                 </>
             default:
@@ -49,7 +55,7 @@ export const LFMSong = ({ song, type }: any) => {
     }
     if (!song) { return <></> }
     return (<>
-        <Paper withBorder sx={interactive} m={-2} p='sm'>
+        <Paper onClick={() => { player.searchPlay(`${song.artist[0].name ? song.artist[0].name : (song.artist[0] as any)['_']} ${song.name[0]}`); loading.start() }} withBorder sx={interactive} m={-2} p='sm'>
             <Group mb='sm' direction="row">
                 <Group spacing={0} direction="column">
                     <Text sx={{ WebkitBoxOrient: 'vertical', WebkitLineClamp: 1, overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box' }} size="lg">{song.name[0]}</Text>

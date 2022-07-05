@@ -1,19 +1,11 @@
 import { useEffect, useState } from "react"
 
-export const useApi = (method: "GET" | "POST", url: string, body: any) => {
-    const [resp, setResp] = useState<any>()
-    useEffect(() => {
-        if (!resp) {
-            switch (method) {
-                case 'GET':
-                    fetch(`${url}?${(new URLSearchParams(body)).toString()}`).then(resp => resp.json()).then(resp => { setResp(resp) })
-                    break
-                case 'POST':
-                    fetch(url, { method: "POST", body: JSON.stringify(body) }).then(resp => resp.json()).then(resp => { setResp(resp) })
-                    break
-            }
-        }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[])
-    return resp
+export const apiCall = async (method: "GET" | "POST", url: string, body: any) => {
+    let res: any = ""
+    switch (method) {
+        case 'GET':
+            return await (await fetch(`${url}?${(new URLSearchParams(body)).toString()}`)).json()
+        case 'POST':
+            return await (await fetch(url, { method: "POST", body: JSON.stringify(body) })).json()
+    }
 }

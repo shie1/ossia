@@ -1,7 +1,9 @@
 import { useLocalStorage } from "@mantine/hooks"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
+import { apiCall } from "./api"
 import { useLastFM } from "./lastfm"
+import { usePiped } from "./piped"
 
 export const usePlayer = () => {
     const [element, setElement] = useState<HTMLAudioElement | null>(null)
@@ -10,6 +12,7 @@ export const usePlayer = () => {
     const [paused, setPaused] = useLocalStorage({ 'key': 'player-paused', 'defaultValue': false })
     const router = useRouter()
     const lastfm = useLastFM()
+    const piped = usePiped()
     const isPlaying = () => {
         return element!.currentTime > 0 && !element!.paused && !element!.ended
             && element!.readyState > element!.HAVE_CURRENT_DATA;
@@ -46,10 +49,13 @@ export const usePlayer = () => {
         if (openPlayer) { router.push("/player") }
         if (scrobbleVal) { scrobble(stream) }
     }
+    function searchPlay(q: string, openPlayer = true) {
+        piped.api("search", { 'q': q }).then(item => { piped.api("streams", { 'v': item.items[0].url.split("?v=")[1] }).then(item2 => { play(item2) }) })
+    }
     function pop() {
         element!.src = ""
         setStreamDetails({})
         document.documentElement.setAttribute('data-loading', 'false')
     }
-    return { 'paused': paused, 'play': play, 'toggleState': toggleState, 'pop': pop }
+    return { 'paused': paused, 'play': play, 'toggleState': toggleState, 'pop': pop, searchPlay: searchPlay }
 }

@@ -40,7 +40,14 @@ export const localized = new LocalizedStrings({
         recentTracks: "Recent tracks",
         topTracks: "Top tracks",
         nothingHere: "Nothing here...",
-        selectIcon: "Select icon"
+        selectIcon: "Select icon",
+        wip: "Under development...",
+        about: "About",
+        aboutTitle: "About Ossia",
+        aboutText: "The Ossia Music player is an open source project, made by Shie1.\nThe project has started {time}.",
+        plays: "plays",
+        nowPlaying: "Now playing",
+        dependencies: "Dependencies"
     },
     hu: {
         navSearch: "Keresés",
@@ -80,6 +87,13 @@ export const localized = new LocalizedStrings({
         recentTracks: "Korábbi dalok",
         topTracks: "Legyakoribb dalok",
         nothingHere: "Ez üres...",
-        selectIcon: "Ikon kiválasztása"
+        selectIcon: "Ikon kiválasztása",
+        wip: "Fejlesztés alatt...",
+        about: "Részletek",
+        aboutTitle: "Az Ossia-ról",
+        aboutText: "Az Ossia Zenelejátszó egy nyílt forráskódú projekt, amit Shie1 készít.\nA projekt {time} kezdődött.",
+        plays: "hallgatás",
+        nowPlaying: "Lejátszás alatt",
+        dependencies: "Függelékek"
     }
 });

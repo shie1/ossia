@@ -3,7 +3,7 @@ import type { AppProps } from 'next/app'
 import { AppShell, Text, Burger, Center, Footer, Group, Header, LoadingOverlay, MantineProvider, MediaQuery, Navbar, Paper, Title } from '@mantine/core'
 import { ModalsProvider } from '@mantine/modals'
 import { NotificationsProvider } from '@mantine/notifications'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { Books, BrandLastfm, Home, PlayerPlay, Search, Settings } from "tabler-icons-react"
 import { useManifest } from '../components/manifest'
@@ -20,6 +20,8 @@ function MyApp({ Component, pageProps }: AppProps) {
   const [streamDetails, setStreamDetails] = useLocalStorage({ 'key': 'stream-details', 'defaultValue': {} })
   const manifest = useManifest()
   const player = usePlayer()
+  const playerRef = useRef<HTMLAudioElement | null>(null)
+  const [volume, setVolume] = useLocalStorage<number>({ 'key': 'volume', 'defaultValue': 100 })
   const [cookies, setCookies, removeCookies] = useCookies(["lang", "auth"])
   useEffect(() => {
     if (!cookies.lang) {
@@ -36,6 +38,10 @@ function MyApp({ Component, pageProps }: AppProps) {
       }
     }
   }, [setStreamDetails])
+
+  useEffect(() => {
+    playerRef.current!.volume = volume / 100
+  }, [volume])
 
   setInterval(() => {
     if (typeof window !== 'undefined' && document.documentElement.hasAttribute('data-loading')) {
@@ -84,7 +90,11 @@ function MyApp({ Component, pageProps }: AppProps) {
   const AppFooter = () => {
     return (<Footer height={60} p="md">
       <Center>
-        <Text>{manifest?.short_name} {localized.appNameAppend}{manifest?.version ? ` v${manifest.version}` : ''}</Text>
+        <Link href="/about">
+          <Group sx={interactive}>
+            <Text align='center'>{manifest?.short_name} {localized.appNameAppend}{manifest?.version ? ` v${manifest.version}` : ''}</Text>
+          </Group>
+        </Link>
       </Center>
     </Footer>)
   }
@@ -117,7 +127,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <ModalsProvider>
           <NotificationsProvider>
             <LoadingOverlay visible={loading} sx={{ position: 'fixed' }} />
-            <audio autoPlay id='ossia-main-player' onLoadStart={(e) => {
+            <audio ref={playerRef} autoPlay id='ossia-main-player' onLoadStart={(e) => {
               if (!e.currentTarget.src.startsWith(document.location.origin)) document.documentElement.setAttribute('data-loading', 'true')
             }} onLoadedData={() => { document.documentElement.setAttribute('data-loading', 'false') }} />
             <Component {...pageProps} />
