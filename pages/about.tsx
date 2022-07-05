@@ -14,7 +14,7 @@ const About: NextPage = () => {
     const manifest = useManifest()
 
     const Dep = ({ name, url }: { name: string, url: string }) => {
-        return (<a target="_blank" href={url}>
+        return (<a rel="noreferrer" target="_blank" href={url}>
             <Paper withBorder p="sm" sx={interactive}>
                 <Text>{name}</Text>
             </Paper>
