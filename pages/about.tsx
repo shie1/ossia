@@ -18,10 +18,11 @@ const About: NextPage = () => {
     const theme = useMantineTheme()
     const customRouter = useCustomRouter()
     const depsE = useRef<HTMLDivElement | null>(null)
+    let depKey = 0
 
     const Dep = ({ name, url }: { name: string, url: string }) => {
         return (
-            <Paper onClick={()=>{customRouter.newTab(url)}} withBorder p="sm" sx={interactive}>
+            <Paper onClick={() => { customRouter.newTab(url) }} withBorder p="sm" sx={interactive}>
                 <Text>{name}</Text>
             </Paper>
         )
@@ -79,10 +80,11 @@ const About: NextPage = () => {
                         <Dep name="Mantine" url="https://mantine.dev" />
                         <Dep name="Piped" url="https://piped.kavin.rocks" />
                         {deps.data && Object.keys(deps.data).map((dep: string) => {
+                            depKey++
                             const url = "https://www.npmjs.com/package/" + dep
                             if (["@types/", "@mantine/"].find(item => dep.startsWith(item))) { return <></> }
                             if (["react", "next", "react-dom"].find(item => item === dep)) { return <></> }
-                            return (<Dep name={dep} url={url} />)
+                            return (<Dep key={depKey} name={dep} url={url} />)
                         })}
                     </Group>
                 </AccordionItem>
