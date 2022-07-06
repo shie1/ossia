@@ -30,18 +30,19 @@ const Player: NextPage = () => {
         </Center>
         <Text mb={2} size="xl" dangerouslySetInnerHTML={{ __html: streamDetails.title }} />
         <Text dangerouslySetInnerHTML={{ __html: streamDetails.uploader }} />
-        <ActionGroup>
-            <Action onClick={() => { player.pop() }} label={localized.endPlayback}>
-                <X />
-            </Action>
-            <Action onClick={() => { player.toggleState() }} label={player?.paused ? localized.play : localized.pause}>
-                {player?.paused ? <PlayerPlay /> : <PlayerPause />}
-            </Action>
-            <Action onClick={wip} label={localized.addToPlaylist}>
-                <Playlist />
-            </Action>
-        </ActionGroup>
-        <Center my="sm">
+        <Center my="md">
+            <ActionGroup>
+                <Action onClick={() => { player.pop() }} label={localized.endPlayback}>
+                    <X />
+                </Action>
+                <Action onClick={() => { player.toggleState() }} label={player?.paused ? localized.play : localized.pause}>
+                    {player?.paused ? <PlayerPlay /> : <PlayerPause />}
+                </Action>
+                <Action onClick={wip} label={localized.addToPlaylist}>
+                    <Playlist />
+                </Action>
+            </ActionGroup>
+            <Space h="sm" />
             <ActionGroup>
                 <SegmentedControl onChange={(e) => { setVolume(Number(e)) }} value={volume.toString()} sx={(theme) => ({ background: 'unset' })} radius="lg" data={[
                     { label: localized.muted, value: '0' },
