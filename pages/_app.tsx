@@ -3,6 +3,7 @@ import type { AppProps } from 'next/app'
 import { AppShell, Text, Burger, Center, Footer, Group, Header, LoadingOverlay, MantineProvider, MediaQuery, Navbar, Paper, Title } from '@mantine/core'
 import { ModalsProvider } from '@mantine/modals'
 import { NotificationsProvider } from '@mantine/notifications'
+import {useEventListener} from "@mantine/hooks"
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { Books, BrandLastfm, Home, PlayerPlay, Search, Settings } from "tabler-icons-react"
@@ -42,6 +43,10 @@ function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
     playerRef.current!.volume = volume / 100
   }, [volume])
+  
+  if(typeof window !== "undefined"){
+      window.addEventListener("ossia-nav-click", () => { setSidebarOpen(false) })
+  }
 
   setInterval(() => {
     if (typeof window !== 'undefined' && document.documentElement.hasAttribute('data-loading')) {
@@ -91,7 +96,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     return (<Footer height={60} p="md">
       <Center>
         <Link href="/about">
-          <Group sx={interactive}>
+          <Group onClick={() => {window.dispatchEvent(new Event("ossia-nav-click"))}} sx={interactive}>
             <Text align='center'>{manifest?.short_name} {localized.appNameAppend}{manifest?.version ? ` v${manifest.version}` : ''}</Text>
           </Group>
         </Link>
