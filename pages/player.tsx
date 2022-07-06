@@ -13,6 +13,7 @@ import { wip } from "../components/notifications";
 
 const Player: NextPage = () => {
     const [streamDetails, setStreamDetails] = useLocalStorage<any>({ 'key': 'stream-details', 'defaultValue': {} })
+    const [playerContent, setPlayerContent] = useLocalStorage<any>({ 'key': 'player-content', 'defaultValue': {} })
     const [volume, setVolume] = useLocalStorage<number>({ 'key': 'volume', 'defaultValue': 90 })
     const router = useRouter()
     const player = usePlayer()
@@ -26,10 +27,10 @@ const Player: NextPage = () => {
     }
     return (<Container>
         <Center>
-            <Image radius="lg" sx={{ maxWidth: '60vh' }} mb="sm" src={streamDetails.thumbnailUrl} alt={streamDetails.title} />
+            <Image radius="lg" sx={{ maxWidth: '30vh', minWidth: '40%' }} mb="sm" src={playerContent.cover} alt={playerContent.title} />
         </Center>
-        <Text mb={2} size="xl" dangerouslySetInnerHTML={{ __html: streamDetails.title }} />
-        <Text dangerouslySetInnerHTML={{ __html: streamDetails.uploader }} />
+        <Text mb={2} size="xl" dangerouslySetInnerHTML={{ __html: playerContent.title }} />
+        <Text dangerouslySetInnerHTML={{ __html: playerContent.artist }} />
         <Group align="center" spacing="sm" direction="column" my="md">
             <ActionGroup>
                 <Action onClick={() => { player.pop() }} label={localized.endPlayback}>

@@ -3,16 +3,19 @@ import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { apiCall } from "./api"
 import { useLastFM } from "./lastfm"
+import { useLoading } from "./loading"
 import { usePiped } from "./piped"
 
 export const usePlayer = () => {
     const [element, setElement] = useState<HTMLAudioElement | null>(null)
     const [scrobbleVal, setScrobble] = useLocalStorage<boolean>({ 'key': 'scrobble', defaultValue: true })
     const [streamDetails, setStreamDetails] = useLocalStorage({ 'key': 'stream-details', 'defaultValue': {} })
+    const [playerContent, setPlayerContent] = useLocalStorage({ 'key': 'player-content', 'defaultValue': {} })
     const [paused, setPaused] = useLocalStorage({ 'key': 'player-paused', 'defaultValue': false })
     const router = useRouter()
     const lastfm = useLastFM()
     const piped = usePiped()
+    const loading = useLoading()
     const isPlaying = () => {
         return element!.currentTime > 0 && !element!.paused && !element!.ended
             && element!.readyState > element!.HAVE_CURRENT_DATA;
@@ -30,24 +33,33 @@ export const usePlayer = () => {
         }
         setPaused(!isPlaying())
     }
-    async function scrobble(stream: any) {
-        if (typeof window === 'undefined') { return }
-        const prR = /\(([^)]+)\)|【([^】]+)】|\{([^\}]+)\}|\[([^\]]+)\]|"|“|”/g
-        const videoTitle = stream.title!.replace(prR, '')
-        const videoAuthor = stream.uploaderName || stream.uploader
-        const videoDescription = stream.description
-    }
     function play(stream: any, openPlayer = true) {
         if (element!.src == stream.audioStreams[stream.audioStreams.length - 1].url) {
             if (!isPlaying()) { toggleState() }
             if (openPlayer) { router.push("/player") }
             return
         }
-        element!.src = stream.audioStreams[stream.audioStreams.length - 1].url
-        setStreamDetails(stream)
-        setPaused(false)
-        if (openPlayer) { router.push("/player") }
-        if (scrobbleVal) { scrobble(stream) }
+        loading.start()
+        apiCall("GET", "/api/youtube/recognize", { v: stream.thumbnailUrl.split("/")[4] }).then(resp => {
+            resp = resp
+            element!.src = stream.audioStreams[stream.audioStreams.length - 1].url
+            setStreamDetails(stream)
+            if (resp == false) {
+                setPlayerContent({
+                    'title': stream.title,
+                    'artist': stream.uploader,
+                    'cover': stream.thumbnailUrl,
+                })
+            } else {
+                setPlayerContent({
+                    'title': resp[0].SONG,
+                    'artist': resp[0].ARTIST,
+                    'cover': resp[0].ALBUMART,
+                })
+            }
+            setPaused(false)
+            if (openPlayer) { router.push("/player") }
+        })
     }
     function searchPlay(q: string, openPlayer = true) {
         piped.api("search", { 'q': q }).then(item => { piped.api("streams", { 'v': item.items[0].url.split("?v=")[1] }).then(item2 => { play(item2) }) })

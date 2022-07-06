@@ -3,7 +3,7 @@ import type { AppProps } from 'next/app'
 import { AppShell, Text, Burger, Center, Footer, Group, Header, LoadingOverlay, MantineProvider, MediaQuery, Navbar, Paper, Title } from '@mantine/core'
 import { ModalsProvider } from '@mantine/modals'
 import { NotificationsProvider } from '@mantine/notifications'
-import {useEventListener} from "@mantine/hooks"
+import { useEventListener } from "@mantine/hooks"
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { Books, BrandLastfm, Home, PlayerPlay, Search, Settings } from "tabler-icons-react"
@@ -17,6 +17,7 @@ import theme from '../components/theme'
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [loading, setLoading] = useState(false)
+  const [playerContent, setPlayerContent] = useLocalStorage({ 'key': 'player-content', 'defaultValue': {} })
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [streamDetails, setStreamDetails] = useLocalStorage({ 'key': 'stream-details', 'defaultValue': {} })
   const manifest = useManifest()
@@ -36,9 +37,10 @@ function MyApp({ Component, pageProps }: AppProps) {
     if (typeof window !== 'undefined') {
       if ((document.querySelector("audio#ossia-main-player") as HTMLAudioElement).src == '') {
         setStreamDetails({})
+        setPlayerContent({})
       }
     }
-  }, [setStreamDetails])
+  }, [setStreamDetails, setPlayerContent])
 
   useEffect(() => {
     playerRef.current!.volume = volume / 100
@@ -82,7 +84,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <Center>
           <Link href="/"><Title onClick={() => {
             window.dispatchEvent(new Event("ossia-title-click"))
-          }} onMouseDown={(e)=>{e.preventDefault()}} className='click'>{manifest?.short_name}</Title></Link>
+          }} onMouseDown={(e) => { e.preventDefault() }} className='click'>{manifest?.short_name}</Title></Link>
         </Center>
       </div>
     </Header>)
@@ -92,7 +94,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     return (<Footer height={60} p="md">
       <Center>
         <Link href="/about">
-          <Group onClick={() => {window.dispatchEvent(new Event("ossia-nav-click"));setSidebarOpen(false)}} sx={interactive}>
+          <Group onClick={() => { window.dispatchEvent(new Event("ossia-nav-click")); setSidebarOpen(false) }} sx={interactive}>
             <Text align='center'>{manifest?.short_name} {localized.appNameAppend}{manifest?.version ? ` v${manifest.version}` : ''}</Text>
           </Group>
         </Link>
