@@ -44,10 +44,10 @@ const Player: NextPage = () => {
         <Center my="sm">
             <ActionGroup>
                 <SegmentedControl onChange={(e) => { setVolume(Number(e)) }} value={volume.toString()} sx={(theme) => ({ background: 'unset' })} radius="lg" data={[
-                    { label: 'Muted', value: '0' },
-                    { label: 'Low', value: '30' },
-                    { label: 'High', value: '60' },
-                    { label: 'Max', value: '90' }
+                    { label: localized.muted, value: '0' },
+                    { label: localized.low, value: '30' },
+                    { label: localized.medium, value: '60' },
+                    { label: localized.high, value: '90' }
                 ]} />
             </ActionGroup>
         </Center>
