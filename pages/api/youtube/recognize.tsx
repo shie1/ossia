@@ -15,7 +15,6 @@ export default async function handler(
             for (const row of lockup.carouselLockupRenderer.infoRows) {
                 const renderer = row.infoRowRenderer
                 const title = renderer.title.simpleText
-                console.log(title)
                 let input: any = typeof renderer.defaultMetadata !== 'undefined' ? renderer.defaultMetadata : renderer.expandedMetadata
                 switch (title) {
                     case "SONG":
