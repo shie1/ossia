@@ -108,8 +108,8 @@ export const localized = new LocalizedStrings({
         newTabTitle: "Link megnyitása új lapon",
         newTabText: "Új lapon készülsz megnyitni egy linket innen: {href}\nBiztos vagy benne? Ez az oldal nem kapcsolódik az Ossia-hoz.",
         muted: "Néma",
-        low: "Alacsony"
-        medium: "Közepes"
+        low: "Alacsony",
+        medium: "Közepes",
         high: "Magas"
     }
 });
