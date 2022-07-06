@@ -43,10 +43,6 @@ function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
     playerRef.current!.volume = volume / 100
   }, [volume])
-  
-  if(typeof window !== "undefined"){
-      window.addEventListener("ossia-nav-click", () => { setSidebarOpen(false) })
-  }
 
   setInterval(() => {
     if (typeof window !== 'undefined' && document.documentElement.hasAttribute('data-loading')) {
@@ -96,7 +92,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     return (<Footer height={60} p="md">
       <Center>
         <Link href="/about">
-          <Group onClick={() => {window.dispatchEvent(new Event("ossia-nav-click"))}} sx={interactive}>
+          <Group onClick={() => {window.dispatchEvent(new Event("ossia-nav-click"));setSidebarOpen(false)}} sx={interactive}>
             <Text align='center'>{manifest?.short_name} {localized.appNameAppend}{manifest?.version ? ` v${manifest.version}` : ''}</Text>
           </Group>
         </Link>
