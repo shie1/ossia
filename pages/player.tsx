@@ -30,7 +30,7 @@ const Player: NextPage = () => {
         </Center>
         <Text mb={2} size="xl" dangerouslySetInnerHTML={{ __html: streamDetails.title }} />
         <Text dangerouslySetInnerHTML={{ __html: streamDetails.uploader }} />
-        <Group spacing"sm" direction="column" my="md">
+        <Group spacing="sm" direction="column" my="md">
             <ActionGroup>
                 <Action onClick={() => { player.pop() }} label={localized.endPlayback}>
                     <X />
