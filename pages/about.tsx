@@ -71,14 +71,16 @@ const About: NextPage = () => {
                         </tr>
                     </Table>
                 </AccordionItem>
-                <AccordionItem label={<Group spacing={6}><Text>{localized.dependencies}</Text> <Badge gradient={{ to: theme.colors[theme.primaryColor][theme.primaryShade as any], from: "indigo" }} variant="gradient">{depsE.current?.children.length}</Badge></Group>} icon={<Affiliate />}>
-                    <Group ref={depsE} spacing="sm" direction="row">
+                <AccordionItem label={<Group spacing={6}><Text>{localized.dependencies}</Text></Group>} icon={<Affiliate />}>
+                    <Group spacing="sm" direction="row">
+                        <Group spacing="sm" direction="row" ref={depsE}>
                         <Dep name="Next.JS" url="https://nextjs.org/" />
                         <Dep name="Vercel" url="https://vercel.com" />
                         <Dep name="React" url="https://reactjs.org" />
                         <Dep name="Typescript" url="https://www.typescriptlang.org/" />
                         <Dep name="Mantine" url="https://mantine.dev" />
                         <Dep name="Piped" url="https://piped.kavin.rocks" />
+                        </Group>
                         {deps.data && Object.keys(deps.data).map((dep: string) => {
                             depKey++
                             const url = "https://www.npmjs.com/package/" + dep

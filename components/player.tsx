@@ -62,7 +62,7 @@ export const usePlayer = () => {
         })
     }
     function searchPlay(q: string, openPlayer = true) {
-        piped.api("search", { 'q': q }).then(item => { piped.api("streams", { 'v': item.items[0].url.split("?v=")[1] }).then(item2 => { play(item2) }) })
+        piped.api("search", { 'q': q }).then(item => { piped.api("streams", { 'v': item.items[0].url.split("?v=")[1] }).then(item2 => { play(item2, openPlayer) }) })
     }
     function pop() {
         element!.src = ""

@@ -9,7 +9,7 @@ export default async function handler(
     return new Promise(async (resolve, reject) => {
         let resp: Array<any> = []
         const info: any = (await ytdl.getInfo(req.query['v'] as any))
-        if (typeof info.response.engagementPanels[1].engagementPanelSectionListRenderer.content.structuredDescriptionContentRenderer.items[1] === 'undefined') { res.status(200).json(false) }
+        if (typeof info.response.engagementPanels[1].engagementPanelSectionListRenderer.content.structuredDescriptionContentRenderer.items[1] === 'undefined') { return res.status(200).json(false) }
         const musicSection = info.response.engagementPanels[1].engagementPanelSectionListRenderer.content.structuredDescriptionContentRenderer.items[1].videoDescriptionMusicSectionRenderer
         const lockups = musicSection.carouselLockups
         for (const lockup of lockups) {
