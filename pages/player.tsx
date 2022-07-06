@@ -30,7 +30,7 @@ const Player: NextPage = () => {
         </Center>
         <Text mb={2} size="xl" dangerouslySetInnerHTML={{ __html: streamDetails.title }} />
         <Text dangerouslySetInnerHTML={{ __html: streamDetails.uploader }} />
-        <Center my="md">
+        <Group spacing"sm" direction="column" my="md">
             <ActionGroup>
                 <Action onClick={() => { player.pop() }} label={localized.endPlayback}>
                     <X />
@@ -42,7 +42,6 @@ const Player: NextPage = () => {
                     <Playlist />
                 </Action>
             </ActionGroup>
-            <Space h="sm" />
             <ActionGroup>
                 <SegmentedControl onChange={(e) => { setVolume(Number(e)) }} value={volume.toString()} sx={(theme) => ({ background: 'unset' })} radius="lg" data={[
                     { label: localized.muted, value: '0' },
@@ -51,7 +50,7 @@ const Player: NextPage = () => {
                     { label: localized.high, value: '90' }
                 ]} />
             </ActionGroup>
-        </Center>
+        </Group>
         <Accordion>
             <AccordionItem icon={<Notes />} label={localized.description}>
                 <Text sx={{ wordBreak: 'break-word', 'whiteSpace': 'pre-wrap' }} dangerouslySetInnerHTML={{ __html: Autolinker.link(streamDetails.description, { email: true, className: "autolinker click" }) }} />
