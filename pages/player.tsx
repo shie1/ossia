@@ -30,7 +30,7 @@ const Player: NextPage = () => {
             <Image radius="lg" sx={{ maxWidth: '30vh', minWidth: '40%' }} mb="sm" src={playerContent.cover} alt={playerContent.title} />
         </Center>
         <Text mb={2} size="xl" dangerouslySetInnerHTML={{ __html: playerContent.title }} />
-        <Text dangerouslySetInnerHTML={{ __html: playerContent.artist }} />
+        <Text dangerouslySetInnerHTML={{ __html: `${playerContent.album ? `${playerContent.artist} - ${playerContent.album}` : playerContent.artist}` }} />
         <Group align="center" spacing="sm" direction="column" my="md">
             <ActionGroup>
                 <Action onClick={() => { player.pop() }} label={localized.endPlayback}>

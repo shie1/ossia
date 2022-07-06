@@ -43,7 +43,7 @@ export default async function handler(
                 }
                 if (input) { inner[title] = input }
             }
-            resp.push({ ...inner, "ALBUMART": `/api/albumart?a=${encodeURIComponent(inner["ARTIST"])}&s=${encodeURIComponent(inner["SONG"])}` })
+            resp.push({ ...inner, "ALBUMART": `/api/albumart?a=${encodeURIComponent(inner["ARTIST"])}&b=${encodeURIComponent(inner["ALBUM"])}&s=${encodeURIComponent(inner["SONG"])}&v=${req.query['v']}` })
         }
         resolve(res.status(200).json(resp))
     })

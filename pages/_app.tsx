@@ -130,7 +130,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <ModalsProvider>
           <NotificationsProvider>
             <LoadingOverlay visible={loading} sx={{ position: 'fixed' }} />
-            <audio ref={playerRef} autoPlay id='ossia-main-player' onLoadStart={(e) => {
+            <audio onPause={() => { player.setPaused(true) }} onPlay={() => { player.setPaused(false) }} onWaiting={() => { player.setPaused(true); document.documentElement.setAttribute('data-loading', 'true') }} ref={playerRef} autoPlay id='ossia-main-player' onLoadStart={(e) => {
               if (!e.currentTarget.src.startsWith(document.location.origin)) document.documentElement.setAttribute('data-loading', 'true')
             }} onLoadedData={() => { document.documentElement.setAttribute('data-loading', 'false') }} />
             <Component {...pageProps} />

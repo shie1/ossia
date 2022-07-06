@@ -54,6 +54,7 @@ export const usePlayer = () => {
                 setPlayerContent({
                     'title': resp[0].SONG,
                     'artist': resp[0].ARTIST,
+                    'album': resp[0].ALBUM,
                     'cover': resp[0].ALBUMART,
                 })
             }
@@ -69,5 +70,5 @@ export const usePlayer = () => {
         setStreamDetails({})
         document.documentElement.setAttribute('data-loading', 'false')
     }
-    return { 'paused': paused, 'play': play, 'toggleState': toggleState, 'pop': pop, searchPlay: searchPlay }
+    return { 'paused': paused, setPaused: setPaused, 'play': play, 'toggleState': toggleState, 'pop': pop, searchPlay: searchPlay }
 }
