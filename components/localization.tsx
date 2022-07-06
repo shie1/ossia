@@ -51,7 +51,11 @@ export const localized = new LocalizedStrings({
         contributors: "Contributors",
         germanContrib: "German translations",
         newTabTitle: "Open URL in new tab",
-        newTabText: "You're about to open a link from {href} in a new tab.\nAre you sure? This page is not related to Ossia."
+        newTabText: "You're about to open a link from {href} in a new tab.\nAre you sure? This page is not related to Ossia.",
+        muted: "Muted",
+        low: "Low",
+        medium: "Medium",
+        high: "High"
     },
     hu: {
         navSearch: "Keresés",
@@ -102,6 +106,10 @@ export const localized = new LocalizedStrings({
         contributors: "Közreműködők",
         germanContrib: "Almalmazás lefordítása német nyelvre",
         newTabTitle: "Link megnyitása új lapon",
-        newTabText: "Új lapon készülsz megnyitni egy linket innen: {href}\nBiztos vagy benne? Ez az oldal nem kapcsolódik az Ossia-hoz."
+        newTabText: "Új lapon készülsz megnyitni egy linket innen: {href}\nBiztos vagy benne? Ez az oldal nem kapcsolódik az Ossia-hoz.",
+        muted: "Néma",
+        low: "Alacsony"
+        medium: "Közepes"
+        high: "Magas"
     }
 });
