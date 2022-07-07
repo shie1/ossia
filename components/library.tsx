@@ -10,52 +10,6 @@ import { localized } from "./localization"
 import { compressedLocalStorage } from "./storage"
 import { interactive } from "./styles"
 
-export const createPlaylist = (name: string, icon: string) => {
-    const pls = JSON.parse(localStorage.getItem("playlists")!)
-    localStorage.setItem("playlists", JSON.stringify([...pls, name]))
-    const playlistObj: any = {
-        'name': name,
-        'icon': icon,
-        'items': []
-    }
-    compressedLocalStorage.setItem(`playlist-${pls?.length}`, playlistObj)
-}
-
-export const removePlaylist = (name: string) => {
-    const pls: Array<string> = JSON.parse(localStorage.getItem("playlists")!)
-    localStorage.removeItem(`playlist-${pls.indexOf(name)}`)
-    localStorage.setItem("playlists", JSON.stringify(pls.filter(item => item !== name)))
-}
-
-export const renamePlaylist = (oldName: string, newName: string, icon: string) => {
-    let pls = JSON.parse(localStorage.getItem("playlists")!)
-    const pl = compressedLocalStorage.getItem(`playlist-${pls.indexOf(oldName)}`)
-    const playlistObj: any = {
-        'name': newName,
-        'icon': icon,
-        'items': pl.items
-    }
-    compressedLocalStorage.setItem(`playlist-${pls.indexOf(oldName)}`, playlistObj)
-    pls[pls.indexOf(oldName)] = newName
-    localStorage.setItem("playlists", JSON.stringify(pls))
-}
-
-export const getPlaylist = (name: string | number) => {
-    if (typeof name === 'string') {
-        name = JSON.parse(localStorage.getItem("playlists")!).indexOf(name)
-    }
-    return compressedLocalStorage.getItem(`playlist-${name}`)
-}
-
-export const getPlaylists = () => {
-    if (typeof window === 'undefined') { return [] }
-    return JSON.parse(localStorage.getItem("playlists")!)
-}
-
-export const playlistExists = (name: string) => {
-    return JSON.parse(localStorage.getItem("playlists")!).filter((item: string) => item === name).length >= 1
-}
-
 const validatePlaylistName = (input: string) => {
     let error: any = false
     if (!input || (input.match(/^\s*$/) !== null)) {
@@ -64,10 +18,6 @@ const validatePlaylistName = (input: string) => {
     }
     if (input.match(/^[a-zA-Z0-9\s]*$/) === null) {
         error = localized.createPlaylistModalNameError1
-        return false
-    }
-    if (playlistExists(input)) {
-        error = localized.createPlaylistModalNameError2
         return false
     }
     return error

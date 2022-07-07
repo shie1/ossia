@@ -6,7 +6,7 @@ import { NotificationsProvider } from '@mantine/notifications'
 import { useEventListener } from "@mantine/hooks"
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
-import { Books, BrandLastfm, Home, PlayerPlay, Search, Settings } from "tabler-icons-react"
+import { Books, BrandLastfm, Home, InfoCircle, PlayerPlay, Search, Settings } from "tabler-icons-react"
 import { useManifest } from '../components/manifest'
 import { interactive } from '../components/styles'
 import { useHotkeys, useLocalStorage } from '@mantine/hooks'
@@ -61,7 +61,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   const NavLink = ({ link, icon, label }: any) => {
     return (<Link href={link}>
-      <Paper component='button' style={{ background: 'rgba(0,0,0,.2)' }} tabIndex={0} radius="lg" onClick={() => { if(link === ""){wip()};setSidebarOpen(false); window.dispatchEvent(new Event("ossia-nav-click")) }} sx={interactive} p='md' withBorder>
+      <Paper component='button' style={{ background: 'rgba(0,0,0,.2)' }} tabIndex={0} radius="lg" onClick={() => { if (link === "") { wip() }; setSidebarOpen(false); window.dispatchEvent(new Event("ossia-nav-click")) }} sx={interactive} p='md' withBorder>
         <Group direction='row'>
           {icon}
           <Text>{label}</Text>
@@ -112,6 +112,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <NavLink icon={<Books />} label={localized.navLibrary} link="" />
         {cookies.auth && <NavLink icon={<BrandLastfm />} label="Last.FM" link="/user" />}
         <NavLink icon={<Settings />} label={localized.settings} link="/settings" />
+        <NavLink icon={<InfoCircle />} label={localized.about} link="/about" />
       </Group>
     </Navbar>)
   }
