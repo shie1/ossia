@@ -12,6 +12,7 @@ export default async function handler(
 ) {
     const token = req.query['token']
     superagent.get(apiroot)
+        .buffer(true)
         .query(genSig({
             'method': 'auth.getSession',
             'api_key': process.env.LASTFM_KEY,

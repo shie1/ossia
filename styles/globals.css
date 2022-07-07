@@ -55,9 +55,9 @@ a {
 
 .background-glow {
   animation-name: bg-glow-move;
-  animation-timing-function: ease-in-out;
+  animation-timing-function: linear;
   animation-iteration-count: infinite;
   animation-play-state: running;
   animation-direction: alternate;
-  animation-duration: 60s;
+  animation-duration: 120s;
 }

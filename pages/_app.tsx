@@ -135,9 +135,9 @@ function MyApp({ Component, pageProps }: AppProps) {
             <audio onPause={() => { player.setPaused(true) }} onPlay={() => { player.setPaused(false) }} onWaiting={() => { player.setPaused(true); document.documentElement.setAttribute('data-loading', 'true') }} ref={playerRef} autoPlay id='ossia-main-player' onLoadStart={(e) => {
               if (!e.currentTarget.src.startsWith(document.location.origin)) document.documentElement.setAttribute('data-loading', 'true')
             }} onLoadedData={() => { document.documentElement.setAttribute('data-loading', 'false') }} />
-            <div>
-              <Center className="background-glow" style={{ filter: 'blur(15rem)', position: 'fixed', left: 240, top: -480, height: '10rem' }}>
-                <div style={{ background: `url(${playerContent?.cover}`, objectFit: 'fill', height: '50vh', width: '90vw' }} draggable={false} />
+            <div style={{position: 'relative'}}>
+              <Center className="background-glow" style={{ filter: 'blur(20rem)', position: 'fixed', left: 240, top: -600, height: '10rem' }}>
+                <div style={{ background: `url(${playerContent?.cover || "/gradient.png"}`, objectFit: 'fill', height: '50vh', width: '90vw' }} draggable={false} />
               </Center>
               <Component {...pageProps} />
             </div>
