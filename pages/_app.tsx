@@ -112,7 +112,6 @@ function MyApp({ Component, pageProps }: AppProps) {
         <NavLink icon={<Books />} label={localized.navLibrary} link="" />
         {cookies.auth && <NavLink icon={<BrandLastfm />} label="Last.FM" link="/user" />}
         <NavLink icon={<Settings />} label={localized.settings} link="/settings" />
-        <NavLink icon={<InfoCircle />} label={localized.about} link="/about" />
       </Group>
     </Navbar>)
   }

@@ -24,7 +24,7 @@ export default async function handler(
                 let input: any = typeof infoRow.infoRowRenderer.defaultMetadata !== 'undefined' ? infoRow.infoRowRenderer.defaultMetadata : infoRow.infoRowRenderer.expandedMetadata
                 switch (title) {
                     case "SONG":
-                        input = input.simpleText
+                        input = typeof input.simpleText === 'undefined' ? input.runs[0].text : input.simpleText
                         break
                     case "ARTIST":
                         input = typeof input.simpleText === 'undefined' ? input.runs[0].text : input.simpleText

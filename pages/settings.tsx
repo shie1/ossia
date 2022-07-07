@@ -31,11 +31,11 @@ export const Settings: NextPage = () => {
     return (<Container>
         <Accordion>
             <AccordionItem label={localized.lang} icon={<World />}>
-                <Text mb="sm">{localized.setLang}</Text>
+                <Text my="sm">{localized.setLang}</Text>
                 <Languages />
             </AccordionItem>
             <AccordionItem label={!lastfm.cookie ? localized.linkLastFM : localized.unlinkLastFM} icon={<BrandLastfm />}>
-                <Text mb="sm">{!lastfm.cookie ? localized.linkLastFMText : localized.unlinkLastFMText}</Text>
+                <Text my="sm">{!lastfm.cookie ? localized.linkLastFMText : localized.unlinkLastFMText}</Text>
                 <Button onClick={()=>{router.push(!lastfm.cookie ? "/login" : "/logout")}} variant="light" leftIcon={<Link />}>{!lastfm.cookie ? localized.linkLastFMButton : localized.unlinkLastFMBUtton}</Button>
             </AccordionItem>
         </Accordion>
