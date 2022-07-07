@@ -41,8 +41,8 @@ const Player: NextPage = () => {
                     <Text dangerouslySetInnerHTML={{ __html: `${playerContent.album ? `${playerContent.artist} - ${playerContent.album}` : playerContent.artist}` }} />
                 </Group>
                 <ActionGroup>
-                    <Action onClick={()=>{customRouter.newTab(`https://youtube.com/watch?v=${streamDetails.thumbnailUrl.split("/")[4]}`)}} label={localized.openInYt}>
-                        <BrandYoutube/>
+                    <Action onClick={() => { customRouter.newTab(`https://youtube.com/watch?v=${streamDetails.thumbnailUrl.split("/")[4]}`) }} label={localized.openInYt}>
+                        <BrandYoutube />
                     </Action>
                 </ActionGroup>
             </Group>

@@ -20,7 +20,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   const [loading, setLoading] = useState(false)
   const [playerContent, setPlayerContent] = useLocalStorage<any>({ 'key': 'player-content', 'defaultValue': {} })
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [streamDetails, setStreamDetails] = useLocalStorage({ 'key': 'stream-details', 'defaultValue': {} })
+  const [streamDetails, setStreamDetails] = useLocalStorage<any>({ 'key': 'stream-details', 'defaultValue': {} })
   const manifest = useManifest()
   const player = usePlayer()
   const playerRef = useRef<HTMLAudioElement | null>(null)
@@ -136,9 +136,6 @@ function MyApp({ Component, pageProps }: AppProps) {
               if (!e.currentTarget.src.startsWith(document.location.origin)) document.documentElement.setAttribute('data-loading', 'true')
             }} onLoadedData={() => { document.documentElement.setAttribute('data-loading', 'false') }} />
             <div style={{position: 'relative'}}>
-              <Center className="background-glow" style={{ filter: 'blur(20rem)', position: 'fixed', left: 240, top: -600, height: '10rem' }}>
-                <div style={{ background: `url(${playerContent?.cover || "/gradient.png"}`, objectFit: 'fill', height: '50vh', width: '90vw' }} draggable={false} />
-              </Center>
               <Component {...pageProps} />
             </div>
           </NotificationsProvider>
