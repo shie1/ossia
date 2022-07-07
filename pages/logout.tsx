@@ -8,7 +8,7 @@ export const Logout: NextPage = () => {
     return (<>
         <Text mb={2} size='xl' align='center'>You will be redirected...</Text>
         <Text size='md' align='center'>If this doesn&apos;t happen automatically, <Anchor href="/">click here!</Anchor></Text>
-        <meta http-equiv="refresh" content="0;URL='/'" />
+        <meta httpEquiv="refresh" content="0;URL='/'" />
     </>)
 }
 
