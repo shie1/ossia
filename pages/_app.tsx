@@ -18,7 +18,7 @@ import { wip } from '../components/notifications'
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [loading, setLoading] = useState(false)
-  const [playerContent, setPlayerContent] = useLocalStorage({ 'key': 'player-content', 'defaultValue': {} })
+  const [playerContent, setPlayerContent] = useLocalStorage<any>({ 'key': 'player-content', 'defaultValue': {} })
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [streamDetails, setStreamDetails] = useLocalStorage({ 'key': 'stream-details', 'defaultValue': {} })
   const manifest = useManifest()
@@ -135,7 +135,12 @@ function MyApp({ Component, pageProps }: AppProps) {
             <audio onPause={() => { player.setPaused(true) }} onPlay={() => { player.setPaused(false) }} onWaiting={() => { player.setPaused(true); document.documentElement.setAttribute('data-loading', 'true') }} ref={playerRef} autoPlay id='ossia-main-player' onLoadStart={(e) => {
               if (!e.currentTarget.src.startsWith(document.location.origin)) document.documentElement.setAttribute('data-loading', 'true')
             }} onLoadedData={() => { document.documentElement.setAttribute('data-loading', 'false') }} />
-            <Component {...pageProps} />
+            <div>
+              <Center className="background-glow" style={{ filter: 'blur(15rem)', position: 'fixed', left: 240, top: -480, height: '10rem' }}>
+                <div style={{ background: `url(${playerContent?.cover}`, objectFit: 'fill', height: '50vh', width: '90vw' }} draggable={false} />
+              </Center>
+              <Component {...pageProps} />
+            </div>
           </NotificationsProvider>
         </ModalsProvider>
       </AppShell>

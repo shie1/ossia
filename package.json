@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "postbuild": "next-sitemap --config next-sitemap.config.mjs && node gen-manifest.mjs",
     "start": "next start",
     "lint": "next lint"
   },
@@ -29,6 +30,8 @@
     "md5": "^2.3.0",
     "moment": "^2.29.3",
     "next": "12.2.0",
+    "next-pwa": "^5.5.4",
+    "next-sitemap": "^3.1.10",
     "react": "18.2.0",
     "react-cookie": "^4.1.1",
     "react-dom": "18.2.0",

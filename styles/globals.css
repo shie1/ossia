@@ -1,3 +1,15 @@
+@keyframes bg-glow-move {
+  0%{
+    transform: rotate(10deg) translateX(0vw) translateY(0vh);
+  }
+  50%{
+    transform: rotate(-10deg) translateX(0vw) translateY(10vh);
+  }
+  100%{
+    transform: rotate(10deg) translateX(0vw) translateY(15vh);
+  }
+}
+
 html,
 body {
   padding: 0;
@@ -39,4 +51,13 @@ a {
 
 .oneliner:hover .mantine-Text-root {
   max-height: 8em;
+}
+
+.background-glow {
+  animation-name: bg-glow-move;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-play-state: running;
+  animation-direction: alternate;
+  animation-duration: 60s;
 }

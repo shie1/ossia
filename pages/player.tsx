@@ -25,10 +25,7 @@ const Player: NextPage = () => {
     if (Object.keys(streamDetails).length === 0) {
         return <></>
     }
-    return (<div style={{ position: 'relative' }}>
-        <Center className="background-glow" style={{ filter: 'blur(8rem) contrast(100%)', position: 'fixed', top: 50, height: '10rem' }}>
-            <div style={{background: `url(${playerContent.cover}`, height: '5vh', width: '83vw'}} draggable={false} />
-        </Center>
+    return (<>
         <Container>
             <Center>
                 <Image imageProps={{draggable: false}} draggable={false} radius="lg" style={{ maxWidth: '30vh', minWidth: '40%' }} mb="sm" src={playerContent.cover} alt={playerContent.title} />
@@ -65,7 +62,7 @@ const Player: NextPage = () => {
                 </AccordionItem>
             </Accordion>
         </Container>
-    </div>)
+    </>)
 }
 
 export default Player
