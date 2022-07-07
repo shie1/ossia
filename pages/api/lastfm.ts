@@ -9,32 +9,35 @@ export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse<any>
 ) {
-    if (!req.body) { res.status(200).json({}) }
-    let params = { ...(req.method === "POST" ? JSON.parse(req.body) : req.query), 'api_key': process.env.LASTFM_KEY }
-    delete params.method
-    params = {...params,...params.options}
-    delete params.options
-    params = genSig(params,true,process.env)
-    switch (req.method) {
-        case 'GET':
-            superagent.get(apiroot)
-                .query(params)
-                .buffer(false)
-                .parse(parser)
-                .end((err, resp) => {
-                    if (err) { console.log(err) }
-                    res.status(200).json(resp.body)
-                })
-            break
-        case 'POST':
-            superagent.post(apiroot)
-                .send((new URLSearchParams(params)).toString())
-                .parse(parser)
-                .set('Content-Type', 'application/x-www-form-urlencoded')
-                .end((err, resp) => {
-                    if (err) { console.log(err) }
-                    res.status(200).json(resp.body)
-                })
-            break
-    }
+    return new Promise((resolve, reject) => {
+        if (!req.body) { resolve(res.status(200).json({})) }
+        let params = { ...(req.method === "POST" ? JSON.parse(req.body) : req.query), 'api_key': process.env.LASTFM_KEY }
+        delete params.method
+        params = { ...params, ...params.options }
+        delete params.options
+        params = genSig(params, true, process.env)
+        switch (req.method) {
+            case 'GET':
+                superagent.get(apiroot)
+                    .query(params)
+                    .buffer(true)
+                    .parse(parser)
+                    .end((err, resp) => {
+                        if (err) { console.log(err) }
+                        resolve(res.status(200).json(resp.body))
+                    })
+                break
+            case 'POST':
+                superagent.post(apiroot)
+                    .send((new URLSearchParams(params)).toString())
+                    .buffer(true)
+                    .parse(parser)
+                    .set('Content-Type', 'application/x-www-form-urlencoded')
+                    .end((err, resp) => {
+                        if (err) { console.log(err) }
+                        resolve(res.status(200).json(resp.body))
+                    })
+                break
+        }
+    })
 }

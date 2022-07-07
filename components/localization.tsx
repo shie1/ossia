@@ -55,7 +55,8 @@ export const localized = new LocalizedStrings({
         muted: "Muted",
         low: "Low",
         medium: "Medium",
-        high: "High"
+        high: "High",
+        openInYt: "Open in YouTube"
     },
     hu: {
         navSearch: "Keresés",
@@ -110,6 +111,7 @@ export const localized = new LocalizedStrings({
         muted: "Néma",
         low: "Alacsony",
         medium: "Közepes",
-        high: "Magas"
+        high: "Magas",
+        openInYt: "Megnyitás YouTube-ban"
     }
 });

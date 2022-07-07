@@ -3,19 +3,21 @@ import type { NextPage } from "next";
 import { useEffect, useState } from "react";
 import { Accordion, AccordionItem, Image, ActionIcon, BackgroundImage, Center, Container, Group, Paper, SegmentedControl, Slider, Space, Text } from "@mantine/core";
 import { usePlayer } from "../components/player";
-import { InfoCircle, LayoutList, Notes, PlayerPause, PlayerPlay, Playlist, X } from "tabler-icons-react";
+import { BrandYoutube, InfoCircle, LayoutList, Notes, PlayerPause, PlayerPlay, Playlist, X } from "tabler-icons-react";
 import { Action, ActionGroup } from "../components/action";
 import { useRouter } from "next/router";
 import { localized } from "../components/localization";
 import { VideoGrid } from "../components/video";
 import Autolinker from 'autolinker';
 import { wip } from "../components/notifications";
+import { useCustomRouter } from "../components/redirect";
 
 const Player: NextPage = () => {
     const [streamDetails, setStreamDetails] = useLocalStorage<any>({ 'key': 'stream-details', 'defaultValue': {} })
     const [playerContent, setPlayerContent] = useLocalStorage<any>({ 'key': 'player-content', 'defaultValue': {} })
     const [volume, setVolume] = useLocalStorage<number>({ 'key': 'volume', 'defaultValue': 90 })
     const router = useRouter()
+    const customRouter = useCustomRouter()
     const player = usePlayer()
     useEffect(() => {
         if (Object.keys(streamDetails).length === 0) {
@@ -28,10 +30,22 @@ const Player: NextPage = () => {
     return (<>
         <Container>
             <Center>
-                <Image imageProps={{draggable: false}} draggable={false} radius="lg" style={{ maxWidth: '30vh', minWidth: '40%' }} mb="sm" src={playerContent.cover} alt={playerContent.title} />
+                <Image onError={({ currentTarget }) => {
+                    currentTarget.onerror = null; // prevents looping
+                    currentTarget.querySelector("img")!.src = streamDetails.thumbnailUrl;
+                }} imageProps={{ draggable: false }} draggable={false} radius="lg" style={{ maxWidth: '30vh', minWidth: '40%' }} mb="sm" src={playerContent.cover || streamDetails.thumbnail_url} alt={playerContent.title} />
             </Center>
-            <Text mb={2} size="xl" dangerouslySetInnerHTML={{ __html: playerContent.title }} />
-            <Text dangerouslySetInnerHTML={{ __html: `${playerContent.album ? `${playerContent.artist} - ${playerContent.album}` : playerContent.artist}` }} />
+            <Group>
+                <Group direction="column" spacing={2}>
+                    <Text size="xl" dangerouslySetInnerHTML={{ __html: playerContent.title }} />
+                    <Text dangerouslySetInnerHTML={{ __html: `${playerContent.album ? `${playerContent.artist} - ${playerContent.album}` : playerContent.artist}` }} />
+                </Group>
+                <ActionGroup>
+                    <Action onClick={()=>{customRouter.newTab(`https://youtube.com/watch?v=${streamDetails.thumbnailUrl.split("/")[4]}`)}} label={localized.openInYt}>
+                        <BrandYoutube/>
+                    </Action>
+                </ActionGroup>
+            </Group>
             <Group align="center" spacing="sm" direction="column" my="md">
                 <ActionGroup>
                     <Action onClick={() => { player.pop() }} label={localized.endPlayback}>

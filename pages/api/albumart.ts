@@ -8,10 +8,14 @@ export default async function handler(
     res: NextApiResponse<any>
 ) {
     return new Promise(async (resolve, reject) => {
-        let url = await albumArt(req.query['a'], { album: req.query['b'] || req.query['s'], size: 'large' })
-        if (url) { request(url).pipe(res) } else {
-            url = (await ytdl.getBasicInfo(req.query['v'] as any)).thumbnail_url
+        let url: any
+        url = await albumArt(req.query['a'], { album: req.query['b'] || req.query['s'], size: 'large' })
+        if (typeof url === 'object') {
+            res.status(200).json(false)
+        } else {
+            request(url).pipe(res)
         }
+
         resolve(true)
     })
 }
