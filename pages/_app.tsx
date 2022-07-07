@@ -14,6 +14,7 @@ import { usePlayer } from '../components/player'
 import { localized } from '../components/localization'
 import { useCookies } from "react-cookie"
 import theme from '../components/theme'
+import { wip } from '../components/notifications'
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [loading, setLoading] = useState(false)
@@ -23,6 +24,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   const manifest = useManifest()
   const player = usePlayer()
   const playerRef = useRef<HTMLAudioElement | null>(null)
+  useLocalStorage<Array<string>>({ 'key': 'playlists', 'defaultValue': [] })
   const [volume, setVolume] = useLocalStorage<number>({ 'key': 'volume', 'defaultValue': 90 })
   const [cookies, setCookies, removeCookies] = useCookies(["lang", "auth"])
   useEffect(() => {
@@ -59,7 +61,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   const NavLink = ({ link, icon, label }: any) => {
     return (<Link href={link}>
-      <Paper component='button' style={{ background: 'rgba(0,0,0,.2)' }} tabIndex={0} radius="lg" onClick={() => { setSidebarOpen(false); window.dispatchEvent(new Event("ossia-nav-click")) }} sx={interactive} p='md' withBorder>
+      <Paper component='button' style={{ background: 'rgba(0,0,0,.2)' }} tabIndex={0} radius="lg" onClick={() => { if(link === ""){wip()};setSidebarOpen(false); window.dispatchEvent(new Event("ossia-nav-click")) }} sx={interactive} p='md' withBorder>
         <Group direction='row'>
           {icon}
           <Text>{label}</Text>
@@ -107,7 +109,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Group grow direction='column' spacing='sm'>
         <NavLink icon={<Search />} label={localized.navSearch} link="/" />
         {Object.keys(streamDetails).length !== 0 && <NavLink icon={<PlayerPlay />} label={localized.navPlayer} link="/player" />}
-        <NavLink icon={<Books />} label={localized.navLibrary} link="/library" />
+        <NavLink icon={<Books />} label={localized.navLibrary} link="" />
         {cookies.auth && <NavLink icon={<BrandLastfm />} label="Last.FM" link="/user" />}
         <NavLink icon={<Settings />} label={localized.settings} link="/settings" />
       </Group>

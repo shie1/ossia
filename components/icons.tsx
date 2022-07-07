@@ -3,21 +3,23 @@ import { createElement, useEffect, useState } from "react"
 import * as Icons from "tabler-icons-react"
 import { localized } from "./localization"
 import { interactive } from "./styles"
+const stringComparison = require("string-comparison")
 
-const Icon = ({ icon, size, color }: { icon: string, size?: number, color?: string }) => {
+export const Icon = ({ icon, size, color }: { icon: string, size?: number, color?: string }) => {
     return createElement((Icons as any)[icon], { size: size, color: color })
 }
 
-export const useIconSelector = (defaultIcon?: Icons.Icon) => {
+export const useIconSelector = (defaultIcon?: string) => {
+    const comp = stringComparison.levenshtein
     const [opened, setOpened] = useState(false)
-    const [icon, setIcon] = useState<any>(defaultIcon || <Icon icon={Object.keys(Icons)[Math.floor(Math.random() * Object.keys(Icons).length)]} />)
+    const [icon, setIcon] = useState<any>(defaultIcon || Object.keys(Icons)[Math.floor(Math.random() * Object.keys(Icons).length)])
     const [page, setPage] = useState<number>(1)
     const [filteredIcons, setFilteredIcons] = useState(Object.keys(Icons))
     const [filter, setFilter] = useState("")
     const itemsPerPage = 24
     useEffect(() => {
         setPage(1)
-        setFilteredIcons(Object.keys(Icons).filter((item: string) => item.toLowerCase().search(filter.toLowerCase()) !== -1))
+        setFilteredIcons(Array.from(new Set([...Object.keys(Icons).filter((item: string) => item.toLowerCase().search(filter.toLowerCase()) !== -1), ...Object.keys(Icons).filter((item: string) => comp.similarity(item, filter) >= .9)])))
     }, [filter])
     const IconsDisp = () => {
         let i = 0
@@ -28,7 +30,7 @@ export const useIconSelector = (defaultIcon?: Icons.Icon) => {
                 if (page * itemsPerPage >= i && (page - 1) * itemsPerPage < i) {
                     return (<>
                         <Grid.Col xs={2} span={4}>
-                            <Paper className="oneliner" onClick={() => { setIcon(<Icon icon={icon} />); setOpened(false) }} p="sm" withBorder sx={interactive}>
+                            <Paper className="oneliner" onClick={() => { setIcon(icon); setOpened(false) }} p="sm" withBorder sx={interactive}>
                                 <Center>
                                     <Icon size={40} icon={icon} />
                                 </Center>
@@ -55,6 +57,6 @@ export const useIconSelector = (defaultIcon?: Icons.Icon) => {
                 </Grid>
                 <Pagination onChange={setPage} mt="md" align="center" position="center" page={page} total={Math.round(filteredIcons.length / itemsPerPage)} />
             </Modal>
-        </>
+        </>, setIcon: setIcon
     })
 }

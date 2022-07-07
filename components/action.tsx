@@ -2,7 +2,7 @@ import { Center, Paper, Group, Popover, Text } from "@mantine/core"
 import { ActionIcon } from "@mantine/core"
 import { useState } from "react"
 
-export const ActionGroup = ({ children }: any) => {
+export const ActionGroup = ({ children, sx }: any) => {
     return (<Center>
         <Paper radius="lg">
             <Group spacing="sm" direction="row">
