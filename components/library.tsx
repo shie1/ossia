@@ -64,24 +64,13 @@ export const PlaylistDisp = ({ name, icon }: { name: string, icon: any }) => {
                     <Action onClick={() => { rnD[1](true) }} label={localized.rename}>
                         <Pencil />
                     </Action>
-                    <Action onClick={() => { confirm(() => { removePlaylist(name); router.replace("/library") }) }} label={localized.delete}>
+                    <Action label={localized.delete}>
                         <Trash />
                     </Action>
                 </ActionGroup>
             </Group>
         </Paper>
     </>)
-}
-
-export const Playlists = () => {
-    let i = 0
-    return (<Group direction="row">
-        {getPlaylists().map((playlist: any) => {
-            playlist = getPlaylist(playlist)
-            i++
-            return (<Playlist id={i - 1} key={i} name={playlist.name} icon={playlist.icon} />)
-        })}
-    </Group>)
 }
 
 export const CreatePlaylistModal = ({ state }: { state: any }) => {
@@ -91,7 +80,7 @@ export const CreatePlaylistModal = ({ state }: { state: any }) => {
     const action = () => {
         setError(validatePlaylistName(input))
         if (error) { return false }
-        createPlaylist(input.replace(/\s*$/, ''), iconSelector.icon)
+        // createPlaylist(input.replace(/\s*$/, ''), iconSelector.icon)
         state[1](false)
     }
     return (<Modal
@@ -125,16 +114,10 @@ export const RenamePlaylistModal = ({ state, plstring }: { state: any, plstring:
     const [error, setError] = useState("")
     const [pl, setPl] = useState<any>()
     const router = useRouter()
-    useEffect(() => {
-        if (!pl) {
-            setPl(getPlaylist(plstring))
-            iconSelector.setIcon(getPlaylist(plstring).icon)
-        }
-    }, [pl])
     const action = () => {
         setError(validatePlaylistName(input))
         if (error) { return false }
-        renamePlaylist(plstring, input.replace(/\s*$/, ''), iconSelector.icon)
+        // renamePlaylist(plstring, input.replace(/\s*$/, ''), iconSelector.icon)
         state[1](false)
     }
     return (<Modal
