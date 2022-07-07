@@ -4,7 +4,7 @@ import { Anchor, Text } from "@mantine/core";
 
 export const Login: NextPage = (props: any) => {
     const router = useRouter()
-    const redir = `http://www.last.fm/api/auth/?api_key=070545b595db2dbcacbf07297c2e93e1&cb=${encodeURIComponent(props.host)}`
+    const redir = `http://www.last.fm/api/auth/?api_key=070545b595db2dbcacbf07297c2e93e1&cb=${encodeURIComponent(props.host + "/api/auth/callback")}`
     router.replace(redir)
     return (<>
         <Text mb={2} size='xl' align='center'>You will be redirected...</Text>
@@ -15,7 +15,7 @@ export const Login: NextPage = (props: any) => {
 export const getServerSideProps = ({ req, res }: any) => {
     require('dotenv').config()
     const protocol = (req.headers['x-forwarded-proto'] || req.headers.referer?.split('://')[0] || 'http')
-    return { props: { 'env': process.env, 'host': `${protocol}://${req.headers.host}` } };
+    return { props: { 'host': `${protocol}://${req.headers.host}` } };
 }
 
 export default Login
