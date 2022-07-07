@@ -56,7 +56,9 @@ export const localized = new LocalizedStrings({
         low: "Low",
         medium: "Medium",
         high: "High",
-        openInYt: "Open in YouTube"
+        openInYt: "Open in YouTube",
+        error: "Error",
+        songErrorText: "Error encountered while trying to load song, please try again!"
     },
     hu: {
         navSearch: "Keresés",
@@ -112,6 +114,8 @@ export const localized = new LocalizedStrings({
         low: "Alacsony",
         medium: "Közepes",
         high: "Magas",
-        openInYt: "Megnyitás YouTube-ban"
+        openInYt: "Megnyitás YouTube-ban",
+        error: "Hiba",
+        songErrorText: "A dal betöltése során hiba merült fel, kérlek próbáld újra!"
     }
 });

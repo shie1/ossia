@@ -9,7 +9,7 @@ export default async function handler(
 ) {
     return new Promise(async (resolve, reject) => {
         let url: any
-        url = await albumArt(req.query['a'], { album: req.query['b'] || req.query['s'], size: 'large' })
+        url = await albumArt(req.query['a'], { album: req.query['b'] !== "undefined" ? req.query['b'] : req.query['s'], size: 'large' })
         if (typeof url === 'object') {
             res.status(200).json(false)
         } else {

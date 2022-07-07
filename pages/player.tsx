@@ -32,7 +32,9 @@ const Player: NextPage = () => {
             <Center>
                 <Image onError={({ currentTarget }) => {
                     currentTarget.onerror = null; // prevents looping
-                    currentTarget.querySelector("img")!.src = streamDetails.thumbnailUrl;
+                    let pc: any = playerContent
+                    pc.cover = streamDetails.thumbnailUrl
+                    setPlayerContent(pc);
                 }} imageProps={{ draggable: false }} draggable={false} radius="lg" style={{ maxWidth: '30vh', minWidth: '40%' }} mb="sm" src={playerContent.cover || streamDetails.thumbnail_url} alt={playerContent.title} />
             </Center>
             <Group>
@@ -40,11 +42,6 @@ const Player: NextPage = () => {
                     <Text size="xl" dangerouslySetInnerHTML={{ __html: playerContent.title }} />
                     <Text dangerouslySetInnerHTML={{ __html: `${playerContent.album ? `${playerContent.artist} - ${playerContent.album}` : playerContent.artist}` }} />
                 </Group>
-                <ActionGroup>
-                    <Action onClick={() => { customRouter.newTab(`https://youtube.com/watch?v=${streamDetails.thumbnailUrl.split("/")[4]}`) }} label={localized.openInYt}>
-                        <BrandYoutube />
-                    </Action>
-                </ActionGroup>
             </Group>
             <Group align="center" spacing="sm" direction="column" my="md">
                 <ActionGroup>
@@ -54,8 +51,8 @@ const Player: NextPage = () => {
                     <Action onClick={() => { player.toggleState() }} label={player?.paused ? localized.play : localized.pause}>
                         {player?.paused ? <PlayerPlay /> : <PlayerPause />}
                     </Action>
-                    <Action onClick={wip} label={localized.addToPlaylist}>
-                        <Playlist />
+                    <Action onClick={() => { customRouter.newTab(`https://youtube.com/watch?v=${streamDetails.thumbnailUrl.split("/")[4]}`) }} label={localized.openInYt}>
+                        <BrandYoutube />
                     </Action>
                 </ActionGroup>
                 <ActionGroup>

@@ -68,6 +68,7 @@ export const usePlayer = () => {
     function pop() {
         element!.src = ""
         setStreamDetails({})
+        setPlayerContent({})
         document.documentElement.setAttribute('data-loading', 'false')
     }
     return { 'paused': paused, setPaused: setPaused, 'play': play, 'toggleState': toggleState, 'pop': pop, searchPlay: searchPlay }

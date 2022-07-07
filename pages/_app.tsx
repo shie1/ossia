@@ -2,11 +2,11 @@ import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import { AppShell, Text, Burger, Center, Footer, Group, Header, LoadingOverlay, MantineProvider, MediaQuery, Navbar, Paper, Title } from '@mantine/core'
 import { ModalsProvider } from '@mantine/modals'
-import { NotificationsProvider } from '@mantine/notifications'
+import { NotificationsProvider, showNotification } from '@mantine/notifications'
 import { useEventListener } from "@mantine/hooks"
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
-import { Books, BrandLastfm, Home, InfoCircle, PlayerPlay, Search, Settings } from "tabler-icons-react"
+import { AlertCircle, Books, BrandLastfm, Home, InfoCircle, PlayerPlay, Search, Settings, X } from "tabler-icons-react"
 import { useManifest } from '../components/manifest'
 import { interactive } from '../components/styles'
 import { useHotkeys, useLocalStorage } from '@mantine/hooks'
@@ -15,6 +15,8 @@ import { localized } from '../components/localization'
 import { useCookies } from "react-cookie"
 import theme from '../components/theme'
 import { wip } from '../components/notifications'
+import { apiCall } from '../components/api'
+import { useRouter } from 'next/router'
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [loading, setLoading] = useState(false)
@@ -22,6 +24,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [streamDetails, setStreamDetails] = useLocalStorage<any>({ 'key': 'stream-details', 'defaultValue': {} })
   const manifest = useManifest()
+  const router = useRouter()
   const player = usePlayer()
   const playerRef = useRef<HTMLAudioElement | null>(null)
   useLocalStorage<Array<string>>({ 'key': 'playlists', 'defaultValue': [] })
@@ -47,6 +50,18 @@ function MyApp({ Component, pageProps }: AppProps) {
   useEffect(() => {
     playerRef.current!.volume = volume / 100
   }, [volume])
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const cover = playerContent.cover
+      const element = document.querySelector(".bglow-1") as HTMLDivElement
+      if (!cover) {
+        element.style.background = "linear-gradient(#e66465, #9198e5)"
+      } else {
+        element.style.background = `url("${cover}")`
+      }
+    }
+  }, [playerContent])
 
   setInterval(() => {
     if (typeof window !== 'undefined' && document.documentElement.hasAttribute('data-loading')) {
@@ -132,10 +147,21 @@ function MyApp({ Component, pageProps }: AppProps) {
         <ModalsProvider>
           <NotificationsProvider>
             <LoadingOverlay visible={loading} sx={{ position: 'fixed' }} />
-            <audio onPause={() => { player.setPaused(true) }} onPlay={() => { player.setPaused(false) }} onWaiting={() => { player.setPaused(true); document.documentElement.setAttribute('data-loading', 'true') }} ref={playerRef} autoPlay id='ossia-main-player' onLoadStart={(e) => {
+            <audio onError={(e) => {
+              if (e.currentTarget.src === location.origin + location.pathname) { return }
+              e.currentTarget.src = ""
+              document.documentElement.setAttribute('data-loading', 'false')
+              setStreamDetails({})
+              setPlayerContent({})
+              router.push("/")
+              showNotification({ 'id': 'error', 'title': localized.error, 'message': localized.songErrorText, 'icon': <AlertCircle /> })
+            }} onPause={() => { player.setPaused(true) }} onPlay={() => { player.setPaused(false) }} onWaiting={() => { player.setPaused(true); document.documentElement.setAttribute('data-loading', 'true') }} ref={playerRef} autoPlay id='ossia-main-player' onLoadStart={(e) => {
               if (!e.currentTarget.src.startsWith(document.location.origin)) document.documentElement.setAttribute('data-loading', 'true')
             }} onLoadedData={() => { document.documentElement.setAttribute('data-loading', 'false') }} />
-            <div style={{position: 'relative'}}>
+            <div style={{ position: 'relative' }}>
+              <Center className="background-glow" style={{ filter: 'blur(20rem)', position: 'fixed', left: 240, top: -600, height: '10rem' }}>
+                <div className='bglow-1' style={{ 'background': 'linear-gradient(#e66465, #9198e5)', transition: '4s', objectFit: 'fill', height: '50vh', width: '90vw' }} draggable={false} />
+              </Center>
               <Component {...pageProps} />
             </div>
           </NotificationsProvider>
