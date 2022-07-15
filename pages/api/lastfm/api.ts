@@ -1,6 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { genSig, apiroot } from '../../components/lastfm'
-import manifest from "../../manifest"
+import { genSig, apiroot } from '../../../components/lastfm'
 import superagent from "superagent"
 const parser = require('superagent-xml2jsparser')
 require("dotenv").config()

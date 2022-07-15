@@ -1,0 +1,1 @@
+export const apiroot = "https://pipedapi.kavin.rocks"
