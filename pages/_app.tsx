@@ -5,7 +5,7 @@ import { ModalsProvider } from '@mantine/modals'
 import { NotificationsProvider } from '@mantine/notifications';
 import { ReactNode, useEffect, useState } from 'react';
 import Link from 'next/link'
-import { Books, Search, Settings } from "tabler-icons-react";
+import { Books, Login, Search, Settings } from "tabler-icons-react";
 import { useManifest } from '../components/manifest'
 import { interactive } from '../components/styles'
 import { localized } from '../components/localization'
@@ -61,7 +61,7 @@ const AppNavbar = ({ cookies, sidebar }: { cookies: any, sidebar: any }) => {
   return (<Navbar p="md" hiddenBreakpoint="sm" hidden={!sidebar[0]} width={{ sm: 200, lg: 300 }}>
     <Group grow direction='column' spacing='sm'>
       <NavLink icon={<Search />} label={localized.navSearch} link="/" />
-      <NavLink icon={<Books />} label={localized.navLibrary} link="" />
+      <NavLink icon={<Login />} label="Login" link='/login' />
       <NavLink icon={<Settings />} label={localized.settings} link="/settings" />
     </Group>
   </Navbar>)

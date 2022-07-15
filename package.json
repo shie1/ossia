@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@mantine/core": "^4.2.11",
+    "@mantine/form": "^4.2.12",
     "@mantine/hooks": "^4.2.11",
     "@mantine/modals": "^4.2.11",
     "@mantine/next": "^4.2.11",
@@ -28,6 +29,7 @@
     "cookies-next": "^2.1.1",
     "dotenv": "^16.0.1",
     "get-image-colors": "^4.0.1",
+    "jose": "^4.8.3",
     "lz-string": "^1.4.4",
     "md5": "^2.3.0",
     "moment": "^2.29.3",

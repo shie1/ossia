@@ -1110,6 +1110,11 @@
     react-popper "^2.2.5"
     react-textarea-autosize "^8.3.2"
 
+"@mantine/form@^4.2.12":
+  version "4.2.12"
+  resolved "https://registry.yarnpkg.com/@mantine/form/-/form-4.2.12.tgz#c204fa17b0232027d9fb0eeb2a6b214708d9e014"
+  integrity sha512-CnpkzZr7VVekN3gg/4fMG9DYEqDsOg1jJGGxFKZ7GjR4liwEOsL3FvC+Szi3OlI0ytfLFOg8zU8RCoEO758sQA==
+
 "@mantine/hooks@^4.2.11":
   version "4.2.11"
   resolved "https://registry.yarnpkg.com/@mantine/hooks/-/hooks-4.2.11.tgz#936d3fdf4eff33620d90902b4091b219aaee7669"
@@ -3562,6 +3567,11 @@ jest-worker@^27.4.5:
     "@types/node" "*"
     merge-stream "^2.0.0"
     supports-color "^8.0.0"
+
+jose@^4.8.3:
+  version "4.8.3"
+  resolved "https://registry.yarnpkg.com/jose/-/jose-4.8.3.tgz#5a754fb4aa5f2806608d083f438e6916b11087da"
+  integrity sha512-7rySkpW78d8LBp4YU70Wb7+OTgE3OwAALNVZxhoIhp4Kscp+p/fBkdpxGAMKxvCAMV4QfXBU9m6l9nX/vGwd2g==
 
 jpeg-js@^0.4.1:
   version "0.4.4"
