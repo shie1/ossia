@@ -4,48 +4,29 @@ import type { NextPage } from 'next'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { ArrowUp, Dots, Search } from 'tabler-icons-react'
 import { Action } from '../components/action'
-import { useLoading } from '../components/loading'
 import { localized } from '../components/localization'
-import { usePiped } from '../components/piped'
 import { VideoGrid } from '../components/video'
 
 const Home: NextPage = () => {
   const [searchInput, setSearchInput] = useState("")
   const [results, setResults] = useState<any>({})
-  const [searching, setSearching] = useState(false)
-  const sie = useRef<HTMLInputElement | null>(null)
   const [scroll, scrollTo] = useWindowScroll()
-  const loading = useLoading()
-  const piped = usePiped()
 
   const search = (e: any) => {
     e.preventDefault()
     if (!searchInput) { return }
-    loading.start()
-    piped.api("search", { 'q': searchInput }).then(resp => {
-      setResults(resp)
-      sie.current!.blur()
-      loading.stop()
-    })
+    console.log(`Search: ${searchInput}`)
   }
 
   const loadMore = useCallback(() => {
     if (!searchInput) { return }
-    loading.start()
-    piped.api("search", { 'q': searchInput, "nextpage": results.nextpage }).then(resp => {
-      let newResults = resp
-      newResults.items = [...results.items, ...resp.items]
-      setResults(newResults)
-      loading.stop()
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loading, results, searchInput])
+    console.log("Load more!")
+  }, [results, searchInput])
 
   useEffect(() => {
     if (results.items && (Math.round(scroll.y) + document.documentElement.clientHeight >= document.documentElement.offsetHeight)) {
       loadMore()
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [scroll])
 
   const SearchResults = () => {
@@ -71,7 +52,7 @@ const Home: NextPage = () => {
     <Container>
       <Center>
         <form style={{ 'width': '100%' }} onSubmit={search}>
-          <TextInput placeholder={localized.navSearch + "..."} radius="lg" ref={sie} onClick={() => { setResults([]) }} size='lg' value={searchInput} onChange={(e) => { setSearchInput(e.currentTarget.value) }} sx={{ width: '100%' }} variant='filled' rightSection={
+          <TextInput placeholder={localized.navSearch + "..."} radius="lg" onClick={() => { setResults([]) }} size='lg' value={searchInput} onChange={(e) => { setSearchInput(e.currentTarget.value) }} sx={{ width: '100%' }} variant='filled' rightSection={
             <Group mr="md">
               <Action label={localized.navSearch} onClick={() => { search(new Event("")) }} >
                 <Search />
