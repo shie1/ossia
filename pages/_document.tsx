@@ -1,8 +1,9 @@
 import type { NextPage } from "next";
 import { Head, NextScript, Main, Html } from "next/document";
-import theme from "../components/theme";
+import { useMantineTheme } from "@mantine/core";
 
 const Document: NextPage = () => {
+    const theme = useMantineTheme()
     return (<Html lang="en">
         <Head>
             <meta charSet="utf-8" />
@@ -15,7 +16,7 @@ const Document: NextPage = () => {
             <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
             <link href="https://fonts.googleapis.com/css2?family=Comfortaa&family=Inconsolata&family=Sora&display=swap" rel="stylesheet" />
             <link rel="manifest" href="/api/manifest.webmanifest" />
-            <meta name="theme-color" content={theme.colors[theme.primaryColor][theme.primaryShade]} />
+            <meta name="theme-color" content={theme.colors[theme.primaryColor][theme.primaryShade as any]} />
         </Head>
         <body>
             <Main />

@@ -2,18 +2,14 @@ import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import { AppShell, Text, Burger, Center, Footer, Group, Header, LoadingOverlay, MantineProvider, MediaQuery, Navbar, Paper, Title } from '@mantine/core'
 import { ModalsProvider } from '@mantine/modals'
-import { NotificationsProvider, showNotification } from '@mantine/notifications'
-import { useEventListener } from "@mantine/hooks"
-import { ReactNode, useEffect, useRef, useState } from 'react'
+import { NotificationsProvider } from '@mantine/notifications';
+import { ReactNode, useEffect, useState } from 'react';
 import Link from 'next/link'
-import { AlertCircle, Books, BrandLastfm, Home, InfoCircle, PlayerPlay, Search, Settings, X } from "tabler-icons-react"
+import { Books, Search, Settings } from "tabler-icons-react";
 import { useManifest } from '../components/manifest'
 import { interactive } from '../components/styles'
-import { useHotkeys, useLocalStorage } from '@mantine/hooks'
 import { localized } from '../components/localization'
 import { useCookies } from "react-cookie"
-import theme from '../components/theme'
-import { apiCall } from '../components/api'
 import { useRouter } from 'next/router'
 
 const NavLink = ({ link, icon, label }: { link: string, icon: ReactNode, label: ReactNode }) => {
@@ -85,8 +81,30 @@ function MyApp({ Component, pageProps }: AppProps) {
     }
   }, [cookies.lang, setCookies])
 
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.addEventListener("ossia-nav-click", () => { sidebar[1](false) })
+    }
+  }, [])
+
   return (<>
-    <MantineProvider withGlobalStyles withNormalizeCSS theme={theme}>
+    <MantineProvider withGlobalStyles withNormalizeCSS theme={{
+      focusRing: 'auto',
+      defaultRadius: 'lg',
+      white: "#F5F3F4",
+      black: "#0B090A",
+      colors: {
+        "purple_plum": ['#9E5DB9', '#9650B4', '#8C48A9', '#81439C', '#773D8F', '#6C3882', '#613275', '#562D68', '#4B275B', '#41214E'],
+      },
+      primaryColor: "purple_plum",
+      primaryShade: 2,
+      fontFamily: "Sora",
+      fontFamilyMonospace: "Inconsolata",
+      dir: 'ltr',
+      loader: 'bars',
+      dateFormat: "YYYY/MM/DD",
+      colorScheme: "dark",
+    }}>
       <AppShell
         navbarOffsetBreakpoint="sm"
         asideOffsetBreakpoint="sm"

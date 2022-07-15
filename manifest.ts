@@ -1,6 +1,5 @@
 import fs from 'fs'
 import path from "path"
-import theme from './components/theme';
 
 const pkg = JSON.parse((fs.readFileSync(path.join(process.cwd(), "package.json")) as any))
 const manifest = {
@@ -9,7 +8,7 @@ const manifest = {
     "author": pkg.author,
     "version": pkg.version,
     "description": pkg.description,
-    "theme_color": theme.colors[theme.primaryColor][theme.primaryShade],
+    "theme_color": "#8C48A9",
     "background_color": "#141517",
     "display": "standalone",
     "orientation": "portrait",
