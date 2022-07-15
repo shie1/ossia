@@ -3,7 +3,7 @@ declare module "moment/min/moment-with-locales" {
     export = x;
 }
 
-declare module "album-art" {
+declare module "serverless-mysql" {
     var x: any;
     export = x;
 }

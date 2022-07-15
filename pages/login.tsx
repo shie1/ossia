@@ -32,8 +32,8 @@ const Login: NextPage = () => {
         <Box sx={{ maxWidth: 300 }} mx="auto">
             <form onSubmit={form.onSubmit((values) => login(values))}>
                 <Group spacing="sm" grow direction="column">
-                    <TextInput maxLength={16} required {...form.getInputProps("username")} label="Username" size="lg" />
-                    <PasswordInput required {...form.getInputProps("password")} label="Password" size="lg" />
+                    <TextInput radius="lg" maxLength={16} required {...form.getInputProps("username")} label="Username" size="lg" />
+                    <PasswordInput radius="lg" required {...form.getInputProps("password")} label="Password" size="lg" />
                     <Button variant="light" size="lg" type="submit">Login</Button>
                     <Text size="sm" sx={interactive}><Link replace href="/register">Don&apos;t have an account yet?</Link></Text>
                 </Group>

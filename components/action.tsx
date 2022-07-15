@@ -1,6 +1,6 @@
-import { Center, Paper, Group, Popover, Text } from "@mantine/core"
+import { Center, Paper, Group, Popover, Text, MantineNumberSize } from "@mantine/core"
 import { ActionIcon } from "@mantine/core"
-import { useState } from "react"
+import { ReactNode, useState } from "react"
 
 export const ActionGroup = ({ children, sx }: any) => {
     return (<Center>
@@ -12,7 +12,7 @@ export const ActionGroup = ({ children, sx }: any) => {
     </Center>)
 }
 
-export const Action = ({ children, onClick, label, position }: any) => {
+export const Action = ({ children, onClick, label, position, size }: { children: ReactNode, onClick: any, label: ReactNode, position?: "top" | "left" | "bottom" | "right", size?: MantineNumberSize }) => {
     const [opened, setOpened] = useState<boolean>(false)
     return (<Popover
         radius="lg"
@@ -21,7 +21,7 @@ export const Action = ({ children, onClick, label, position }: any) => {
         withArrow
         spacing='sm'
         position={position || "top"}
-        target={<ActionIcon onMouseEnter={() => { setOpened(true) }} onMouseLeave={() => { setOpened(false) }} radius="xl" onClick={onClick} size="xl" variant="default">
+        target={<ActionIcon onMouseEnter={() => { setOpened(true) }} onMouseLeave={() => { setOpened(false) }} radius="xl" onClick={onClick} size={size || "xl"} variant="default">
             {children}
         </ActionIcon>}
     >

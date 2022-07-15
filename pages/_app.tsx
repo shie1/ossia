@@ -24,7 +24,7 @@ const NavLink = ({ link, icon, label }: { link: string, icon: ReactNode, label: 
 }
 
 const AppHeader = ({ manifest, sidebar }: { manifest: any, sidebar: any }) => {
-  return (<Header height={70} p="md">
+  return (<Header style={{ zIndex: '99 !important' }} height={70} p="md">
     <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
       <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
         <Burger
