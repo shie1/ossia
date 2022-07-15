@@ -1,6 +1,8 @@
-import { Box, Button, Container, Group, PasswordInput, TextInput } from "@mantine/core";
+import { Box, Button, Container, Group, PasswordInput, Text, TextInput } from "@mantine/core";
 import type { NextPage } from "next";
 import { useForm } from "@mantine/form"
+import Link from "next/link";
+import { interactive } from "../components/styles";
 
 function caesar(str: string, num: number) {
     var result = '';
@@ -40,6 +42,7 @@ const Register: NextPage = () => {
                     <PasswordInput description={<ul style={{ margin: 0, padding: 0, paddingLeft: '1em' }}><li>8 chars</li><li>Must contain lower and upper case</li><li>Must contain a number</li></ul>} required {...form.getInputProps("password")} label="Password" size="lg" />
                     <TextInput maxLength={8} description="A code you can get from a registered user, or by purchasing one." required {...form.getInputProps("inviteCode")} label="Invite code" size="lg" />
                     <Button variant="light" size="lg" type="submit">Register</Button>
+                    <Text size="sm" sx={interactive}><Link href="/buy">Don&apos;t have an invite?</Link></Text>
                 </Group>
             </form>
         </Box>

@@ -35,7 +35,7 @@ const Login: NextPage = () => {
                     <TextInput maxLength={16} required {...form.getInputProps("username")} label="Username" size="lg" />
                     <PasswordInput required {...form.getInputProps("password")} label="Password" size="lg" />
                     <Button variant="light" size="lg" type="submit">Login</Button>
-                    <Text size="sm" sx={interactive}><Link href="/register">Don&apos;t have an account yet?</Link></Text>
+                    <Text size="sm" sx={interactive}><Link replace href="/register">Don&apos;t have an account yet?</Link></Text>
                 </Group>
             </form>
         </Box>
