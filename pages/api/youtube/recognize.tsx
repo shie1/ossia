@@ -1,6 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import ytdl from "ytdl-core"
-import albumArt from "album-art"
 
 export default async function handler(
     req: NextApiRequest,
