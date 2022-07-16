@@ -10,7 +10,7 @@ import { useModals } from "@mantine/modals";
 import { useHotkeys } from "@mantine/hooks";
 import { Action } from "../components/action";
 import { localized } from "../components/localization";
-import { Clipboard } from "tabler-icons-react";
+import { ArrowBackUp, Clipboard } from "tabler-icons-react";
 import { showNotification } from "@mantine/notifications";
 import { UseForm } from "@mantine/hooks/lib/use-form/use-form";
 import { apiCall } from "../components/api";
@@ -27,7 +27,7 @@ function caesar(str: string, num: number) {
 
 const BuyCode = ({ clientId, form }: { clientId: string, form: any }) => {
     const modals = useModals()
-    const [page, setPage] = useState(0)
+    const [restore, setRestore] = useState(false)
     const [orderId, setOrderId] = useState("")
     const doneOrder = (details: any) => {
         const date = new Date()
@@ -59,36 +59,34 @@ const BuyCode = ({ clientId, form }: { clientId: string, form: any }) => {
     }
     return (<PayPalScriptProvider options={{ "client-id": clientId }}>
         <Container>
-            <Collapse in={page === 0}>
-                <Group position="center" direction="row" my="sm">
-                    <Group sx={{ width: '100%' }} align="center" spacing={6}>
-                        <Text align="left" size="xl">1.99$ | Invite code</Text>
-                        <Text>With this one time purchase, you can register to Ossia and get access to all of the features our application has to offer.</Text>
-                    </Group>
-                    <Group >
-                        <Paper p="sm" pb={0} withBorder sx={(theme) => ({ background: theme.colors.gray[0] })}>
-                            <PayPalButtons className="paypal-buttons-container" style={{ shape: "pill", color: "black" }} createOrder={(data, actions) => {
-                                return actions.order.create({
-                                    purchase_units: [
-                                        {
-                                            amount: {
-                                                value: "1.99",
-                                            },
-                                        },
-                                    ],
-                                });
-                            }}
-                                onApprove={async (data, actions) => {
-                                    return actions.order?.capture().then((details) => {
-                                        doneOrder(details)
-                                    });
-                                }} />
-                        </Paper>
-                    </Group>
-                    <Group sx={interactive} onClick={() => { setPage(1) }}><Text mt={-6} size="sm" >Restore purchase</Text></Group>
+            <Group position="center" direction="row" my="sm">
+                <Group sx={{ width: '100%' }} align="center" spacing={6}>
+                    <Text align="left" size="xl">1.99$ | Invite code</Text>
+                    <Text>With this one time purchase, you can register to Ossia and get access to all of the features our application has to offer.</Text>
                 </Group>
-            </Collapse>
-            <Collapse in={page === 1}>
+                <Group >
+                    <Paper p="sm" pb={0} withBorder sx={(theme) => ({ background: theme.colors.gray[0] })}>
+                        <PayPalButtons className="paypal-buttons-container" style={{ shape: "pill", color: "black" }} createOrder={(data, actions) => {
+                            return actions.order.create({
+                                purchase_units: [
+                                    {
+                                        amount: {
+                                            value: "1.99",
+                                        },
+                                    },
+                                ],
+                            });
+                        }}
+                            onApprove={async (data, actions) => {
+                                return actions.order?.capture().then((details) => {
+                                    doneOrder(details)
+                                });
+                            }} />
+                    </Paper>
+                </Group>
+                <Group sx={interactive} onClick={() => { setRestore(!restore) }}><Text mt={-6} size="sm" >{restore ? "Back to order" : "Restore purchase"}</Text></Group>
+            </Group>
+            <Collapse in={restore}>
                 <form onSubmit={async (e) => {
                     e.preventDefault()
                     apiCall("POST", "/api/restoreinvite", { i: orderId }).then(resp => {
@@ -114,10 +112,10 @@ const BuyCode = ({ clientId, form }: { clientId: string, form: any }) => {
                         }
                     })
                 }}>
-                    <TextInput placeholder="8X183i26Jr596b63Y" size="lg" label="Order ID" value={orderId} onChange={(e) => setOrderId(e.currentTarget.value)} />
-                    <Button variant="light" mt="sm" type="submit">Restore</Button>
+                    <TextInput placeholder="8X183i26Jr596b63Y" size="sm" label="Order ID" value={orderId} onChange={(e) => setOrderId(e.currentTarget.value)} rightSection={
+                        <Action mr={2} size="md" label="Restore" type="submit"><ArrowBackUp/></Action>
+                    } />
                 </form>
-                <Group mt="sm" position="center" sx={interactive} onClick={() => { setPage(0) }}><Text mt={-6} size="sm" >Back to order</Text></Group>
             </Collapse>
         </Container>
     </PayPalScriptProvider >)
