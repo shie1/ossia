@@ -1,6 +1,7 @@
 // INSERT INTO `invites` (`code`) VALUES ('value');
 import md5 from 'md5'
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { Details } from 'tabler-icons-react'
 import { apiCall } from '../../components/api'
 import { getMixedValue } from '../../components/mixval'
 import excuteQuery from '../../components/mysql'
@@ -21,8 +22,8 @@ export default function handler(
         if (resp.status === 'COMPLETED') {
             const plain = `ossia-invite-code:${(new Date()).getTime()}`
             const hash = md5(plain).substring(0, 8)
-            excuteQuery("INSERT INTO `invites` (`code`) VALUES ('?');", [hash]).then(result => {
-                resolve(res.status(200).json(hash))
+            excuteQuery("INSERT INTO `invites` (`code`,`order`) VALUES " + `('${hash}','${resp.links[0].href}');`).then(result => {
+                resolve(res.status(200).json([hash, resp.id]))
             })
         } else {
             resolve(res.status(500).json(false))

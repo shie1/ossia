@@ -1,4 +1,4 @@
-import { Box, Button, Center, Collapse, Container, Group, Paper, PasswordInput, Text, TextInput } from "@mantine/core";
+import { Box, Button, Center, Col, Collapse, Container, Group, Paper, PasswordInput, Text, TextInput } from "@mantine/core";
 import type { NextPage } from "next";
 import { useForm } from "@mantine/form"
 import Link from "next/link";
@@ -27,62 +27,100 @@ function caesar(str: string, num: number) {
 
 const BuyCode = ({ clientId, form }: { clientId: string, form: any }) => {
     const modals = useModals()
+    const [page, setPage] = useState(0)
+    const [orderId, setOrderId] = useState("")
     const doneOrder = (details: any) => {
         const date = new Date()
         const salt = 42
         const plain = `${date.getDay() + salt}${date.getMonth() + (salt / 2)}`
         const sig = md5(plain)
         apiCall("POST", "/api/invite", { sig: sig, details: JSON.stringify(details) }).then(hash => {
-            const reply = modals.openModal({
-                title: "Invite code", children:
-                    <Group spacing="sm" grow direction="column">
-                        <Group spacing={2} grow direction="column">
-                            <Text>Your purchase has been successful, your code is:</Text>
-                            <TextInput size="lg" rightSection={<Group mr="md"><Action onClick={() => {
-                                window.navigator.clipboard.writeText(hash)
-                                showNotification({ title: "Copied to clipboard!", message: "", icon: <Clipboard /> })
-                            }} label="Copy to clipboard"><Clipboard /></Action></Group>} value={hash} />
+            if (hash) {
+                form.setFieldValue("inviteCode", hash[0])
+                const reply = modals.openModal({
+                    title: "Invite code", children:
+                        <Group spacing="sm" grow direction="column">
+                            <Group spacing={2} grow direction="column">
+                                <Text>Order {hash[1]} has been successful, your code is:</Text>
+                                <TextInput size="lg" rightSection={<Group mr="md"><Action onClick={() => {
+                                    window.navigator.clipboard.writeText(hash[0])
+                                    showNotification({ title: "Copied to clipboard!", message: "", icon: <Clipboard /> })
+                                }} label="Copy to clipboard"><Clipboard /></Action></Group>} value={hash[0]} />
+                            </Group>
+                            <Group spacing={6} position="right">
+                                <Button onClick={() => {
+                                    modals.closeModal(reply)
+                                }} variant="light">Close</Button>
+                            </Group>
                         </Group>
-                        <Group spacing={6} position="right">
-                            <Button onClick={() => {
-                                form.setFieldValue("inviteCode", hash)
-                                modals.closeModal(reply)
-                            }} variant="light">Use code</Button>
-                        </Group>
-                    </Group>
-            })
+                })
+            }
         })
     }
     return (<PayPalScriptProvider options={{ "client-id": clientId }}>
         <Container>
-            <Group position="center" direction="row" my="sm">
-                <Group sx={{ width: '100%' }} align="center" spacing={6}>
-                    <Text align="left" size="xl">1.99$ | Invite code</Text>
-                    <Text>With this one time purchase, you can register to Ossia and get access to all of the features our application has to offer.</Text>
-                </Group>
-                <Group >
-                    <Paper p="sm" pb={0} withBorder sx={(theme) => ({ background: theme.colors.gray[0] })}>
-                        <PayPalButtons className="paypal-buttons-container" style={{ shape: "pill", color: "black" }} createOrder={(data, actions) => {
-                            return actions.order.create({
-                                purchase_units: [
-                                    {
-                                        amount: {
-                                            value: "1.99",
+            <Collapse in={page === 0}>
+                <Group position="center" direction="row" my="sm">
+                    <Group sx={{ width: '100%' }} align="center" spacing={6}>
+                        <Text align="left" size="xl">1.99$ | Invite code</Text>
+                        <Text>With this one time purchase, you can register to Ossia and get access to all of the features our application has to offer.</Text>
+                    </Group>
+                    <Group >
+                        <Paper p="sm" pb={0} withBorder sx={(theme) => ({ background: theme.colors.gray[0] })}>
+                            <PayPalButtons className="paypal-buttons-container" style={{ shape: "pill", color: "black" }} createOrder={(data, actions) => {
+                                return actions.order.create({
+                                    purchase_units: [
+                                        {
+                                            amount: {
+                                                value: "1.99",
+                                            },
                                         },
-                                    },
-                                ],
-                            });
-                        }}
-                            onApprove={async (data, actions) => {
-                                return actions.order?.capture().then((details) => {
-                                    doneOrder(details)
+                                    ],
                                 });
-                            }} />
-                    </Paper>
+                            }}
+                                onApprove={async (data, actions) => {
+                                    return actions.order?.capture().then((details) => {
+                                        doneOrder(details)
+                                    });
+                                }} />
+                        </Paper>
+                    </Group>
+                    <Group sx={interactive} onClick={() => { setPage(1) }}><Text mt={-6} size="sm" >Restore purchase</Text></Group>
                 </Group>
-            </Group>
+            </Collapse>
+            <Collapse in={page === 1}>
+                <form onSubmit={async (e) => {
+                    e.preventDefault()
+                    apiCall("POST", "/api/restoreinvite", { i: orderId }).then(resp => {
+                        if (resp) {
+                            form.setFieldValue("inviteCode", resp)
+                            const reply = modals.openModal({
+                                title: "Invite code", children:
+                                    <Group spacing="sm" grow direction="column">
+                                        <Group spacing={2} grow direction="column">
+                                            <Text>Your code is:</Text>
+                                            <TextInput size="lg" rightSection={<Group mr="md"><Action onClick={() => {
+                                                window.navigator.clipboard.writeText(resp)
+                                                showNotification({ title: "Copied to clipboard!", message: "", icon: <Clipboard /> })
+                                            }} label="Copy to clipboard"><Clipboard /></Action></Group>} value={resp} />
+                                        </Group>
+                                        <Group spacing={6} position="right">
+                                            <Button onClick={() => {
+                                                modals.closeModal(reply)
+                                            }} variant="light">Close</Button>
+                                        </Group>
+                                    </Group>
+                            })
+                        }
+                    })
+                }}>
+                    <TextInput placeholder="8X183i26Jr596b63Y" size="lg" label="Order ID" value={orderId} onChange={(e) => setOrderId(e.currentTarget.value)} />
+                    <Button variant="light" mt="sm" type="submit">Restore</Button>
+                </form>
+                <Group mt="sm" position="center" sx={interactive} onClick={() => { setPage(0) }}><Text mt={-6} size="sm" >Back to order</Text></Group>
+            </Collapse>
         </Container>
-    </PayPalScriptProvider>)
+    </PayPalScriptProvider >)
 }
 
 const Register: NextPage = (props: any) => {
