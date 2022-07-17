@@ -9,7 +9,7 @@ const db = mysql({
         password: process.env.MYSQL_PASSWORD
     }
 });
-export default async function excuteQuery(query: string, values?: Array<any>) {
+export default async function executeQuery(query: string, values?: Array<any>) {
     try {
         const results = await db.query(query, values);
         await db.end();

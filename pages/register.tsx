@@ -10,10 +10,11 @@ import { useModals } from "@mantine/modals";
 import { useHotkeys } from "@mantine/hooks";
 import { Action } from "../components/action";
 import { localized } from "../components/localization";
-import { ArrowBackUp, Clipboard } from "tabler-icons-react";
+import { ArrowBackUp, Check, Clipboard } from "tabler-icons-react";
 import { showNotification } from "@mantine/notifications";
 import { UseForm } from "@mantine/hooks/lib/use-form/use-form";
 import { apiCall } from "../components/api";
+import { useRouter } from "next/router";
 
 function caesar(str: string, num: number) {
     var result = '';
@@ -109,7 +110,7 @@ const BuyCode = ({ clientId, form }: { clientId: string, form: any }) => {
                     })
                 }}>
                     <TextInput placeholder="8X183i26Jr596b63Y" size="sm" label="Order ID" value={orderId} onChange={(e) => setOrderId(e.currentTarget.value)} rightSection={
-                        <Action mr={2} size="md" label="Restore" type="submit"><ArrowBackUp/></Action>
+                        <Action mr={2} size="md" label="Restore" type="submit"><ArrowBackUp /></Action>
                     } />
                 </form>
             </Collapse>
@@ -119,7 +120,9 @@ const BuyCode = ({ clientId, form }: { clientId: string, form: any }) => {
 
 const Register: NextPage = (props: any) => {
     const buy = useState(false)
-    const iv = useState("")
+    const [available, setAvailable] = useState<boolean | null>(null)
+    const [codeError, setCodeError] = useState(false)
+    const router = useRouter()
     const form = useForm({
         initialValues: {
             username: '',
@@ -129,23 +132,41 @@ const Register: NextPage = (props: any) => {
         validate: {
             password: (val) => (/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/.test(val) ? null : "This password is too weak!"),
             inviteCode: (val) => (/[0-z]{7}/.test(val) ? null : 'Invite code invalid!'),
-            username: (val) => (/^[0-z]{1,16}$/.test(val) ? null : "Username can only contain letters and numbers!")
+            username: (val) => (/^[0-z]{1,20}$/.test(val) ? null : "Username can only contain letters and numbers!")
         }
     })
 
     const register = (values: any) => {
+        if (available === false || available === null) { return }
         const salt = Number(`${(new Date().getDate())}67${(new Date().getMonth())}`)
         let password = caesar(values["password"], salt)
+        apiCall("POST", "/api/user/create", { username: values.username, password: password, inviteCode: values.inviteCode }).then(resp => {
+            if (!resp) { setCodeError(true) } else {
+                router.replace(`/login?u=${values.username}`)
+                showNotification({'title':"Registration successful!","message": "You may now log in!", icon: <Check />})
+            }
+        })
     }
+
+    useEffect(() => {
+        setAvailable(null)
+        apiCall("POST", "api/user/available", { username: form.values.username }).then(resp => {
+            setAvailable(resp)
+        })
+    }, [form.values.username])
+
+    useEffect(() => {
+        setCodeError(false)
+    }, [form.values.inviteCode])
 
     return (<Container>
         <Group spacing="xl" position="center" align="center">
             <Box sx={{ maxWidth: 300 }}>
                 <form onSubmit={form.onSubmit((values) => register(values))}>
                     <Group spacing="sm" grow direction="column">
-                        <TextInput maxLength={16} description="You can't change this later." required {...form.getInputProps("username")} label="Username" size="lg" />
+                        <TextInput error={available === false && "Username is taken!"} maxLength={20} description="You can't change this later." required {...form.getInputProps("username")} label="Username" size="lg" />
                         <PasswordInput description={<ul style={{ margin: 0, padding: 0, paddingLeft: '1em' }}><li>8 chars</li><li>Must contain lower and upper case</li><li>Must contain a number</li></ul>} required {...form.getInputProps("password")} label="Password" size="lg" />
-                        <TextInput maxLength={8} description="A code you can get from a registered user, or by purchasing one." required {...form.getInputProps("inviteCode")} label="Invite code" size="lg" />
+                        <TextInput error={codeError && "Invite code invalid!"} maxLength={8} description="A code you can get from a registered user, or by purchasing one." required {...form.getInputProps("inviteCode")} label="Invite code" size="lg" />
                         <Button variant="light" size="lg" type="submit">Register</Button>
                         <Group onClick={() => { buy[1](!buy[0]) }} sx={interactive}><Text size="sm" >{buy[0] ? "Already have an invite?" : "Don't have an invite?"}</Text></Group>
                     </Group>

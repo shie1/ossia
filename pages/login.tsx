@@ -3,6 +3,8 @@ import type { NextPage } from "next";
 import { useForm } from "@mantine/form"
 import Link from "next/link";
 import { interactive } from "../components/styles";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 function caesar(str: string, num: number) {
     var result = '';
@@ -15,12 +17,17 @@ function caesar(str: string, num: number) {
 }
 
 const Login: NextPage = () => {
+    const router = useRouter()
     const form = useForm({
         initialValues: {
             username: '',
             password: '',
         },
     })
+
+    useEffect(() => {
+        if (router.query['u']) { form.setFieldValue("username", router.query['u'] as string) }
+    }, [router])
 
     const login = (values: any) => {
         const salt = Number(`${(new Date().getDate())}67${(new Date().getMonth())}`)
@@ -32,7 +39,7 @@ const Login: NextPage = () => {
         <Box sx={{ maxWidth: 300 }} mx="auto">
             <form onSubmit={form.onSubmit((values) => login(values))}>
                 <Group spacing="sm" grow direction="column">
-                    <TextInput radius="lg" maxLength={16} required {...form.getInputProps("username")} label="Username" size="lg" />
+                    <TextInput radius="lg" required {...form.getInputProps("username")} label="Username" size="lg" />
                     <PasswordInput radius="lg" required {...form.getInputProps("password")} label="Password" size="lg" />
                     <Button variant="light" size="lg" type="submit">Login</Button>
                     <Text size="sm" sx={interactive}><Link replace href="/register">Don&apos;t have an account yet?</Link></Text>
