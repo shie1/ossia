@@ -1,8 +1,12 @@
-import { useState } from "react"
+import { useRouter } from "next/router"
+import { useEffect, useState } from "react"
 import { apiCall } from "./api"
 
 export const useMe = () => {
     const [me, setMe] = useState<any>("")
-    apiCall("GET", "/api/authenticated", {}).then(resp => { setMe(resp) })
+    const router = useRouter()
+    useEffect(() => {
+        apiCall("GET", "/api/authenticated", {}).then(resp => { setMe(resp) })
+    }, [router])
     return me
 }

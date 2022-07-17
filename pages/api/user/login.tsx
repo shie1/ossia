@@ -27,7 +27,6 @@ export default function handler(
             salt = salt[0].salt
             const hash = pbkdf2Sync(rb.password, salt, 1000, 64, `sha512`).toString(`hex`);
             executeQuery("SELECT * FROM `users` WHERE (`username` = ? and `password` = ? and `salt` = ?);", [rb.username, hash, salt]).then(resp => {
-                console.log(resp)
                 resp = resp[0]
                 if (typeof resp !== "undefined") {
                     const token = sign({ username: resp.username, }, process.env["OSSIA_PRIVATE_KEY"] as string)

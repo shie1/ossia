@@ -34,7 +34,7 @@ const Login: NextPage = () => {
         const salt = Number(`${(new Date().getDate())}67${(new Date().getMonth())}`)
         let password = caesar(values["password"], salt)
         apiCall("POST", "/api/user/login", { username: values.username, password: password }).then(resp => {
-            if (resp) { router.replace("/") }
+            if (resp) { router.replace("/library") }
         })
     }
 
