@@ -1,4 +1,4 @@
-import { Avatar, Group, Paper, Text } from "@mantine/core";
+import { Avatar, Container, Group, Paper, Text } from "@mantine/core";
 import type { NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -10,7 +10,7 @@ import { useMe } from "../components/auth";
 const Library: NextPage = () => {
     const router = useRouter()
     const me = useMe()
-    return (<>
+    return (<Container>
         <Paper p="sm" withBorder>
             <Group position="apart">
                 <Group spacing={6}>
@@ -28,7 +28,7 @@ const Library: NextPage = () => {
                 </ActionGroup>
             </Group>
         </Paper>
-    </>)
+    </Container>)
 }
 
 export default Library
