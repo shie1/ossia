@@ -5,6 +5,7 @@ import Link from "next/link";
 import { interactive } from "../components/styles";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import { apiCall } from "../components/api";
 
 function caesar(str: string, num: number) {
     var result = '';
@@ -32,7 +33,9 @@ const Login: NextPage = () => {
     const login = (values: any) => {
         const salt = Number(`${(new Date().getDate())}67${(new Date().getMonth())}`)
         let password = caesar(values["password"], salt)
-        console.log({ ...values, password })
+        apiCall("POST", "/api/user/login", { username: values.username, password: password }).then(resp => {
+            if (resp) { router.replace("/") }
+        })
     }
 
     return (<Container>

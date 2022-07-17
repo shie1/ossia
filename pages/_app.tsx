@@ -1,6 +1,6 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
-import { AppShell, Text, Burger, Center, Footer, Group, Header, LoadingOverlay, MantineProvider, MediaQuery, Navbar, Paper, Title } from '@mantine/core'
+import { AppShell, Text, Burger, Center, Footer, Group, Header, LoadingOverlay, MantineProvider, MediaQuery, Navbar, Paper, Title, Avatar } from '@mantine/core'
 import { ModalsProvider } from '@mantine/modals'
 import { NotificationsProvider } from '@mantine/notifications';
 import { ReactNode, useEffect, useState } from 'react';
@@ -11,6 +11,7 @@ import { interactive } from '../components/styles'
 import { localized } from '../components/localization'
 import { useCookies } from "react-cookie"
 import { useRouter } from 'next/router'
+import { useMe } from '../components/auth';
 
 const NavLink = ({ link, icon, label }: { link: string, icon: ReactNode, label: ReactNode }) => {
   return (<Link href={link}>
@@ -37,9 +38,9 @@ const AppHeader = ({ manifest, sidebar }: { manifest: any, sidebar: any }) => {
       </MediaQuery>
 
       <Center>
-        <Link href="/"><Title onClick={() => {
+        <Link href="/"><Group onClick={() => {
           window.dispatchEvent(new Event("ossia-title-click"))
-        }} onMouseDown={(e) => { e.preventDefault() }} className='click'>{manifest?.short_name}</Title></Link>
+        }} onMouseDown={(e: any) => { e.preventDefault() }} className='click'><Avatar src="/ossia.svg">{manifest?.short_name.substring(0, 2)}</Avatar><Title>{manifest?.short_name}</Title></Group></Link>
       </Center>
     </div>
   </Header>)
@@ -58,10 +59,11 @@ const AppFooter = ({ manifest, sidebar }: { manifest: any, sidebar: any }) => {
 }
 
 const AppNavbar = ({ cookies, sidebar }: { cookies: any, sidebar: any }) => {
+  const me = useMe()
   return (<Navbar p="md" hiddenBreakpoint="sm" hidden={!sidebar[0]} width={{ sm: 200, lg: 300 }}>
     <Group grow direction='column' spacing='sm'>
       <NavLink icon={<Search />} label={localized.navSearch} link="/" />
-      <NavLink icon={<Login />} label="Login" link='/login' />
+      {!me ? <NavLink icon={<Login />} label="Login" link='/login' /> : <NavLink icon={<Books />} label={localized.navLibrary} link="/library" />}
       <NavLink icon={<Settings />} label={localized.settings} link="/settings" />
     </Group>
   </Navbar>)
@@ -72,7 +74,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   const sidebar = useState(false);
   const manifest = useManifest()
   const router = useRouter()
-  const [cookies, setCookies, removeCookies] = useCookies(["lang", "auth"])
+  const [cookies, setCookies, removeCookies] = useCookies(["lang"])
   useEffect(() => {
     if (!cookies.lang) {
       setCookies("lang", localized.getInterfaceLanguage())

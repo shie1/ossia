@@ -56,7 +56,7 @@ const About: NextPage = () => {
                     <Table>
                         <tr>
                             <Group grow>
-                                <Contributor name="Weaver" customRouter={customRouter}>
+                                <Contributor href="https://www.youtube.com/c/Weaver2822" avatar="https://media.discordapp.net/attachments/831841076062060634/998300647965343786/milan_-_lampalaz.png" name="Weaver" customRouter={customRouter}>
                                     <ul>
                                         <li>Ossia logo design</li>
                                     </ul>
