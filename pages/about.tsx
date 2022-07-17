@@ -74,6 +74,7 @@ const About: NextPage = () => {
                             <Dep name="Typescript" url="https://www.typescriptlang.org/" />
                             <Dep name="Mantine" url="https://mantine.dev" />
                             <Dep name="Piped" url="https://piped.kavin.rocks" />
+                            <Dep name="Paypal" url="https://paypal.com" />
                         </Group>
                         {deps.data && Object.keys(deps.data).map((dep: string) => {
                             depKey++
