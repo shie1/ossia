@@ -30,11 +30,7 @@ const BuyCode = ({ clientId, form }: { clientId: string, form: any }) => {
     const [restore, setRestore] = useState(false)
     const [orderId, setOrderId] = useState("")
     const doneOrder = (details: any) => {
-        const date = new Date()
-        const salt = 42
-        const plain = `${date.getDay() + salt}${date.getMonth() + (salt / 2)}`
-        const sig = md5(plain)
-        apiCall("POST", "/api/invite", { sig: sig, details: JSON.stringify(details) }).then(hash => {
+        apiCall("POST", "/api/invite", { details: JSON.stringify(details) }).then(hash => {
             if (hash) {
                 form.setFieldValue("inviteCode", hash[0])
                 const reply = modals.openModal({

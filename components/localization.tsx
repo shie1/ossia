@@ -1,4 +1,3 @@
-import { useLocalStorage } from '@mantine/hooks';
 import LocalizedStrings from 'react-localization';
 
 export const localized = new LocalizedStrings({

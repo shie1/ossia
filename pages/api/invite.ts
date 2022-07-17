@@ -23,6 +23,7 @@ export default function handler(
             const plain = `ossia-invite-code:${(new Date()).getTime()}`
             const hash = md5(plain).substring(0, 8)
             excuteQuery("INSERT INTO `invites` (`code`,`order`) VALUES " + `('${hash}','${resp.links[0].href}');`).then(result => {
+                console.log(result)
                 resolve(res.status(200).json([hash, resp.id]))
             })
         } else {

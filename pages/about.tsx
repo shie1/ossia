@@ -9,7 +9,7 @@ import { Prism } from "@mantine/prism"
 import { localized } from "../components/localization";
 import Link from "next/link";
 import { useCustomRouter } from "../components/redirect";
-import { useRef } from "react";
+import { ReactNode, useRef } from "react";
 
 const About: NextPage = () => {
     const fetcher = (url: string) => fetch(url).then((res) => res.json());
@@ -56,17 +56,11 @@ const About: NextPage = () => {
                     <Table>
                         <tr>
                             <Group grow>
-                                <Paper onClick={() => { customRouter.newTab("https://www.youtube.com/channel/UC_osfKm8TMv6_kzuhdp_vGg") }} sx={interactive} p="sm" pb={0} withBorder>
-                                    <Group mb="sm" direction="row">
-                                        <Avatar src="https://yt3.ggpht.com/ytc/AKedOLQUwERYNidMP7NkgHmpxeT6JE2JXhOUfWEkihvM=s88-c-k-c0x00ffffff-no-rj" radius="xl" size="lg">Wl</Avatar>
-                                        <Text size="lg">Wladynosz</Text>
-                                    </Group>
-                                    <TypographyStylesProvider>
-                                        <ul>
-                                            <li>{localized.germanContrib}</li>
-                                        </ul>
-                                    </TypographyStylesProvider>
-                                </Paper>
+                                <Contributor name="Weaver" customRouter={customRouter}>
+                                    <ul>
+                                        <li>Ossia logo design</li>
+                                    </ul>
+                                </Contributor>
                             </Group>
                         </tr>
                     </Table>
@@ -74,12 +68,12 @@ const About: NextPage = () => {
                 <AccordionItem label={<Group spacing={6}><Text>{localized.dependencies}</Text></Group>} icon={<Affiliate />}>
                     <Group spacing="sm" direction="row">
                         <Group spacing="sm" direction="row" ref={depsE}>
-                        <Dep name="Next.JS" url="https://nextjs.org/" />
-                        <Dep name="Vercel" url="https://vercel.com" />
-                        <Dep name="React" url="https://reactjs.org" />
-                        <Dep name="Typescript" url="https://www.typescriptlang.org/" />
-                        <Dep name="Mantine" url="https://mantine.dev" />
-                        <Dep name="Piped" url="https://piped.kavin.rocks" />
+                            <Dep name="Next.JS" url="https://nextjs.org/" />
+                            <Dep name="Vercel" url="https://vercel.com" />
+                            <Dep name="React" url="https://reactjs.org" />
+                            <Dep name="Typescript" url="https://www.typescriptlang.org/" />
+                            <Dep name="Mantine" url="https://mantine.dev" />
+                            <Dep name="Piped" url="https://piped.kavin.rocks" />
                         </Group>
                         {deps.data && Object.keys(deps.data).map((dep: string) => {
                             depKey++
@@ -95,4 +89,18 @@ const About: NextPage = () => {
     </Container>)
 }
 
+
+function Contributor({ customRouter, name, avatar, children, href }: { customRouter: any, name: string, avatar?: string, children: any, href?: string }) {
+    return (<Paper style={{ width: '100%' }} onClick={() => {
+        if (href) customRouter.newTab(href);
+    }} sx={interactive} p="sm" pb={0} withBorder>
+        <Group mb="sm" direction="row">
+            <Avatar src={avatar} radius="xl" size="lg">{name.substring(0, 1).toUpperCase()}{name.substring(1, 2)}</Avatar>
+            <Text size="lg">{name}</Text>
+        </Group>
+        <TypographyStylesProvider>
+            {children}
+        </TypographyStylesProvider>
+    </Paper>);
+}
 export default About
