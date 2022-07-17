@@ -1,6 +1,6 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
-import { AppShell, Text, Burger, Center, Footer, Group, Header, LoadingOverlay, MantineProvider, MediaQuery, Navbar, Paper, Title, Avatar } from '@mantine/core'
+import { AppShell, Text, Burger, Center, Footer, Group, Header, LoadingOverlay, MantineProvider, MediaQuery, Navbar, Paper, Title, Avatar, Image } from '@mantine/core'
 import { ModalsProvider } from '@mantine/modals'
 import { NotificationsProvider } from '@mantine/notifications';
 import { ReactNode, useEffect, useState } from 'react';
@@ -40,7 +40,7 @@ const AppHeader = ({ manifest, sidebar }: { manifest: any, sidebar: any }) => {
       <Center>
         <Link href="/"><Group onClick={() => {
           window.dispatchEvent(new Event("ossia-title-click"))
-        }} onMouseDown={(e: any) => { e.preventDefault() }} className='click'><Avatar src="/ossia.svg">{manifest?.short_name.substring(0, 2)}</Avatar><Title>{manifest?.short_name}</Title></Group></Link>
+        }} onMouseDown={(e: any) => { e.preventDefault() }} className='click'><Image src="/title.png" height={40} /></Group></Link>
       </Center>
     </div>
   </Header>)
