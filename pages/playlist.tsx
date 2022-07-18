@@ -21,13 +21,13 @@ const Playlist: NextPage = () => {
     }, [pl])
 
     useEffect(() => {
-        if (typeof window !== undefined) {
+        if (typeof window !== undefined && typeof router.query['p'] !== 'undefined' && !pl) {
             apiCall("POST", "/api/playlist/get", { id: Number(Buffer.from(router.query['p'] as string, "base64")) - 45 }).then(resp => {
                 setPl(resp)
                 setLoading(false)
             })
         }
-    }, [])
+    }, [pl,router])
     return (<>
         <Container>
             <Paper p="sm" withBorder>
@@ -39,16 +39,18 @@ const Playlist: NextPage = () => {
                         </>}
                     </Group>
                     <ActionGroup>
-                        <Action onClick={() => {
-                            apiCall("POST", "/api/playlist/delete", { id: Number(Buffer.from(router.query['p'] as string, "base64")) - 45 }).then(resp => {
-                                if (resp) {
-                                    router.replace("/library")
-                                    showNotification({ "title": "Playlist deleted!", "icon": <Trash />, "message": "" })
-                                }
-                            })
-                        }} label={localized.deletePlaylist}>
-                            <Trash />
-                        </Action>
+                        {typeof router.query['p'] !== "undefined" && pl && <>
+                            <Action onClick={() => {
+                                apiCall("POST", "/api/playlist/delete", { id: Number(Buffer.from(router.query['p'] as string, "base64")) - 45 }).then(resp => {
+                                    if (resp) {
+                                        router.replace("/library")
+                                        showNotification({ "title": "Playlist deleted!", "icon": <Trash />, "message": "" })
+                                    }
+                                })
+                            }} label={localized.deletePlaylist}>
+                                <Trash />
+                            </Action>
+                        </>}
                     </ActionGroup>
                 </Group>
             </Paper>
