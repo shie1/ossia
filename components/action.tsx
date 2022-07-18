@@ -4,7 +4,7 @@ import { ReactNode, useState } from "react"
 
 export const ActionGroup = ({ children, sx }: any) => {
     return (<Center>
-        <Paper radius="lg">
+        <Paper shadow="sm" radius="lg">
             <Group spacing="sm" direction="row">
                 {children}
             </Group>

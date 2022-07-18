@@ -6,6 +6,7 @@ import { interactive } from "../components/styles";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { apiCall } from "../components/api";
+import Head from "next/head";
 
 function caesar(str: string, num: number) {
     var result = '';
@@ -39,11 +40,14 @@ const Login: NextPage = () => {
     }
 
     return (<Container>
+        <Head>
+            <title>Login | Ossia</title>
+        </Head>
         <Box sx={{ maxWidth: 300 }} mx="auto">
             <form onSubmit={form.onSubmit((values) => login(values))}>
                 <Group spacing="sm" grow direction="column">
                     <TextInput radius="lg" required {...form.getInputProps("username")} label="Username" size="lg" />
-                    <PasswordInput radius="lg" required {...form.getInputProps("password")} label="Password" size="lg" />
+                    <PasswordInput autoComplete="current-password" radius="lg" required {...form.getInputProps("password")} label="Password" size="lg" />
                     <Button variant="light" size="lg" type="submit">Login</Button>
                     <Text size="sm" sx={interactive}><Link replace href="/register">Don&apos;t have an account yet?</Link></Text>
                 </Group>

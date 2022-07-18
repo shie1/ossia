@@ -1,20 +1,26 @@
-import { Box, Button, Center, Col, Collapse, Container, Group, Paper, PasswordInput, Text, TextInput } from "@mantine/core";
+import {
+    Box,
+    Button,
+    Collapse,
+    Container,
+    Group,
+    Paper,
+    PasswordInput,
+    Text,
+    TextInput,
+} from "@mantine/core";
 import type { NextPage } from "next";
 import { useForm } from "@mantine/form"
-import Link from "next/link";
 import { interactive } from "../components/styles";
 import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js"
 import { useEffect, useState } from "react";
-import md5 from "md5";
 import { useModals } from "@mantine/modals";
-import { useHotkeys } from "@mantine/hooks";
 import { Action } from "../components/action";
-import { localized } from "../components/localization";
 import { ArrowBackUp, Check, Clipboard } from "tabler-icons-react";
 import { showNotification } from "@mantine/notifications";
-import { UseForm } from "@mantine/hooks/lib/use-form/use-form";
 import { apiCall } from "../components/api";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 function caesar(str: string, num: number) {
     var result = '';
@@ -143,7 +149,7 @@ const Register: NextPage = (props: any) => {
         apiCall("POST", "/api/user/create", { username: values.username, password: password, inviteCode: values.inviteCode }).then(resp => {
             if (!resp) { setCodeError(true) } else {
                 router.replace(`/login?u=${values.username}`)
-                showNotification({'title':"Registration successful!","message": "You may now log in!", icon: <Check />})
+                showNotification({ 'title': "Registration successful!", "message": "You may now log in!", icon: <Check /> })
             }
         })
     }
@@ -160,13 +166,16 @@ const Register: NextPage = (props: any) => {
     }, [form.values.inviteCode])
 
     return (<Container>
+        <Head>
+            <title>Register | Ossia</title>
+        </Head>
         <Group spacing="xl" position="center" align="center">
             <Box sx={{ maxWidth: 300 }}>
                 <form onSubmit={form.onSubmit((values) => register(values))}>
                     <Group spacing="sm" grow direction="column">
-                        <TextInput error={available === false && "Username is taken!"} maxLength={20} description="You can't change this later." required {...form.getInputProps("username")} label="Username" size="lg" />
-                        <PasswordInput description={<ul style={{ margin: 0, padding: 0, paddingLeft: '1em' }}><li>8 chars</li><li>Must contain lower and upper case</li><li>Must contain a number</li></ul>} required {...form.getInputProps("password")} label="Password" size="lg" />
-                        <TextInput error={codeError && "Invite code invalid!"} maxLength={8} description="A code you can get from a registered user, or by purchasing one." required {...form.getInputProps("inviteCode")} label="Invite code" size="lg" />
+                        <TextInput autoComplete="off" error={available === false && "Username is taken!"} maxLength={20} description="You can't change this later." required {...form.getInputProps("username")} label="Username" size="lg" />
+                        <PasswordInput autoComplete="new-password" description={<ul style={{ margin: 0, padding: 0, paddingLeft: '1em' }}><li>8 chars</li><li>Must contain lower and upper case</li><li>Must contain a number</li></ul>} required {...form.getInputProps("password")} label="Password" size="lg" />
+                        <TextInput autoComplete="off" error={codeError && "Invite code invalid!"} maxLength={8} description="A code you can get from a registered user, or by purchasing one." required {...form.getInputProps("inviteCode")} label="Invite code" size="lg" />
                         <Button variant="light" size="lg" type="submit">Register</Button>
                         <Group onClick={() => { buy[1](!buy[0]) }} sx={interactive}><Text size="sm" >{buy[0] ? "Already have an invite?" : "Don't have an invite?"}</Text></Group>
                     </Group>

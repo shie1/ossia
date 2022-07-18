@@ -6,8 +6,12 @@ export default function handler(
     res: NextApiResponse<any>
 ) {
     return new Promise(async (resolve, reject) => {
-        const params = new URLSearchParams(JSON.parse(req.body))
-        const resp = await (await fetch(`${apiroot}/search?${params.toString()}`)).json()
+        let np = ""
+        if (JSON.parse(req.body)["nextpage"]) {
+            np = "nextpage/"
+        }
+        const params = new URLSearchParams(JSON.parse(req.body)).toString()
+        const resp = await (await fetch(`${apiroot}/${np}search?${params}`)).json()
         resolve(res.status(200).json(resp))
     })
 }

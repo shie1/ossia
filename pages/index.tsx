@@ -1,9 +1,11 @@
-import { Container, Group, Loader, TextInput, Text, Paper, Center, Divider, ActionIcon, Button, Affix } from '@mantine/core'
-import { useEventListener, useWindowScroll } from '@mantine/hooks'
+import { Container, Group, TextInput, Center, Divider, ActionIcon, Affix, Button } from '@mantine/core';
+import { useWindowScroll } from '@mantine/hooks';
 import type { NextPage } from 'next'
-import { useCallback, useEffect, useRef, useState } from 'react'
-import { ArrowUp, Dots, Search } from 'tabler-icons-react'
+import Head from 'next/head'
+import { useCallback, useEffect, useState } from 'react';
+import { ArrowUp, Search } from 'tabler-icons-react';
 import { Action } from '../components/action'
+import { apiCall } from '../components/api';
 import { localized } from '../components/localization'
 import { VideoGrid } from '../components/video'
 
@@ -15,12 +17,18 @@ const Home: NextPage = () => {
   const search = (e: any) => {
     e.preventDefault()
     if (!searchInput) { return }
-    console.log(`Search: ${searchInput}`)
+    apiCall("POST", "/api/piped/search", { "filter": "videos", "q": searchInput }).then(resp => {
+      setResults(resp)
+    })
   }
 
   const loadMore = useCallback(() => {
     if (!searchInput) { return }
-    console.log("Load more!")
+    apiCall("POST", "/api/piped/search", { nextpage: results.nextpage, filter: "videos", q: searchInput }).then(resp => {
+      let newResults = resp
+      newResults.items = [...results.items, ...resp.items]
+      setResults(newResults)
+    })
   }, [results, searchInput])
 
   useEffect(() => {
@@ -34,6 +42,9 @@ const Home: NextPage = () => {
     return (<div>
       <Divider size="lg" my="md" />
       <VideoGrid videos={results.items} />
+      <Center mt="sm">
+        <Button variant='light' onClick={loadMore}>Load more</Button>
+      </Center>
     </div>)
   }
 
@@ -49,6 +60,9 @@ const Home: NextPage = () => {
   }
 
   return (<>
+    <Head>
+      <title>{localized.navSearch} | Ossia</title>
+    </Head>
     <Container>
       <Center>
         <form style={{ 'width': '100%' }} onSubmit={search}>

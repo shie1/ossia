@@ -9,5 +9,10 @@ export default function handler(
 ) {
     const token = getCookie("token", { req: req, res: res, path: "/", httpOnly: true })
     if (!token) { return res.status(200).json(false) }
-    res.status(200).json(verify(token as string, process.env["OSSIA_PRIVATE_KEY"] as string))
+    try {
+        const jwt = verify(token as string, process.env["OSSIA_PRIVATE_KEY"] as string)
+        res.status(200).json(jwt)
+    } catch {
+        res.status(200).json(false)
+    }
 }

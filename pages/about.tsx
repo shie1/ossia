@@ -1,15 +1,27 @@
-import { Container, Title, Text, Group, Accordion, AccordionItem, Paper, Avatar, Table, TypographyStylesProvider, Badge, useMantineTheme } from "@mantine/core";
+import {
+    Container,
+    Title,
+    Text,
+    Group,
+    Accordion,
+    AccordionItem,
+    Paper,
+    Avatar,
+    Table,
+    TypographyStylesProvider,
+    useMantineTheme,
+} from "@mantine/core";
 import type { NextPage } from "next";
 import useSWR from "swr";
 import moment from "moment/min/moment-with-locales";
-import { Affiliate, FileCode, Hierarchy, Users } from "tabler-icons-react";
+import { Affiliate, FileCode, Users } from "tabler-icons-react";
 import { interactive } from "../components/styles";
 import { useManifest } from "../components/manifest";
 import { Prism } from "@mantine/prism"
 import { localized } from "../components/localization";
-import Link from "next/link";
 import { useCustomRouter } from "../components/redirect";
-import { ReactNode, useRef } from "react";
+import { useRef } from "react";
+import Head from "next/head";
 
 const About: NextPage = () => {
     const fetcher = (url: string) => fetch(url).then((res) => res.json());
@@ -31,6 +43,9 @@ const About: NextPage = () => {
     moment.locale(localized.getLanguage())
 
     return (<Container>
+        <Head>
+            <title>{localized.about} | Ossia</title>
+        </Head>
         <Group mb="sm" direction="column" spacing="sm">
             <Title align="center">{localized.aboutTitle}</Title>
             <Group direction="column" spacing={2}>
