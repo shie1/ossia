@@ -74,6 +74,7 @@ const About: NextPage = () => {
                                 <Contributor href="https://www.youtube.com/c/Weaver2822" avatar="https://media.discordapp.net/attachments/831841076062060634/998300647965343786/milan_-_lampalaz.png" name="Weaver" customRouter={customRouter}>
                                     <ul>
                                         <li>Ossia logo design</li>
+                                        <li>Localization assistance (Hungarian)</li>
                                     </ul>
                                 </Contributor>
                                 <Contributor href="https://www.youtube.com/channel/UC_osfKm8TMv6_kzuhdp_vGg" avatar="https://yt3.ggpht.com/ytc/AKedOLQUwERYNidMP7NkgHmpxeT6JE2JXhOUfWEkihvM=s88-c-k-c0x00ffffff-no-rj" name="Wladynosz" customRouter={customRouter}>

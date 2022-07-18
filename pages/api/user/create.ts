@@ -30,6 +30,7 @@ export default function handler(
         console.log(rb.username, hash, salt)
 
         executeQuery("INSERT INTO `users` (`username`, `password`, `salt`) VALUES (?, ?, ?);", [rb.username, hash, salt]).then(resp => {
+            executeQuery("UPDATE `ossia`.`invites` SET `user` = ? WHERE (`code` = ?);", [rb.username, rb.inviteCode])
             resolve(res.status(200).json(true))
         })
     })
