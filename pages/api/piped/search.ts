@@ -11,7 +11,8 @@ export default function handler(
             np = "nextpage/"
         }
         const params = new URLSearchParams(JSON.parse(req.body)).toString()
-        const resp = await (await fetch(`${apiroot}/${np}search?${params}`)).json()
+        let resp
+        try { resp = await (await fetch(`${apiroot}/${np}search?${params}`)).json() } catch { resp = {} }
         resolve(res.status(200).json(resp))
     })
 }
