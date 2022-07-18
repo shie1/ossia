@@ -21,6 +21,7 @@ import { showNotification } from "@mantine/notifications";
 import { apiCall } from "../components/api";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import { localized } from "../components/localization";
 
 function caesar(str: string, num: number) {
     var result = '';
@@ -41,19 +42,19 @@ const BuyCode = ({ clientId, form }: { clientId: string, form: any }) => {
             if (hash) {
                 form.setFieldValue("inviteCode", hash[0])
                 const reply = modals.openModal({
-                    title: "Invite code", children:
+                    title: localized.inviteCode, children:
                         <Group spacing="sm" grow direction="column">
                             <Group spacing={2} grow direction="column">
                                 <Text>Order {hash[1]} has been successful, your code is:</Text>
                                 <TextInput size="lg" rightSection={<Group mr="md"><Action onClick={() => {
                                     window.navigator.clipboard.writeText(hash[0])
-                                    showNotification({ title: "Copied to clipboard!", message: "", icon: <Clipboard /> })
-                                }} label="Copy to clipboard"><Clipboard /></Action></Group>} value={hash[0]} />
+                                    showNotification({ title: localized.copiedToClipboard, message: "", icon: <Clipboard /> })
+                                }} label={localized.copyToClipboard}><Clipboard /></Action></Group>} value={hash[0]} />
                             </Group>
                             <Group spacing={6} position="right">
                                 <Button onClick={() => {
                                     modals.closeModal(reply)
-                                }} variant="light">Close</Button>
+                                }} variant="light">{localized.close}</Button>
                             </Group>
                         </Group>
                 })
@@ -64,8 +65,8 @@ const BuyCode = ({ clientId, form }: { clientId: string, form: any }) => {
         <Container>
             <Group position="center" direction="row" my="sm">
                 <Group sx={{ width: '100%' }} align="center" spacing={6}>
-                    <Text align="left" size="xl">1.99$ | Invite code</Text>
-                    <Text>With this one time purchase, you can register to Ossia and get access to all of the features our application has to offer.</Text>
+                    <Text align="left" size="xl">1.99$ | {localized.inviteCode}</Text>
+                    <Text>{localized.inviteSalesPitch}</Text>
                 </Group>
                 <Group >
                     <Paper p="sm" pb={0} withBorder sx={(theme) => ({ background: theme.colors.gray[0] })}>
@@ -96,27 +97,27 @@ const BuyCode = ({ clientId, form }: { clientId: string, form: any }) => {
                         if (resp) {
                             form.setFieldValue("inviteCode", resp)
                             const reply = modals.openModal({
-                                title: "Invite code", children:
+                                title: localized.inviteCode, children:
                                     <Group spacing="sm" grow direction="column">
                                         <Group spacing={2} grow direction="column">
                                             <Text>Your code is:</Text>
                                             <TextInput size="lg" rightSection={<Group mr="md"><Action onClick={() => {
                                                 window.navigator.clipboard.writeText(resp)
-                                                showNotification({ title: "Copied to clipboard!", message: "", icon: <Clipboard /> })
-                                            }} label="Copy to clipboard"><Clipboard /></Action></Group>} value={resp} />
+                                                showNotification({ title: localized.copiedToClipboard, message: "", icon: <Clipboard /> })
+                                            }} label={localized.copyToClipboard}><Clipboard /></Action></Group>} value={resp} />
                                         </Group>
                                         <Group spacing={6} position="right">
                                             <Button onClick={() => {
                                                 modals.closeModal(reply)
-                                            }} variant="light">Close</Button>
+                                            }} variant="light">{localized.close}</Button>
                                         </Group>
                                     </Group>
                             })
                         }
                     })
                 }}>
-                    <TextInput placeholder="8X183i26Jr596b63Y" size="sm" label="Order ID" value={orderId} onChange={(e) => setOrderId(e.currentTarget.value)} rightSection={
-                        <Action mr={2} size="md" label="Restore" type="submit"><ArrowBackUp /></Action>
+                    <TextInput placeholder="8X183i26Jr596b63Y" size="sm" label={localized.orderId} value={orderId} onChange={(e) => setOrderId(e.currentTarget.value)} rightSection={
+                        <Action mr={2} size="md" label={localized.restore} type="submit"><ArrowBackUp /></Action>
                     } />
                 </form>
             </Collapse>
@@ -149,7 +150,7 @@ const Register: NextPage = (props: any) => {
         apiCall("POST", "/api/user/create", { username: values.username, password: password, inviteCode: values.inviteCode }).then(resp => {
             if (!resp) { setCodeError(true) } else {
                 router.replace(`/login?u=${values.username}`)
-                showNotification({ 'title': "Registration successful!", "message": "You may now log in!", icon: <Check /> })
+                showNotification({ 'title': localized.registrationSuccessful, "message": localized.youMayNowLogin, icon: <Check /> })
             }
         })
     }
@@ -167,17 +168,17 @@ const Register: NextPage = (props: any) => {
 
     return (<Container>
         <Head>
-            <title>Register | Ossia</title>
+            <title>{localized.register} | Ossia</title>
         </Head>
         <Group spacing="xl" position="center" align="center">
             <Box sx={{ maxWidth: 300 }}>
                 <form onSubmit={form.onSubmit((values) => register(values))}>
                     <Group spacing="sm" grow direction="column">
-                        <TextInput autoComplete="off" error={available === false && "Username is taken!"} maxLength={20} description="You can't change this later." required {...form.getInputProps("username")} label="Username" size="lg" />
-                        <PasswordInput autoComplete="new-password" description={<ul style={{ margin: 0, padding: 0, paddingLeft: '1em' }}><li>8 chars</li><li>Must contain lower and upper case</li><li>Must contain a number</li></ul>} required {...form.getInputProps("password")} label="Password" size="lg" />
-                        <TextInput autoComplete="off" error={codeError && "Invite code invalid!"} maxLength={8} description="A code you can get from a registered user, or by purchasing one." required {...form.getInputProps("inviteCode")} label="Invite code" size="lg" />
-                        <Button variant="light" size="lg" type="submit">Register</Button>
-                        <Group onClick={() => { buy[1](!buy[0]) }} sx={interactive}><Text size="sm" >{buy[0] ? "Already have an invite?" : "Don't have an invite?"}</Text></Group>
+                        <TextInput autoComplete="off" error={available === false && localized.usernameTaken} maxLength={20} description={localized.usernameDesc} required {...form.getInputProps("username")} label={localized.username} size="lg" />
+                        <PasswordInput autoComplete="new-password" description={<ul style={{ margin: 0, padding: 0, paddingLeft: '1em' }}><li>{localized.passwordDesc!.split("\n")[0]}</li><li>{localized.passwordDesc!.split("\n")[1]}</li><li>{localized.passwordDesc!.split("\n")[2]}</li></ul>} required {...form.getInputProps("password")} label="Password" size="lg" />
+                        <TextInput autoComplete="off" error={codeError && localized.inviteCodeInvalid} maxLength={8} description={localized.inviteCodeDesc} required {...form.getInputProps("inviteCode")} label={localized.inviteCode} size="lg" />
+                        <Button variant="light" size="lg" type="submit">{localized.register}</Button>
+                        <Group onClick={() => { buy[1](!buy[0]) }} sx={interactive}><Text size="sm" >{buy[0] ? localized.buyInviteClose : localized.buyInviteClose}</Text></Group>
                     </Group>
                 </form>
             </Box>

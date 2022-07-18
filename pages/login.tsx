@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { apiCall } from "../components/api";
 import Head from "next/head";
+import { localized } from "../components/localization";
 
 function caesar(str: string, num: number) {
     var result = '';
@@ -46,10 +47,10 @@ const Login: NextPage = () => {
         <Box sx={{ maxWidth: 300 }} mx="auto">
             <form onSubmit={form.onSubmit((values) => login(values))}>
                 <Group spacing="sm" grow direction="column">
-                    <TextInput radius="lg" required {...form.getInputProps("username")} label="Username" size="lg" />
-                    <PasswordInput autoComplete="current-password" radius="lg" required {...form.getInputProps("password")} label="Password" size="lg" />
-                    <Button variant="light" size="lg" type="submit">Login</Button>
-                    <Text size="sm" sx={interactive}><Link replace href="/register">Don&apos;t have an account yet?</Link></Text>
+                    <TextInput radius="lg" required {...form.getInputProps("username")} label={localized.username} size="lg" />
+                    <PasswordInput autoComplete="current-password" radius="lg" required {...form.getInputProps("password")} label={localized.password} size="lg" />
+                    <Button variant="light" size="lg" type="submit">{localized.login}</Button>
+                    <Text size="sm" sx={interactive}><Link replace href="/register">{localized.registerText}</Link></Text>
                 </Group>
             </form>
         </Box>

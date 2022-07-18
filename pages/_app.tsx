@@ -122,6 +122,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       >
         <ModalsProvider>
           <NotificationsProvider>
+            <audio id='ossia-main-player' style={{ display: 'none' }} />
             <LoadingOverlay visible={loading} sx={{ position: 'fixed' }} />
             <Component {...pageProps} />
           </NotificationsProvider>

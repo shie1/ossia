@@ -45,7 +45,7 @@ const Library: NextPage = () => {
             <Group position="apart">
                 <Group spacing="sm">
                     <Avatar><User /></Avatar>
-                    <Text>Logged in as: {me.username}</Text>
+                    <Text>{localized.formatString(localized.loggedInAs!, me.username || "")}</Text>
                 </Group>
                 <ActionGroup>
                     <Action onClick={() => { createModal[1](true) }} label={localized.createPlaylist}>
@@ -61,7 +61,7 @@ const Library: NextPage = () => {
                 </ActionGroup>
             </Group>
         </Paper>
-        <Text size="xl" mt="md">My playlists</Text>
+        <Text size="xl" mt="md">{localized.myPlaylists}</Text>
         <Box mt="sm">
             {playlists && <Playlists playlists={playlists} />}
         </Box>

@@ -20,13 +20,13 @@ export const CreatePlaylist = ({ open }: { open: Array<any> }) => {
             <form onSubmit={(e) => {
                 e.preventDefault()
                 if (plName.length === 0) {
-                    return setError("Playlist name cannot be empty!")
+                    return setError(localized.createPlaylistNameError2!)
                 }
                 if (!error) {
                     open[1](false)
                     apiCall("POST", "/api/playlist/create", { playlist: plName, icon: iconSel.icon }).then(resp => {
                         if (resp) {
-                            showNotification({ "title": "Success!", icon: <Check />, message: "Playlist created successfully!" })
+                            showNotification({ "title": localized.success, icon: <Check />, message: localized.playlistCreateResp })
                             window.dispatchEvent(new Event("ossia-playlist-added"))
                         }
                     })
@@ -37,7 +37,7 @@ export const CreatePlaylist = ({ open }: { open: Array<any> }) => {
                         <Avatar sx={interactive} onClick={iconSel.open} size="lg"><Icon size={40} icon={iconSel.icon} /></Avatar>
                         <TextInput value={plName} onChange={(e) => {
                             setPlName(e.currentTarget.value)
-                            if (!/^(\w|\s){0,100}$/.test(e.currentTarget.value)) { setError("Playlist name can only contain letters, numbers and spaces.") } else { setError("") }
+                            if (!/^(\w|\s){0,100}$/.test(e.currentTarget.value)) { setError(localized.createPlaylistNameError!) } else { setError("") }
                         }} error={error} sx={{ width: '100%' }} size="lg" />
                     </Group>
                 </Paper>
@@ -55,7 +55,7 @@ export const Playlists = ({ playlists }: { playlists: Array<any> }) => {
         {playlists.map((pl) => {
             key++
             const plid = encodeURIComponent(Buffer.from((pl["id"] + 45).toString()).toString('base64'))
-            return (<Paper sx={interactive} p="md" withBorder>
+            return (<Paper key={key} sx={interactive} p="md" withBorder>
                 <Link href={`/playlist?p=${plid}`}>
                     <Group spacing="sm" direction="row">
                         <Icon size={30} icon={pl["icon_name"]} />

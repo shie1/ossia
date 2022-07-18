@@ -10,7 +10,7 @@ export const useCustomRouter = () => {
             title: localized.newTabTitle,
             size: "lg",
             children: (
-                <Text sx={{whiteSpace: 'pre-wrap', wordWrap: 'break-word'}} dangerouslySetInnerHTML={{ __html: localized.newTabText.replace('{href}', `<b>${href.host.replace('www.', '')}</b>`.replace('\n', '<br>')) }} />
+                <Text sx={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word' }} dangerouslySetInnerHTML={{ __html: localized.formatString(localized.newTabText!, `<b>${href.host.replace('www.', '')}</b>`.replace('\n', '<br>')) as string }} />
             ),
             labels: { confirm: localized.confirm, cancel: localized.cancel },
             onConfirm: () => { window.open(href) },

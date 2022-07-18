@@ -50,7 +50,7 @@ const About: NextPage = () => {
             <Title align="center">{localized.aboutTitle}</Title>
             <Group direction="column" spacing={2}>
                 <Text>{localized.aboutText.split("\n")[0]}</Text>
-                <Text>{localized.aboutText.split("\n")[1].replace('{time}', moment("2022-05-30").fromNow())}</Text>
+                <Text>{localized.formatString(localized.aboutText.split("\n")![1], moment("2022-05-30").fromNow())}</Text>
             </Group>
         </Group>
         <Paper p="sm" withBorder shadow="lg" radius="lg">
@@ -74,6 +74,11 @@ const About: NextPage = () => {
                                 <Contributor href="https://www.youtube.com/c/Weaver2822" avatar="https://media.discordapp.net/attachments/831841076062060634/998300647965343786/milan_-_lampalaz.png" name="Weaver" customRouter={customRouter}>
                                     <ul>
                                         <li>Ossia logo design</li>
+                                    </ul>
+                                </Contributor>
+                                <Contributor href="https://www.youtube.com/channel/UC_osfKm8TMv6_kzuhdp_vGg" avatar="https://yt3.ggpht.com/ytc/AKedOLQUwERYNidMP7NkgHmpxeT6JE2JXhOUfWEkihvM=s88-c-k-c0x00ffffff-no-rj" name="Wladynosz" customRouter={customRouter}>
+                                    <ul>
+                                        <li>{localized.germanContrib}</li>
                                     </ul>
                                 </Contributor>
                             </Group>
