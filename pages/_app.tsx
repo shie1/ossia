@@ -12,6 +12,7 @@ import { localized } from '../components/localization'
 import { useCookies } from "react-cookie"
 import { useRouter } from 'next/router'
 import { useMe } from '../components/auth';
+import { useLocalStorage } from '@mantine/hooks';
 
 const NavLink = ({ link, icon, label }: { link: string, icon: ReactNode, label: ReactNode }) => {
   return (<Link href={link}>
@@ -70,7 +71,7 @@ const AppNavbar = ({ cookies, sidebar }: { cookies: any, sidebar: any }) => {
 }
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useLocalStorage({ key: "loading", defaultValue: false })
   const sidebar = useState(false);
   const manifest = useManifest()
   const router = useRouter()
@@ -84,6 +85,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   }, [cookies.lang, setCookies])
 
   useEffect(() => {
+    setLoading(false)
     if (typeof window !== 'undefined') {
       window.addEventListener("ossia-nav-click", () => { sidebar[1](false) })
     }
