@@ -3,6 +3,7 @@ import Autolinker from "autolinker";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 import { X, PlayerPlay, PlayerPause, BrandYoutube, Notes, LayoutList, Router } from "tabler-icons-react";
 import { ActionGroup, Action } from "../components/action";
 import { localized } from "../components/localization";
@@ -15,6 +16,13 @@ const Player: NextPage = (props: any) => {
     const customRouter = useCustomRouter()
     const router = useRouter()
     const { playerDisp } = player
+
+    useEffect(() => {
+        if (!Object.keys(player.playerDisp).length) {
+            router.replace("/")
+        }
+    }, [player.playerDisp])
+
     return (<Container>
         <Head>
             <title>Player | Ossia</title>

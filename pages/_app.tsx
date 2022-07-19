@@ -96,6 +96,8 @@ function MyApp({ Component, pageProps }: AppProps) {
   const me = useMe()
   const player = usePlayer(playerRef)
   const [cookies, setCookies, removeCookies] = useCookies(["lang"])
+  const bg = useRef<null | HTMLDivElement>(null)
+  const gradient = "linear-gradient(90deg, rgba(158,93,185,1) 0%, rgba(129,67,156,1) 100%)"
 
   useEffect(() => {
     if (konami) {
@@ -123,11 +125,16 @@ function MyApp({ Component, pageProps }: AppProps) {
   }, [])
 
   useEffect(() => {
+    bg.current!.style.background = Object.keys(player.playerDisp).length ? `url("${player.playerDisp.ALBUMART}")` : gradient
+  }, [player.playerDisp, bg])
+
+  useEffect(() => {
     if (playerRef.current === null) { return }
     playerRef.current!.volume = volume / 100
   }, [volume])
 
   pageProps = {
+    ...pageProps,
     playerRef,
     loading: [loading, setLoading],
     manifest,
@@ -167,6 +174,9 @@ function MyApp({ Component, pageProps }: AppProps) {
       >
         <ModalsProvider>
           <NotificationsProvider>
+            <Center className="background-glow" style={{ filter: 'blur(20rem)', position: 'fixed', left: 240, top: -600, height: '10rem' }}>
+              <div ref={bg} className='bglow-1' style={{ background: gradient, transition: '4s', objectFit: 'fill', height: '50vh', width: '90vw' }} draggable={false} />
+            </Center>
             <audio autoPlay ref={playerRef} id='ossia-main-player' style={{ display: 'none' }} />
             <LoadingOverlay visible={loading} sx={{ position: 'fixed' }} />
             <Component {...pageProps} />

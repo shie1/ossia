@@ -42,7 +42,7 @@ export const VideoGrid = ({ videos, player }: any) => {
         <Grid>
             {videos.map((video: any) => {
                 i++
-                if (video.uploaded == -1) return <></>
+                if (video.uploaded == -1) return <div key={i}></div>
                 return <Grid.Col md={4} span={12} key={i}>
                     <Video player={player} video={video} />
                 </Grid.Col>

@@ -1,5 +1,6 @@
+import { useLocalStorage } from "@mantine/hooks";
 import { useRouter } from "next/router";
-import { RefObject, useEffect, useState } from "react";
+import { RefObject, useCallback, useEffect, useState } from "react";
 import { apiCall } from "./api";
 
 const myShift = (list: Array<any>) => {
@@ -17,6 +18,7 @@ export const usePlayer = (player: RefObject<null | HTMLAudioElement>) => {
 
     useEffect(() => {
         if (!Object.keys(streams).length) { return }
+        window.dispatchEvent(new Event("ossia-song-update"))
         setPlayerDisp({
             "ARTIST": streams.uploader,
             "SONG": streams.title,
@@ -24,6 +26,7 @@ export const usePlayer = (player: RefObject<null | HTMLAudioElement>) => {
         })
         apiCall("GET", "/api/youtube/recognize", { v: streams.thumbnailUrl.split("/")[4] }).then(resp => {
             if (resp.length === 1) {
+                window.dispatchEvent(new Event("ossia-song-update"))
                 setPlayerDisp((old: any) => ({ ...old, ...resp[0] }))
             }
         })
@@ -50,6 +53,7 @@ export const usePlayer = (player: RefObject<null | HTMLAudioElement>) => {
     }
 
     const pop = () => {
+        window.dispatchEvent(new Event("ossia-song-update"))
         player.current!.src = ""
         setStreams({})
         setPlayerDisp({})
@@ -59,13 +63,13 @@ export const usePlayer = (player: RefObject<null | HTMLAudioElement>) => {
     useEffect(() => {
         player.current!.onended = () => {
             if (!queue.length) {
-                pop()
+                apiCall("GET", "/api/piped/streams", { v: streams.relatedStreams[0].url.split("?v=")[1] }).then(resp => { play(resp) })
             } else {
                 play(queue[0])
                 setQueue(myShift(queue))
             }
         }
-    }, [])
+    }, [streams])
 
     useEffect(() => {
         if (queue.length) {

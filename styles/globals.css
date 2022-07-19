@@ -1,11 +1,13 @@
 @keyframes bg-glow-move {
-  0%{
+  0% {
     transform: rotate(10deg) translateX(0vw) translateY(0vh);
   }
-  50%{
+
+  50% {
     transform: rotate(-10deg) translateX(0vw) translateY(10vh);
   }
-  100%{
+
+  100% {
     transform: rotate(10deg) translateX(0vw) translateY(15vh);
   }
 }
@@ -59,9 +61,9 @@ a {
   animation-iteration-count: infinite;
   animation-play-state: running;
   animation-direction: alternate;
-  animation-duration: 120s;
+  animation-duration: 60s;
 }
 
-iframe{
+iframe {
   z-index: 1 !important;
 }
