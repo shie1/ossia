@@ -9,7 +9,7 @@ import { apiCall } from '../components/api';
 import { localized } from '../components/localization'
 import { VideoGrid } from '../components/video'
 
-const Home: NextPage = () => {
+const Home: NextPage = (props: any) => {
   const [searchInput, setSearchInput] = useState("")
   const [results, setResults] = useState<any>({})
   const [scroll, scrollTo] = useWindowScroll()
@@ -41,7 +41,7 @@ const Home: NextPage = () => {
     if (!results.items) return <></>
     return (<div>
       <Divider size="lg" my="md" />
-      <VideoGrid videos={results.items} />
+      <VideoGrid player={props.player} videos={results.items} />
       <Center mt="sm">
         <Button variant='light' onClick={loadMore}>Load more</Button>
       </Center>
@@ -66,7 +66,7 @@ const Home: NextPage = () => {
     <Container>
       <Center>
         <form style={{ 'width': '100%' }} onSubmit={search}>
-          <TextInput placeholder={localized.navSearch + "..."} radius="lg" onClick={() => { setResults([]) }} size='lg' value={searchInput} onChange={(e) => { if(!e.currentTarget.value){setResults([])}setSearchInput(e.currentTarget.value) }} sx={{ width: '100%' }} variant='filled' rightSection={
+          <TextInput placeholder={localized.navSearch + "..."} radius="lg" onClick={() => { setResults([]) }} size='lg' value={searchInput} onChange={(e) => { if (!e.currentTarget.value) { setResults([]) } setSearchInput(e.currentTarget.value) }} sx={{ width: '100%' }} variant='filled' rightSection={
             <Group mr="md">
               <Action label={localized.navSearch} onClick={() => { search(new Event("")) }} >
                 <Search />

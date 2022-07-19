@@ -3,7 +3,6 @@ import md5 from 'md5'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { Details } from 'tabler-icons-react'
 import { apiCall } from '../../components/api'
-import { getMixedValue } from '../../components/mixval'
 import excuteQuery from '../../components/mysql'
 require("dotenv").config()
 

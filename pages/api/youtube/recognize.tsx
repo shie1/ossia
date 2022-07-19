@@ -1,5 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import ytdl from "ytdl-core"
+import request from "request"
+import albumArt from "album-art"
 
 export default async function handler(
     req: NextApiRequest,
@@ -43,7 +45,13 @@ export default async function handler(
                 }
                 if (input) { inner[title] = input }
             }
-            resp.push({ ...inner, "ALBUMART": `/api/albumart?a=${encodeURIComponent(inner["ARTIST"])}&b=${encodeURIComponent(inner["ALBUM"])}&s=${encodeURIComponent(inner["SONG"])}&v=${req.query['v']}` })
+            let art: any
+            let url: any
+            url = await albumArt(inner["ARTIST"], { album: inner["ALBUM"] !== "undefined" ? inner["ALBUM"] : inner["SONG"], size: 'large' })
+            if (typeof url === 'string') {
+                art = url
+            }
+            resp.push({ ...inner, "ALBUMART": art })
         }
         resolve(res.status(200).json(resp))
     })

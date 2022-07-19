@@ -38,7 +38,7 @@ export const Settings: NextPage = () => {
     }
 
     useEffect(() => {
-        if (langClick[0] % 5 === 0) {
+        if (langClick[0] !== 0 && langClick[0] % 5 === 0) {
             showNotification({ id: "hungary", icon: <Heart />, title: localized.formatString(localized.hungaryText!, <>&#128156;</>), message: "" })
         }
     }, [langClick[0]])

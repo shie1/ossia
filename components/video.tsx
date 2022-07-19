@@ -1,7 +1,10 @@
 import { Card, Grid, Image, Text, AspectRatio } from "@mantine/core"
+import { useRouter } from "next/router"
+import { apiCall } from "./api"
 import { interactive } from "./styles"
 
-export const Video = ({ video }: any) => {
+export const Video = ({ video, player }: any) => {
+    const router = useRouter()
     if (!video) { return <></> }
     let type = ""
     if (video.title) {
@@ -10,7 +13,10 @@ export const Video = ({ video }: any) => {
         type = "channel"
     }
     const play = () => {
-        console.log(`Play: ${video}`)
+        apiCall("GET", "/api/piped/streams", { v: (video.thumbnail || video.thumbnailUrl).split("/")[4] }).then(resp => {
+            player.play(resp)
+            router.push("/player")
+        })
     }
     return <>
         <Card radius="lg" sx={interactive} onClick={play}>
@@ -29,7 +35,7 @@ export const Video = ({ video }: any) => {
     </>
 }
 
-export const VideoGrid = ({ videos }: any) => {
+export const VideoGrid = ({ videos, player }: any) => {
     if (!videos) { return <></> }
     let i = 0
     return (<>
@@ -38,7 +44,7 @@ export const VideoGrid = ({ videos }: any) => {
                 i++
                 if (video.uploaded == -1) return <></>
                 return <Grid.Col md={4} span={12} key={i}>
-                    <Video video={video} />
+                    <Video player={player} video={video} />
                 </Grid.Col>
             })}
         </Grid>

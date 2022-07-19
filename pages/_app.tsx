@@ -19,7 +19,7 @@ import { ModalsProvider } from '@mantine/modals'
 import { NotificationsProvider, showNotification } from '@mantine/notifications';
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import Link from 'next/link'
-import { AlertTriangle, Books, Login, Search, Settings } from "tabler-icons-react";
+import { AlertTriangle, Books, Login, PlayerPlay, Search, Settings } from "tabler-icons-react";
 import { useManifest } from '../components/manifest'
 import { interactive } from '../components/styles'
 import { localized } from '../components/localization'
@@ -75,10 +75,11 @@ const AppFooter = ({ manifest, sidebar }: { manifest: any, sidebar: any }) => {
   </Footer>)
 }
 
-const AppNavbar = ({ sidebar, me }: { sidebar: any, me: any }) => {
+const AppNavbar = ({ sidebar, me, player }: { sidebar: any, me: any, player: any }) => {
   return (<Navbar p="md" hiddenBreakpoint="sm" hidden={!sidebar[0]} width={{ sm: 200, lg: 300 }}>
     <Group grow direction='column' spacing='sm'>
       <NavLink icon={<Search />} label={localized.navSearch} link="/" />
+      {Object.keys(player.playerDisp).length && <NavLink label={localized.navPlayer} link="/player" icon={<PlayerPlay />} />}
       {!me ? <NavLink icon={<Login />} label={localized.login} link='/login' /> : <NavLink icon={<Books />} label={localized.navLibrary} link="/library" />}
       <NavLink icon={<Settings />} label={localized.settings} link="/settings" />
     </Group>
@@ -88,7 +89,7 @@ const AppNavbar = ({ sidebar, me }: { sidebar: any, me: any }) => {
 function MyApp({ Component, pageProps }: AppProps) {
   const [loading, setLoading] = useState(false)
   const konami = useKonamiCode()
-  const [volume, setVolume] = useLocalStorage({ key: 'music-volume', defaultValue: 100 })
+  const [volume, setVolume] = useLocalStorage({ key: 'music-volume', defaultValue: 90 })
   const sidebar = useState(false);
   const manifest = useManifest()
   const playerRef = useRef<null | HTMLAudioElement>(null)
@@ -127,11 +128,12 @@ function MyApp({ Component, pageProps }: AppProps) {
   }, [volume])
 
   pageProps = {
-    playerElement: playerRef,
+    playerRef,
     loading: [loading, setLoading],
-    manifest: manifest,
-    me: me,
-    volume: [volume, setVolume]
+    manifest,
+    me,
+    volume: [volume, setVolume],
+    player,
   }
 
   return (<>
@@ -156,7 +158,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         navbarOffsetBreakpoint="sm"
         asideOffsetBreakpoint="sm"
         fixed
-        navbar={<AppNavbar me={me} sidebar={sidebar} />}
+        navbar={<AppNavbar player={player} me={me} sidebar={sidebar} />}
         footer={<AppFooter sidebar={sidebar} manifest={manifest} />}
         header={<AppHeader sidebar={sidebar} />}
         styles={(theme) => ({
