@@ -1,13 +1,11 @@
-import { Accordion, AccordionItem, Avatar, Box, Container, Group, Paper, Space, Text, Title } from "@mantine/core";
-import { useLocalStorage } from "@mantine/hooks";
+import { Avatar, Box, Container, Group, Paper, Text } from "@mantine/core";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { Playlist, Plus, User, UserOff } from "tabler-icons-react";
+import { Plus, User, UserOff } from "tabler-icons-react";
 import { Action, ActionGroup } from "../components/action";
 import { apiCall } from "../components/api";
-import { useMe } from "../components/auth";
 import { localized } from "../components/localization";
 import { CreatePlaylist, Playlists } from "../components/playlist";
 

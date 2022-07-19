@@ -1,6 +1,20 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
-import { AppShell, Text, Burger, Center, Footer, Group, Header, LoadingOverlay, MantineProvider, MediaQuery, Navbar, Paper, Title, Avatar, Image } from '@mantine/core'
+import {
+  AppShell,
+  Text,
+  Burger,
+  Center,
+  Footer,
+  Group,
+  Header,
+  LoadingOverlay,
+  MantineProvider,
+  MediaQuery,
+  Navbar,
+  Paper,
+  Image,
+} from '@mantine/core';
 import { ModalsProvider } from '@mantine/modals'
 import { NotificationsProvider } from '@mantine/notifications';
 import { ReactNode, useEffect, useRef, useState } from 'react';
@@ -10,9 +24,7 @@ import { useManifest } from '../components/manifest'
 import { interactive } from '../components/styles'
 import { localized } from '../components/localization'
 import { useCookies } from "react-cookie"
-import { useRouter } from 'next/router'
 import { useMe } from '../components/auth';
-import { useLocalStorage } from '@mantine/hooks';
 
 const NavLink = ({ link, icon, label }: { link: string, icon: ReactNode, label: ReactNode }) => {
   return (<Link href={link}>
@@ -25,7 +37,7 @@ const NavLink = ({ link, icon, label }: { link: string, icon: ReactNode, label: 
   </Link>)
 }
 
-const AppHeader = ({ manifest, sidebar }: { manifest: any, sidebar: any }) => {
+const AppHeader = ({ sidebar }: { sidebar: any }) => {
   return (<Header style={{ zIndex: '99 !important' }} height={70} p="md">
     <div style={{ display: 'flex', alignItems: 'center', height: '100%' }}>
       <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
@@ -122,7 +134,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         fixed
         navbar={<AppNavbar me={me} sidebar={sidebar} />}
         footer={<AppFooter sidebar={sidebar} manifest={manifest} />}
-        header={<AppHeader sidebar={sidebar} manifest={manifest} />}
+        header={<AppHeader sidebar={sidebar} />}
         styles={(theme) => ({
           main: { backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0] },
         })}

@@ -1,8 +1,8 @@
-import { Accordion, AccordionItem, Chip, Chips, Container, Text, Button } from "@mantine/core";
+import { Accordion, AccordionItem, Chip, Chips, Container, Text } from "@mantine/core";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { BrandLastfm, Link, World } from "tabler-icons-react";
+import { World } from "tabler-icons-react";
 import { localized } from "../components/localization";
 import { useCookies } from "react-cookie"
 import Head from "next/head";

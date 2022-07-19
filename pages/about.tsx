@@ -16,7 +16,6 @@ import useSWR from "swr";
 import moment from "moment/min/moment-with-locales";
 import { Affiliate, FileCode, Users } from "tabler-icons-react";
 import { interactive } from "../components/styles";
-import { useManifest } from "../components/manifest";
 import { Prism } from "@mantine/prism"
 import { localized } from "../components/localization";
 import { useCustomRouter } from "../components/redirect";
