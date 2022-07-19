@@ -174,12 +174,14 @@ function MyApp({ Component, pageProps }: AppProps) {
       >
         <ModalsProvider>
           <NotificationsProvider>
-            <Center className="background-glow" style={{ filter: 'blur(20rem)', position: 'fixed', left: 240, top: -600, height: 400}}>
+            <Center className="background-glow" style={{ zIndex: 1, filter: 'blur(20rem)', position: 'fixed', left: 240, top: -600, height: 400 }}>
               <div ref={bg} className='bglow-1' style={{ background: gradient, transition: '4s', objectFit: 'fill', height: 600, width: '90vw' }} draggable={false} />
             </Center>
             <audio autoPlay ref={playerRef} id='ossia-main-player' style={{ display: 'none' }} />
             <LoadingOverlay visible={loading} sx={{ position: 'fixed' }} />
-            <Component {...pageProps} />
+            <div style={{ zIndex: 2 }}>
+              <Component {...pageProps} />
+            </div>
           </NotificationsProvider>
         </ModalsProvider>
       </AppShell>
