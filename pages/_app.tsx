@@ -25,6 +25,7 @@ import { interactive } from '../components/styles'
 import { localized } from '../components/localization'
 import { useCookies } from "react-cookie"
 import { useMe } from '../components/auth';
+import { useLocalStorage } from '@mantine/hooks';
 
 const NavLink = ({ link, icon, label }: { link: string, icon: ReactNode, label: ReactNode }) => {
   return (<Link href={link}>
@@ -83,11 +84,13 @@ const AppNavbar = ({ sidebar, me }: { sidebar: any, me: any }) => {
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [loading, setLoading] = useState(false)
+  const [volume, setVolume] = useLocalStorage({ key: 'music-volume', defaultValue: 100 })
   const sidebar = useState(false);
   const manifest = useManifest()
-  const playerRef = useRef(null)
+  const playerRef = useRef<null | HTMLAudioElement>(null)
   const me = useMe()
   const [cookies, setCookies, removeCookies] = useCookies(["lang"])
+
   useEffect(() => {
     if (!cookies.lang) {
       setCookies("lang", localized.getInterfaceLanguage())
@@ -103,11 +106,17 @@ function MyApp({ Component, pageProps }: AppProps) {
     }
   }, [])
 
+  useEffect(() => {
+    if (playerRef.current === null) { return }
+    playerRef.current!.volume = volume / 100
+  }, [volume])
+
   pageProps = {
     playerElement: playerRef,
     loading: [loading, setLoading],
     manifest: manifest,
-    me: me
+    me: me,
+    volume: [volume, setVolume]
   }
 
   return (<>
@@ -141,7 +150,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       >
         <ModalsProvider>
           <NotificationsProvider>
-            <audio ref={playerRef} id='ossia-main-player' style={{ display: 'none' }} />
+            <audio autoPlay ref={playerRef} id='ossia-main-player' style={{ display: 'none' }} />
             <LoadingOverlay visible={loading} sx={{ position: 'fixed' }} />
             <Component {...pageProps} />
           </NotificationsProvider>

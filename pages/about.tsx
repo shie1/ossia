@@ -43,7 +43,7 @@ const About: NextPage = (props: any) => {
 
     return (<Container>
         <Head>
-            <title>{localized.about} | Ossia</title>
+            <title>About | Ossia</title>
         </Head>
         <Group mb="sm" direction="column" spacing="sm">
             <Title align="center">{localized.aboutTitle}</Title>
@@ -95,6 +95,7 @@ const About: NextPage = (props: any) => {
                             <Dep name="Mantine" url="https://mantine.dev" />
                             <Dep name="Piped" url="https://piped.kavin.rocks" />
                             <Dep name="Paypal" url="https://paypal.com" />
+                            <Dep name="MySQL" url="https://www.mysql.com/" />
                         </Group>
                         {deps.data && Object.keys(deps.data).map((dep: string) => {
                             depKey++

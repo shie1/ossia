@@ -37,7 +37,7 @@ const Library: NextPage = (props: any) => {
     return (<Container>
         <CreatePlaylist open={createModal} />
         <Head>
-            <title>{localized.navLibrary} | Ossia</title>
+            <title>Library | Ossia</title>
         </Head>
         <Paper p="sm" withBorder>
             <Group position="apart">

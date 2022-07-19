@@ -36,7 +36,7 @@ export const Settings: NextPage = () => {
     }
     return (<Container>
         <Head>
-            <title>{localized.settings} | Ossia</title>
+            <title>Settings | Ossia</title>
         </Head>
         <Accordion>
             <AccordionItem label={localized.lang} icon={<World />}>

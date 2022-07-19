@@ -168,7 +168,7 @@ const Register: NextPage = (props: any) => {
 
     return (<Container>
         <Head>
-            <title>{localized.register} | Ossia</title>
+            <title>Register | Ossia</title>
         </Head>
         <Group spacing="xl" position="center" align="center">
             <Box sx={{ maxWidth: 300 }}>

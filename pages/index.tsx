@@ -61,7 +61,7 @@ const Home: NextPage = () => {
 
   return (<>
     <Head>
-      <title>{localized.navSearch} | Ossia</title>
+      <title>Search | Ossia</title>
     </Head>
     <Container>
       <Center>
