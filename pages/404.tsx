@@ -8,9 +8,9 @@ const Page404: NextPage = () => {
         <Head>
             <title>404: Page not found!</title>
         </Head>
-        <Group position="center" align="center" sx={{ height: '95%' }} direction="row">
+        <Group position="center" align="center" sx={{ height: '90%' }} direction="row">
             <Center mx={10}>
-                <Image imageProps={{ draggable: false }} alt="Sad robot on tower" sx={{ width: '38vh' }} src="/sad_robot.svg" />
+                <Image imageProps={{ draggable: false }} alt="Sad robot on tower" sx={{ width: '32vh' }} src="/sad_robot.svg" />
             </Center>
             <Group mx={30} direction="column" spacing={4}>
                 <Title sx={{ fontSize: '3rem' }}>404</Title>
