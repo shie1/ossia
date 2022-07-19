@@ -45,7 +45,7 @@ const BuyCode = ({ clientId, form }: { clientId: string, form: any }) => {
                     title: localized.inviteCode, children:
                         <Group spacing="sm" grow direction="column">
                             <Group spacing={2} grow direction="column">
-                                <Text>{localized.formatString(localized.orderResp!,hash[1])}</Text>
+                                <Text>{localized.formatString(localized.orderResp!, hash[1])}</Text>
                                 <TextInput size="lg" rightSection={<Group mr="md"><Action onClick={() => {
                                     window.navigator.clipboard.writeText(hash[0])
                                     showNotification({ title: localized.copiedToClipboard, message: "", icon: <Clipboard /> })

@@ -42,7 +42,7 @@ const Login: NextPage = () => {
 
     return (<Container>
         <Head>
-            <title>Login | Ossia</title>
+            <title>{localized.login} | Ossia</title>
         </Head>
         <Box sx={{ maxWidth: 300 }} mx="auto">
             <form onSubmit={form.onSubmit((values) => login(values))}>

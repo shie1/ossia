@@ -90,7 +90,8 @@ export const localized = new LocalizedStrings({
         weaverContrib: "Ossia logo design\nLocalization assistance (Hungarian)",
         yourCodeIs: "Your code is:",
         orderResp: "Order {0} has been successful, your code is:",
-        playlistDeleted: "Playlist deleted!"
+        playlistDeleted: "Playlist deleted!",
+        pageNotFound: "Page not found!"
     },
     hu: {
         navSearch: "Keresés",
@@ -181,7 +182,8 @@ export const localized = new LocalizedStrings({
         weaverContrib: "Ossia logó design\nLokalizációs segítség (Magyar)",
         yourCodeIs: "A te kódod:",
         orderResp: "A megrendelés {0} sikeres volt, a te kódod:",
-        playlistDeleted: "Lejátszási lista törölve!"
+        playlistDeleted: "Lejátszási lista törölve!",
+        pageNotFound: "Az oldal nem található!"
     },
     de: {
         navSearch: "Suche",
