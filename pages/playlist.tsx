@@ -27,7 +27,7 @@ const Playlist: NextPage = () => {
                 setLoading(false)
             })
         }
-    }, [pl,router])
+    }, [pl, router])
     return (<>
         <Container>
             <Paper p="sm" withBorder>
@@ -44,7 +44,7 @@ const Playlist: NextPage = () => {
                                 apiCall("POST", "/api/playlist/delete", { id: Number(Buffer.from(router.query['p'] as string, "base64")) - 45 }).then(resp => {
                                     if (resp) {
                                         router.replace("/library")
-                                        showNotification({ "title": "Playlist deleted!", "icon": <Trash />, "message": "" })
+                                        showNotification({ "title": localized.success, "icon": <Trash />, "message": localized.playlistDeleted })
                                     }
                                 })
                             }} label={localized.deletePlaylist}>

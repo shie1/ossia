@@ -55,7 +55,7 @@ const Library: NextPage = () => {
                         apiCall("GET", "/api/user/logout", {}).then(() => {
                             router.replace("/")
                         })
-                    }} label="Sign out">
+                    }} label={localized.logout}>
                         <UserOff />
                     </Action>
                 </ActionGroup>

@@ -64,7 +64,7 @@ const AppNavbar = ({ cookies, sidebar }: { cookies: any, sidebar: any }) => {
   return (<Navbar p="md" hiddenBreakpoint="sm" hidden={!sidebar[0]} width={{ sm: 200, lg: 300 }}>
     <Group grow direction='column' spacing='sm'>
       <NavLink icon={<Search />} label={localized.navSearch} link="/" />
-      {!me ? <NavLink icon={<Login />} label="Login" link='/login' /> : <NavLink icon={<Books />} label={localized.navLibrary} link="/library" />}
+      {!me ? <NavLink icon={<Login />} label={localized.login} link='/login' /> : <NavLink icon={<Books />} label={localized.navLibrary} link="/library" />}
       <NavLink icon={<Settings />} label={localized.settings} link="/settings" />
     </Group>
   </Navbar>)

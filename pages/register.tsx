@@ -45,7 +45,7 @@ const BuyCode = ({ clientId, form }: { clientId: string, form: any }) => {
                     title: localized.inviteCode, children:
                         <Group spacing="sm" grow direction="column">
                             <Group spacing={2} grow direction="column">
-                                <Text>Order {hash[1]} has been successful, your code is:</Text>
+                                <Text>{localized.formatString(localized.orderResp!,hash[1])}</Text>
                                 <TextInput size="lg" rightSection={<Group mr="md"><Action onClick={() => {
                                     window.navigator.clipboard.writeText(hash[0])
                                     showNotification({ title: localized.copiedToClipboard, message: "", icon: <Clipboard /> })
@@ -88,7 +88,7 @@ const BuyCode = ({ clientId, form }: { clientId: string, form: any }) => {
                             }} />
                     </Paper>
                 </Group>
-                <Group sx={interactive} onClick={() => { setRestore(!restore) }}><Text mt={-6} size="sm" >{restore ? "Back to order" : "Restore purchase"}</Text></Group>
+                <Group sx={interactive} onClick={() => { setRestore(!restore) }}><Text mt={-6} size="sm" >{restore ? localized.backToOrder : localized.restorePurchase}</Text></Group>
             </Group>
             <Collapse in={restore}>
                 <form onSubmit={async (e) => {
@@ -100,7 +100,7 @@ const BuyCode = ({ clientId, form }: { clientId: string, form: any }) => {
                                 title: localized.inviteCode, children:
                                     <Group spacing="sm" grow direction="column">
                                         <Group spacing={2} grow direction="column">
-                                            <Text>Your code is:</Text>
+                                            <Text>{localized.yourCodeIs}</Text>
                                             <TextInput size="lg" rightSection={<Group mr="md"><Action onClick={() => {
                                                 window.navigator.clipboard.writeText(resp)
                                                 showNotification({ title: localized.copiedToClipboard, message: "", icon: <Clipboard /> })
@@ -137,9 +137,9 @@ const Register: NextPage = (props: any) => {
             inviteCode: ''
         },
         validate: {
-            password: (val) => (/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/.test(val) ? null : "This password is too weak!"),
-            inviteCode: (val) => (/[0-z]{7}/.test(val) ? null : 'Invite code invalid!'),
-            username: (val) => (/^[0-z]{1,20}$/.test(val) ? null : "Username can only contain letters and numbers!")
+            password: (val) => (/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/.test(val) ? null : localized.weakPassword),
+            inviteCode: (val) => (/[0-z]{7}/.test(val) ? null : localized.inviteCodeInvalid),
+            username: (val) => (/^[0-z]{1,20}$/.test(val) ? null : localized.usernameInvalid)
         }
     })
 
@@ -175,7 +175,7 @@ const Register: NextPage = (props: any) => {
                 <form onSubmit={form.onSubmit((values) => register(values))}>
                     <Group spacing="sm" grow direction="column">
                         <TextInput autoComplete="off" error={available === false && localized.usernameTaken} maxLength={20} description={localized.usernameDesc} required {...form.getInputProps("username")} label={localized.username} size="lg" />
-                        <PasswordInput autoComplete="new-password" description={<ul style={{ margin: 0, padding: 0, paddingLeft: '1em' }}><li>{localized.passwordDesc!.split("\n")[0]}</li><li>{localized.passwordDesc!.split("\n")[1]}</li><li>{localized.passwordDesc!.split("\n")[2]}</li></ul>} required {...form.getInputProps("password")} label="Password" size="lg" />
+                        <PasswordInput autoComplete="new-password" description={<ul style={{ margin: 0, padding: 0, paddingLeft: '1em' }}><li>{localized.passwordDesc!.split("\n")[0]}</li><li>{localized.passwordDesc!.split("\n")[1]}</li><li>{localized.passwordDesc!.split("\n")[2]}</li></ul>} required {...form.getInputProps("password")} label={localized.password} size="lg" />
                         <TextInput autoComplete="off" error={codeError && localized.inviteCodeInvalid} maxLength={8} description={localized.inviteCodeDesc} required {...form.getInputProps("inviteCode")} label={localized.inviteCode} size="lg" />
                         <Button variant="light" size="lg" type="submit">{localized.register}</Button>
                         <Group onClick={() => { buy[1](!buy[0]) }} sx={interactive}><Text size="sm" >{buy[0] ? localized.buyInviteClose : localized.buyInviteClose}</Text></Group>
