@@ -48,10 +48,10 @@ export const Settings: NextPage = () => {
             <title>Settings | Ossia</title>
         </Head>
         <Accordion>
-            <AccordionItem onClick={() => {
-                langClick[1](langClick[0] + 1)
-            }} label={localized.lang} icon={<World />}>
-                <Text my="sm">{localized.setLang}</Text>
+            <AccordionItem label={localized.lang} icon={<World />}>
+                <Text onClick={() => {
+                    langClick[1](langClick[0] + 1)
+                }} my="sm">{localized.setLang}</Text>
                 <Languages />
             </AccordionItem>
         </Accordion>

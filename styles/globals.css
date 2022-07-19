@@ -4,11 +4,11 @@
   }
 
   50% {
-    transform: rotate(-10deg) translateX(0vw) translateY(10vh);
+    transform: rotate(-10deg) translateX(0vw) translateY(5vh);
   }
 
   100% {
-    transform: rotate(10deg) translateX(0vw) translateY(15vh);
+    transform: rotate(10deg) translateX(0vw) translateY(10vh);
   }
 }
 
@@ -57,11 +57,11 @@ a {
 
 .background-glow {
   animation-name: bg-glow-move;
-  animation-timing-function: linear;
+  animation-timing-function: ease;
   animation-iteration-count: infinite;
   animation-play-state: running;
   animation-direction: alternate;
-  animation-duration: 60s;
+  animation-duration: 50s;
 }
 
 iframe {
