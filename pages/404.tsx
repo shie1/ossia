@@ -8,13 +8,13 @@ const Page404: NextPage = () => {
         <Head>
             <title>404: Page not found!</title>
         </Head>
-        <Group position="center" align="center" sx={{ height: '90%' }} direction="row">
+        <Group spacing={0} position="center" align="center" sx={{ height: '90%' }} direction="row">
             <Center mx={10}>
-                <Image imageProps={{ draggable: false }} alt="Sad robot on tower" sx={{ width: '32vh' }} src="/sad_robot.svg" />
+                <Image imageProps={{ draggable: false }} alt="Sad robot on tower" sx={{ width: '28vh' }} src="/sad_robot.svg" />
             </Center>
-            <Group mx={30} direction="column" spacing={4}>
-                <Title sx={{ fontSize: '3rem' }}>404</Title>
-                <Text size="xl">{localized.pageNotFound}</Text>
+            <Group align="center" mx={20} direction="column" spacing={4}>
+                <Title align="center" sx={{ fontSize: '3rem' }}>404</Title>
+                <Text align="center" size="xl">{localized.pageNotFound}</Text>
             </Group>
         </Group>
     </Container>)
