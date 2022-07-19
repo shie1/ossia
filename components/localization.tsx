@@ -176,6 +176,12 @@ export const localized = new LocalizedStrings({
         youMayNowLogin: "Most már bejelentkezhetsz!",
         restorePurchase: "Vásárlás visszaállítása",
         backToOrder: "Vissza a vásárláshoz",
+        weakPassword: "Ez a jelszó túl gyenge!",
+        usernameInvalid: "A felhasználónév csak betűket, és számokat tartalmazhat!",
+        weaverContrib: "Ossia logó design\nLokalizációs segítség (Magyar)",
+        yourCodeIs: "A te kódod:",
+        orderResp: "A megrendelés {0} sikeres volt, a te kódod:",
+        playlistDeleted: "Lejátszási lista törölve!"
     },
     de: {
         navSearch: "Suche",
