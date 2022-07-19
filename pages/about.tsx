@@ -117,7 +117,7 @@ function Contributor({ customRouter, name, avatar, children, href }: { customRou
         if (href) customRouter.newTab(href);
     }} sx={interactive} p="sm" pb={0} withBorder>
         <Group mb="sm" direction="row">
-            <Avatar src={avatar} radius="xl" size="lg">{name.substring(0, 1).toUpperCase()}{name.substring(1, 2)}</Avatar>
+            <Avatar imageProps={{draggable: false}} src={avatar} radius="xl" size="lg">{name.substring(0, 1).toUpperCase()}{name.substring(1, 2)}</Avatar>
             <Text size="lg">{name}</Text>
         </Group>
         <TypographyStylesProvider>
