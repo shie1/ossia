@@ -1,14 +1,16 @@
 import { Accordion, AccordionItem, Chip, Chips, Container, Text } from "@mantine/core";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useState } from "react";
-import { World } from "tabler-icons-react";
+import { useEffect, useState } from "react";
+import { Heart, World } from "tabler-icons-react";
 import { localized } from "../components/localization";
 import { useCookies } from "react-cookie"
 import Head from "next/head";
+import { showNotification } from "@mantine/notifications";
 
 export const Settings: NextPage = () => {
     const router = useRouter()
+    const langClick = useState(0)
     const [cookies, setCookies, removeCookies] = useCookies(["lang"])
     const Languages = () => {
         let i = 0
@@ -34,12 +36,21 @@ export const Settings: NextPage = () => {
             </Chips>
         </>)
     }
+
+    useEffect(() => {
+        if (langClick[0] % 5 === 0) {
+            showNotification({ id: "hungary", icon: <Heart />, title: localized.formatString(localized.hungaryText!, <>&#128156;</>), message: "" })
+        }
+    }, [langClick[0]])
+
     return (<Container>
         <Head>
             <title>Settings | Ossia</title>
         </Head>
         <Accordion>
-            <AccordionItem label={localized.lang} icon={<World />}>
+            <AccordionItem onClick={() => {
+                langClick[1](langClick[0] + 1)
+            }} label={localized.lang} icon={<World />}>
                 <Text my="sm">{localized.setLang}</Text>
                 <Languages />
             </AccordionItem>

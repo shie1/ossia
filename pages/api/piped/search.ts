@@ -7,10 +7,11 @@ export default function handler(
 ) {
     return new Promise(async (resolve, reject) => {
         let np = ""
-        if (JSON.parse(req.body)["nextpage"]) {
+        let rb = req.query
+        if (rb["nextpage"]) {
             np = "nextpage/"
         }
-        const params = new URLSearchParams(JSON.parse(req.body)).toString()
+        const params = new URLSearchParams(rb as any).toString()
         let resp
         try { resp = await (await fetch(`${apiroot}/${np}search?${params}`)).json() } catch { resp = {} }
         resolve(res.status(200).json(resp))

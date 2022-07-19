@@ -16,16 +16,19 @@ import {
   Image,
 } from '@mantine/core';
 import { ModalsProvider } from '@mantine/modals'
-import { NotificationsProvider } from '@mantine/notifications';
+import { NotificationsProvider, showNotification } from '@mantine/notifications';
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import Link from 'next/link'
-import { Books, Login, Search, Settings } from "tabler-icons-react";
+import { AlertTriangle, Books, Login, Search, Settings } from "tabler-icons-react";
 import { useManifest } from '../components/manifest'
 import { interactive } from '../components/styles'
 import { localized } from '../components/localization'
 import { useCookies } from "react-cookie"
 import { useMe } from '../components/auth';
 import { useLocalStorage } from '@mantine/hooks';
+import { useKonamiCode } from '../components/konami';
+import { usePlayer } from '../components/player';
+import { apiCall } from '../components/api';
 
 const NavLink = ({ link, icon, label }: { link: string, icon: ReactNode, label: ReactNode }) => {
   return (<Link href={link}>
@@ -84,12 +87,24 @@ const AppNavbar = ({ sidebar, me }: { sidebar: any, me: any }) => {
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [loading, setLoading] = useState(false)
+  const konami = useKonamiCode()
   const [volume, setVolume] = useLocalStorage({ key: 'music-volume', defaultValue: 100 })
   const sidebar = useState(false);
   const manifest = useManifest()
   const playerRef = useRef<null | HTMLAudioElement>(null)
   const me = useMe()
+  const player = usePlayer(playerRef)
   const [cookies, setCookies, removeCookies] = useCookies(["lang"])
+
+  useEffect(() => {
+    if (konami) {
+      setLoading(true)
+      apiCall("GET", "/api/piped/streams", { v: "dQw4w9WgXcQ" }).then(resp => {
+        setLoading(false)
+        player.play(resp)
+      })
+    }
+  }, [konami])
 
   useEffect(() => {
     if (!cookies.lang) {

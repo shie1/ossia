@@ -91,7 +91,8 @@ export const localized = new LocalizedStrings({
         yourCodeIs: "Your code is:",
         orderResp: "Order {0} has been successful, your code is:",
         playlistDeleted: "Playlist deleted!",
-        pageNotFound: "Page not found!"
+        pageNotFound: "Page not found!",
+        hungaryText: "Made with {0} from Hungary"
     },
     hu: {
         navSearch: "Keresés",
@@ -183,7 +184,8 @@ export const localized = new LocalizedStrings({
         yourCodeIs: "A te kódod:",
         orderResp: "A megrendelés {0} sikeres volt, a te kódod:",
         playlistDeleted: "Lejátszási lista törölve!",
-        pageNotFound: "Az oldal nem található!"
+        pageNotFound: "Az oldal nem található!",
+        hungaryText: "{0}-el Magyarországról"
     },
     de: {
         navSearch: "Suche",

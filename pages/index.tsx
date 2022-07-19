@@ -17,14 +17,14 @@ const Home: NextPage = () => {
   const search = (e: any) => {
     e.preventDefault()
     if (!searchInput) { return }
-    apiCall("POST", "/api/piped/search", { "filter": "videos", "q": searchInput }).then(resp => {
+    apiCall("GET", "/api/piped/search", { "filter": "videos", "q": searchInput }).then(resp => {
       setResults(resp)
     })
   }
 
   const loadMore = useCallback(() => {
     if (!searchInput) { return }
-    apiCall("POST", "/api/piped/search", { nextpage: results.nextpage, filter: "videos", q: searchInput }).then(resp => {
+    apiCall("GET", "/api/piped/search", { nextpage: results.nextpage, filter: "videos", q: searchInput }).then(resp => {
       let newResults = resp
       newResults.items = [...results.items, ...resp.items]
       setResults(newResults)
@@ -66,7 +66,7 @@ const Home: NextPage = () => {
     <Container>
       <Center>
         <form style={{ 'width': '100%' }} onSubmit={search}>
-          <TextInput placeholder={localized.navSearch + "..."} radius="lg" onClick={() => { setResults([]) }} size='lg' value={searchInput} onChange={(e) => { setSearchInput(e.currentTarget.value) }} sx={{ width: '100%' }} variant='filled' rightSection={
+          <TextInput placeholder={localized.navSearch + "..."} radius="lg" onClick={() => { setResults([]) }} size='lg' value={searchInput} onChange={(e) => { if(!e.currentTarget.value){setResults([])}setSearchInput(e.currentTarget.value) }} sx={{ width: '100%' }} variant='filled' rightSection={
             <Group mr="md">
               <Action label={localized.navSearch} onClick={() => { search(new Event("")) }} >
                 <Search />
