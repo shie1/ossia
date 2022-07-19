@@ -166,8 +166,6 @@ const Register: NextPage = (props: any) => {
         setCodeError(false)
     }, [form.values.inviteCode])
 
-    console.log(props)
-
     return (<Container>
         <Head>
             <title>Register | Ossia</title>
