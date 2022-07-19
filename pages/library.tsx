@@ -11,12 +11,12 @@ import { useMe } from "../components/auth";
 import { localized } from "../components/localization";
 import { CreatePlaylist, Playlists } from "../components/playlist";
 
-const Library: NextPage = () => {
-    const [loading, setLoading] = useLocalStorage({ key: "loading", defaultValue: false })
+const Library: NextPage = (props: any) => {
+    const [loading, setLoading] = props.loading
     const router = useRouter()
     const createModal = useState<boolean>(false)
     const [playlists, setPlaylists] = useState<Array<any> | null>(null)
-    const me = useMe()
+    const me = props.me
     useEffect(() => {
         if (!me && playlists === null) { setLoading(true) } else { setLoading(false) }
     }, [me, playlists])

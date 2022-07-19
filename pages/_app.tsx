@@ -3,7 +3,7 @@ import type { AppProps } from 'next/app'
 import { AppShell, Text, Burger, Center, Footer, Group, Header, LoadingOverlay, MantineProvider, MediaQuery, Navbar, Paper, Title, Avatar, Image } from '@mantine/core'
 import { ModalsProvider } from '@mantine/modals'
 import { NotificationsProvider } from '@mantine/notifications';
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode, useEffect, useRef, useState } from 'react';
 import Link from 'next/link'
 import { Books, Login, Search, Settings } from "tabler-icons-react";
 import { useManifest } from '../components/manifest'
@@ -59,8 +59,7 @@ const AppFooter = ({ manifest, sidebar }: { manifest: any, sidebar: any }) => {
   </Footer>)
 }
 
-const AppNavbar = ({ cookies, sidebar }: { cookies: any, sidebar: any }) => {
-  const me = useMe()
+const AppNavbar = ({ sidebar, me }: { sidebar: any, me: any }) => {
   return (<Navbar p="md" hiddenBreakpoint="sm" hidden={!sidebar[0]} width={{ sm: 200, lg: 300 }}>
     <Group grow direction='column' spacing='sm'>
       <NavLink icon={<Search />} label={localized.navSearch} link="/" />
@@ -71,10 +70,11 @@ const AppNavbar = ({ cookies, sidebar }: { cookies: any, sidebar: any }) => {
 }
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const [loading, setLoading] = useLocalStorage({ key: "loading", defaultValue: false })
+  const [loading, setLoading] = useState(false)
   const sidebar = useState(false);
   const manifest = useManifest()
-  const router = useRouter()
+  const playerRef = useRef(null)
+  const me = useMe()
   const [cookies, setCookies, removeCookies] = useCookies(["lang"])
   useEffect(() => {
     if (!cookies.lang) {
@@ -90,6 +90,13 @@ function MyApp({ Component, pageProps }: AppProps) {
       window.addEventListener("ossia-nav-click", () => { sidebar[1](false) })
     }
   }, [])
+
+  pageProps = {
+    playerElement: playerRef,
+    loading: [loading, setLoading],
+    manifest: manifest,
+    me: me
+  }
 
   return (<>
     <MantineProvider withGlobalStyles withNormalizeCSS theme={{
@@ -113,7 +120,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         navbarOffsetBreakpoint="sm"
         asideOffsetBreakpoint="sm"
         fixed
-        navbar={<AppNavbar sidebar={sidebar} cookies={cookies} />}
+        navbar={<AppNavbar me={me} sidebar={sidebar} />}
         footer={<AppFooter sidebar={sidebar} manifest={manifest} />}
         header={<AppHeader sidebar={sidebar} manifest={manifest} />}
         styles={(theme) => ({
@@ -122,7 +129,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       >
         <ModalsProvider>
           <NotificationsProvider>
-            <audio id='ossia-main-player' style={{ display: 'none' }} />
+            <audio ref={playerRef} id='ossia-main-player' style={{ display: 'none' }} />
             <LoadingOverlay visible={loading} sx={{ position: 'fixed' }} />
             <Component {...pageProps} />
           </NotificationsProvider>

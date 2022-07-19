@@ -22,11 +22,11 @@ import { localized } from "../components/localization";
 import { useCustomRouter } from "../components/redirect";
 import { useRef } from "react";
 import Head from "next/head";
+import { fetcher } from "../components/manifest";
 
-const About: NextPage = () => {
-    const fetcher = (url: string) => fetch(url).then((res) => res.json());
+const About: NextPage = (props: any) => {
     const deps = useSWR("/api/deps", fetcher)
-    const manifest = useManifest()
+    const manifest = props.manifest
     const theme = useMantineTheme()
     const customRouter = useCustomRouter()
     const depsE = useRef<HTMLDivElement | null>(null)
