@@ -6,7 +6,7 @@ import { localized } from "../components/localization";
 const Page404: NextPage = () => {
     return (<Container sx={{ height: '100%' }}>
         <Head>
-            <title>404: {localized.pageNotFound}</title>
+            <title>404: Page not found!</title>
         </Head>
         <Group position="center" align="center" sx={{ height: '95%' }} direction="row">
             <Center mx={10}>
