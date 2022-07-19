@@ -2,7 +2,7 @@ export const apiroot = "http://ws.audioscrobbler.com/2.0/"
 import { unescape } from "querystring"
 import { createHash } from "crypto"
 
-const md5 = (text: string) => {
+export const md5 = (text: string) => {
     return createHash("md5").update(text).digest("hex")
 }
 
