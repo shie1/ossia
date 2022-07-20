@@ -1,4 +1,6 @@
+import { Group, Paper, Text } from '@mantine/core';
 import LocalizedStrings from 'react-localization';
+import { AlertCircle } from 'tabler-icons-react';
 
 export const localized = new LocalizedStrings({
     en: {
@@ -96,7 +98,12 @@ export const localized = new LocalizedStrings({
         registerCheckbox: "I am over 18 years old and I have read the {0}.",
         legalSection: "\"Legal\" section",
         sites: "Sites",
-        dcs0Contrib: "Database hosting"
+        dcs0Contrib: "Database hosting",
+        englishOnlyTitle: "Unlocalized page",
+        englishOnlyText: "This page is only available in english, we apologize for the inconvenience.",
+        legalSectionTitle: "The \"Legal\" section",
+        legalSectionText: "Reading these are necessary before registering an account.",
+        privacyPolicy: "Privacy Policy"
     },
     hu: {
         navSearch: "Keresés",
@@ -191,9 +198,14 @@ export const localized = new LocalizedStrings({
         pageNotFound: "Az oldal nem található!",
         hungaryText: "{0}-el Magyarországról",
         dcs0Contrib: "Adatbázis üzemeltetés",
-        legalSection: "\"Legal\" részlegét",
+        legalSection: "\"Jogi\" részlegét",
         registerCheckbox: "Elmúltam 18 éves és elolvastam a weboldal {0}.",
-        sites: "Oldalak"
+        sites: "Oldalak",
+        englishOnlyTitle: "Lokalizálatlan oldal",
+        englishOnlyText: "Ez az oldal csak angol nyelven elérhető, elnézést a kellemetlenségért!",
+        legalSectionTitle: "A \"Jogi\" részleg",
+        legalSectionText: "Ezeket szükséges elolvasni regisztráció előtt.",
+        privacyPolicy: "Adatvédelmi Irányelvek"
     },
     de: {
         navSearch: "Suche",
@@ -238,5 +250,21 @@ export const localized = new LocalizedStrings({
         plays: "Spielt",
         nowPlaying: "Jetzt Spielt",
         dependencies: "Abhängigkeiten",
+        englishOnlyTitle: "Nicht lokalisierte Seite",
+        englishOnlyText: "Diese Seite ist nur auf Englisch verfügbar, bitte entschuldigung für die Unannehmlichkeiten."
     }
 });
+
+export const NonLocalized = ({ l }: { l: any }) => {
+    return (<>{l.getLanguage() !== 'en' &&
+        <Paper p="sm" withBorder >
+            <Group direction='row'>
+                <AlertCircle size={50} />
+                <Group direction='column' spacing={4}>
+                    <Text size="xl">{localized.englishOnlyTitle}</Text>
+                    <Text>{localized.englishOnlyText}</Text>
+                </Group>
+            </Group>
+        </Paper >
+    }</>)
+}

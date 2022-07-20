@@ -1,12 +1,14 @@
 import { Container, TypographyStylesProvider } from "@mantine/core";
 import type { NextPage } from "next";
 import Head from "next/head";
+import { localized, NonLocalized } from "../../components/localization";
 
 const Privacy: NextPage = () => {
     return (<Container>
         <Head>
             <title>Privacy Policy | Ossia</title>
         </Head>
+        <NonLocalized l={localized} />
         <TypographyStylesProvider>
             <h1>Privacy Policy</h1>
             <p>Last updated: July 20, 2022</p>

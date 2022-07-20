@@ -4,6 +4,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { ReactNode } from "react";
 import { Lock } from "tabler-icons-react";
+import { localized } from "../../components/localization";
 import { interactive } from "../../components/styles";
 
 const Page = ({ icon, label, href }: { icon: ReactNode, label: ReactNode, href: string }) => {
@@ -23,11 +24,11 @@ const Legal: NextPage = () => {
             <title>Legal | Ossia</title>
         </Head>
         <Group direction="column" mb="sm" spacing={4}>
-            <Title>The legal section</Title>
-            <Text>Reading these are necessary before registering an account.</Text>
+            <Title>{localized.legalSectionTitle}</Title>
+            <Text>{localized.legalSectionText}</Text>
         </Group>
         <Group grow direction="column">
-            <Page icon={<Lock size={30} />} label="Privacy Policy" href="/legal/privacy" />
+            <Page icon={<Lock size={30} />} label={localized.privacyPolicy} href="/legal/privacy" />
         </Group>
     </Container>)
 }
