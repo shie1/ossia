@@ -25,7 +25,7 @@ import { interactive } from '../components/styles'
 import { localized } from '../components/localization'
 import { useCookies } from "react-cookie"
 import { useMe } from '../components/auth';
-import { useLocalStorage } from '@mantine/hooks';
+import { useHotkeys, useLocalStorage } from '@mantine/hooks';
 import { useKonamiCode } from '../components/konami';
 import { usePlayer } from '../components/player';
 import { apiCall } from '../components/api';
@@ -94,6 +94,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   const manifest = useManifest()
   const playerRef = useRef<null | HTMLAudioElement>(null)
   const me = useMe()
+  const [prevVol, setPrevVol] = useLocalStorage({ key: 'music-prev-volume', defaultValue: volume })
   const player = usePlayer(playerRef)
   const [cookies, setCookies, removeCookies] = useCookies(["lang"])
   const bg = useRef<null | HTMLDivElement>(null)
@@ -132,6 +133,15 @@ function MyApp({ Component, pageProps }: AppProps) {
     if (playerRef.current === null) { return }
     playerRef.current!.volume = volume / 100
   }, [volume])
+
+  useHotkeys([["space", () => { (player.paused[1] as any)(!player.paused[0]) }], ["m", () => {
+    if (!volume) {
+      setVolume(prevVol)
+    } else {
+      setPrevVol(volume)
+      setVolume(0)
+    }
+  }]])
 
   pageProps = {
     ...pageProps,
