@@ -19,7 +19,7 @@ import { ModalsProvider } from '@mantine/modals'
 import { NotificationsProvider } from '@mantine/notifications';
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import Link from 'next/link'
-import { Books, Login, PlayerPlay, Search, Settings } from "tabler-icons-react";
+import { AlertCircle, Books, Login, PlayerPlay, Search, Settings } from "tabler-icons-react";
 import { useManifest } from '../components/manifest'
 import { interactive } from '../components/styles'
 import { localized } from '../components/localization'
@@ -30,6 +30,7 @@ import { useKonamiCode } from '../components/konami';
 import { usePlayer } from '../components/player';
 import { apiCall } from '../components/api';
 import { useUserAgent } from '../components/useragent';
+import { Alert } from '../components/alert';
 
 const NavLink = ({ link, icon, label }: { link: string, icon: ReactNode, label: ReactNode }) => {
   return (<Link href={link}>
@@ -102,6 +103,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   const bg = useRef<null | HTMLDivElement>(null)
   const gradient = "linear-gradient(90deg, rgba(158,93,185,1) 0%, rgba(129,67,156,1) 100%)"
   const userAgent = useUserAgent()
+  const appleAlert = useState(false)
 
   useEffect(() => {
     if (konami) {
@@ -197,6 +199,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             <audio autoPlay ref={playerRef} id='ossia-main-player' style={{ display: 'none' }} />
             <LoadingOverlay visible={loading} sx={{ position: 'fixed' }} />
             <div style={{ zIndex: 2 }}>
+              {userAgent?.os.name === "iOS" && <Alert title={localized.iosTitle!} text={localized.iosText!} />}
               <Component {...pageProps} />
             </div>
           </NotificationsProvider>

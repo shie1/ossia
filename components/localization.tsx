@@ -1,6 +1,7 @@
 import { Group, Paper, Text } from '@mantine/core';
 import LocalizedStrings from 'react-localization';
 import { AlertCircle } from 'tabler-icons-react';
+import { Alert } from './alert';
 
 export const localized = new LocalizedStrings({
     en: {
@@ -120,7 +121,9 @@ export const localized = new LocalizedStrings({
         playLast: "Play last",
         addedToQueue: "Added to queue!",
         addFirst: "Song added as first in queue!",
-        addLast: "Song added as last in queue!"
+        addLast: "Song added as last in queue!",
+        iosTitle: "The website might not work properly in this browser",
+        iosText: "You're viewing this page from an iOS device, audio playback may not function as intended.",
     },
     hu: {
         navSearch: "Keresés",
@@ -280,14 +283,6 @@ export const localized = new LocalizedStrings({
 
 export const NonLocalized = ({ l }: { l: any }) => {
     return (<>{l.getLanguage() !== 'en' &&
-        <Paper p="sm" withBorder >
-            <Group direction='row'>
-                <AlertCircle size={50} />
-                <Group direction='column' spacing={4}>
-                    <Text size="xl">{localized.englishOnlyTitle}</Text>
-                    <Text>{localized.englishOnlyText}</Text>
-                </Group>
-            </Group>
-        </Paper >
+        <Alert title={localized.englishOnlyTitle} text={localized.englishOnlyText} />
     }</>)
 }
