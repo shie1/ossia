@@ -202,7 +202,7 @@ function MyApp({ Component, pageProps }: AppProps) {
               <noscript>
                 <img alt='Megamind' style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh' }} src='/img/nojs.jpg' />
                 <div style={{ position: 'fixed', justifyContent: 'center', alignItems: 'center', top: 0, left: 0, padding: 0, margin: 0, display: 'flex', width: '100vw', height: '100vh', zIndex: '99 !important' }}>
-                  <audio controls autoPlay src='/audio/mii_channel.mp3' />
+                  <audio loop controls autoPlay src='/audio/mii_channel.mp3' />
                 </div>
               </noscript>
               {userAgent?.os.name === "iOS" && <Alert title={localized.iosTitle!} text={localized.iosText!} />}
