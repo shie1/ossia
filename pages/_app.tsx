@@ -199,6 +199,10 @@ function MyApp({ Component, pageProps }: AppProps) {
             <audio autoPlay ref={playerRef} id='ossia-main-player' style={{ display: 'none' }} />
             <LoadingOverlay visible={loading} sx={{ position: 'fixed' }} />
             <div style={{ zIndex: 2 }}>
+              <noscript>
+                <img style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh' }} src='/img/nojs.jpg' />
+                <audio autoPlay src='/audio/mii_channel.mp3' />
+              </noscript>
               {userAgent?.os.name === "iOS" && <Alert title={localized.iosTitle!} text={localized.iosText!} />}
               <Component {...pageProps} />
             </div>
