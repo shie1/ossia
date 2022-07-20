@@ -94,7 +94,6 @@ const About: NextPage = (props: any) => {
                     <Group spacing="sm" direction="row">
                         <Group spacing="sm" direction="row" ref={depsE}>
                             <Dep name="Next.JS" url="https://nextjs.org/" />
-                            <Dep name="Vercel" url="https://vercel.com" />
                             <Dep name="React" url="https://reactjs.org" />
                             <Dep name="Typescript" url="https://www.typescriptlang.org/" />
                             <Dep name="Mantine" url="https://mantine.dev" />

@@ -8,6 +8,8 @@ import { useEffect } from "react";
 import { apiCall } from "../components/api";
 import Head from "next/head";
 import { localized } from "../components/localization";
+import { showNotification } from "@mantine/notifications";
+import { AlertCircle } from "tabler-icons-react";
 
 function caesar(str: string, num: number) {
     var result = '';
@@ -36,7 +38,7 @@ const Login: NextPage = () => {
         const salt = Number(`${(new Date().getDate())}67${(new Date().getMonth())}`)
         let password = caesar(values["password"], salt)
         apiCall("POST", "/api/user/login", { username: values.username, password: password }).then(resp => {
-            if (resp) { router.replace("/library") }
+            if (resp) { router.replace("/library") } else { showNotification({ 'title': localized.invalidLogin, message: '', icon: <AlertCircle /> }) }
         })
     }
 

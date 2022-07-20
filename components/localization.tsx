@@ -98,12 +98,13 @@ export const localized = new LocalizedStrings({
         registerCheckbox: "I am over 18 years old and I have read the {0}.",
         legalSection: "\"Legal\" section",
         sites: "Sites",
-        dcs0Contrib: "Database hosting",
+        dcs0Contrib: "Hosting services",
         englishOnlyTitle: "Unlocalized page",
         englishOnlyText: "This page is only available in english, we apologize for the inconvenience.",
         legalSectionTitle: "The \"Legal\" section",
         legalSectionText: "Reading these are necessary before registering an account.",
-        privacyPolicy: "Privacy Policy"
+        privacyPolicy: "Privacy Policy",
+        invalidLogin: "Invalid username or password"
     },
     hu: {
         navSearch: "Keresés",
@@ -197,7 +198,7 @@ export const localized = new LocalizedStrings({
         playlistDeleted: "Lejátszási lista törölve!",
         pageNotFound: "Az oldal nem található!",
         hungaryText: "{0}-el Magyarországról",
-        dcs0Contrib: "Adatbázis üzemeltetés",
+        dcs0Contrib: "Szerver üzemeltetés",
         legalSection: "\"Jogi\" részlegét",
         registerCheckbox: "Elmúltam 18 éves és elolvastam a weboldal {0}.",
         sites: "Oldalak",
@@ -205,7 +206,8 @@ export const localized = new LocalizedStrings({
         englishOnlyText: "Ez az oldal csak angol nyelven elérhető, elnézést a kellemetlenségért!",
         legalSectionTitle: "A \"Jogi\" részleg",
         legalSectionText: "Ezeket szükséges elolvasni regisztráció előtt.",
-        privacyPolicy: "Adatvédelmi Irányelvek"
+        privacyPolicy: "Adatvédelmi Irányelvek",
+        invalidLogin: "Helytelen felhasználónév vagy jelszó"
     },
     de: {
         navSearch: "Suche",

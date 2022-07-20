@@ -24,6 +24,7 @@ export default function handler(
         rb["password"] = caesar(rb["password"], -Number(`${(new Date().getDate())}67${(new Date().getMonth())}`))
 
         executeQuery("SELECT `salt` FROM `users` WHERE (`username` = ?);", [rb.username]).then(salt => {
+            if (!salt[0]) { return resolve(res.status(200).json(false)) }
             salt = salt[0].salt
             const hash = pbkdf2Sync(rb.password, salt, 1000, 64, `sha512`).toString(`hex`);
             executeQuery("SELECT * FROM `users` WHERE (`username` = ? and `password` = ? and `salt` = ?);", [rb.username, hash, salt]).then(resp => {
