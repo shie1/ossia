@@ -6,7 +6,7 @@ export const useMe = () => {
     const [me, setMe] = useState<any>("")
     const router = useRouter()
     useEffect(() => {
-        apiCall("GET", "/api/authenticated", {}).then(resp => { setMe(resp) })
+        apiCall("GET", "/api/user/authenticated", {}).then(resp => { setMe(resp) })
     }, [router])
     return me
 }

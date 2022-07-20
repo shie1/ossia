@@ -30,7 +30,7 @@ export default function handler(
             executeQuery("SELECT * FROM `users` WHERE (`username` = ? and `password` = ? and `salt` = ?);", [rb.username, hash, salt]).then(resp => {
                 resp = resp[0]
                 if (typeof resp !== "undefined") {
-                    const token = sign({ username: resp.username, hash: resp.hash }, process.env["OSSIA_PRIVATE_KEY"] as string)
+                    const token = sign({ username: resp.username, salt: resp.salt }, process.env["OSSIA_PRIVATE_KEY"] as string)
                     setCookie("token", token, { req: req, res: res, httpOnly: true, path: '/' })
                     return resolve(res.status(200).json(true))
                 }
