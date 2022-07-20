@@ -196,13 +196,15 @@ function MyApp({ Component, pageProps }: AppProps) {
             <Center className="background-glow" style={{ zIndex: 1, filter: 'blur(20rem)', position: 'fixed', left: 240, top: -600, height: 400 }}>
               <div ref={bg} className='bglow-1' style={{ background: gradient, transition: '4s', objectFit: 'fill', height: 600, width: '90vw' }} draggable={false} />
             </Center>
-            <audio autoPlay ref={playerRef} id='ossia-main-player' style={{ display: 'none' }} />
+            <audio
+              src='data:audio/mpeg;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADY29tbWVudABCaWdTb3VuZEJhbmsuY29tIC8gTGFTb25vdGhlcXVlLm9yZwBURU5DAAAAHQAAA1N3aXRjaCBQbHVzIMKpIE5DSCBTb2Z0d2FyZQBUSVQyAAAABgAAAzIyMzUAVFNTRQAAAA8AAANMYXZmNTcuODMuMTAwAAAAAAAAAAAAAAD/80DEAAAAA0gAAAAATEFNRTMuMTAwVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQsRbAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQMSkAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV'
+              autoPlay ref={playerRef} id='ossia-main-player' style={{ display: 'none' }} />
             <LoadingOverlay visible={loading} sx={{ position: 'fixed' }} />
             <div style={{ zIndex: 2 }}>
               <noscript>
                 <img alt='Megamind' style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh' }} src='/img/nojs.jpg' />
                 <div style={{ position: 'fixed', justifyContent: 'center', alignItems: 'center', top: 0, left: 0, padding: 0, margin: 0, display: 'flex', width: '100vw', height: '100vh', zIndex: '99 !important' }}>
-                  <audio loop controls autoPlay src='/audio/mii_channel.mp3' />
+                  <audio controlsList="nodownload noplaybackrate novolume" loop controls autoPlay src='/audio/mii_channel.mp3' />
                 </div>
               </noscript>
               {userAgent?.os.name === "iOS" && <Alert title={localized.iosTitle!} text={localized.iosText!} />}
