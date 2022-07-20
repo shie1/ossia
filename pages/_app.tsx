@@ -57,7 +57,7 @@ const AppHeader = ({ sidebar }: { sidebar: any }) => {
       <Center>
         <Link href="/"><Group onClick={() => {
           window.dispatchEvent(new Event("ossia-title-click"))
-        }} onMouseDown={(e: any) => { e.preventDefault() }} className='click'><Image src="/title.png" height={40} /></Group></Link>
+        }} onMouseDown={(e: any) => { e.preventDefault() }} className='click'><Image alt='Ossia' src="/title.png" height={40} /></Group></Link>
       </Center>
     </div>
   </Header>)
