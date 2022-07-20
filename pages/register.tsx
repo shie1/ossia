@@ -26,16 +26,6 @@ import Head from "next/head";
 import { localized } from "../components/localization";
 import Link from "next/link";
 
-function caesar(str: string, num: number) {
-    var result = '';
-    var charcode = 0;
-    for (var i = 0; i < str.length; i++) {
-        charcode = ((str[i].charCodeAt(0)) + num) % 65535;
-        result += String.fromCharCode(charcode);
-    }
-    return result;
-}
-
 const BuyCode = ({ clientId, form }: { clientId: string, form: any }) => {
     const modals = useModals()
     const [restore, setRestore] = useState(false)
@@ -148,8 +138,7 @@ const Register: NextPage = (props: any) => {
 
     const register = (values: any) => {
         if (available === false || available === null) { return }
-        const salt = Number(`${(new Date().getDate())}67${(new Date().getMonth())}`)
-        let password = caesar(values["password"], salt)
+        let password = values["password"]
         apiCall("POST", "/api/user/create", { username: values.username, password: password, inviteCode: values.inviteCode }).then(resp => {
             if (!resp) { setCodeError(true) } else {
                 router.replace(`/login?u=${values.username}`)

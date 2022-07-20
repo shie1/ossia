@@ -5,31 +5,20 @@ import { valideateInviteCode } from '../../../components/invite';
 import { randomBytes, pbkdf2Sync } from "crypto"
 import executeQuery from '../../../components/mysql';
 
-function caesar(str: string, num: number) {
-    var result = '';
-    var charcode = 0;
-    for (var i = 0; i < str.length; i++) {
-        charcode = ((str[i].charCodeAt(0)) + num) % 65535;
-        result += String.fromCharCode(charcode);
-    }
-    return result;
-}
-
 export default function handler(
     req: NextApiRequest,
     res: NextApiResponse<any>
 ) {
     return new Promise(async (resolve, reject) => {
-        let rb = JSON.parse(req.body)
-        rb.password = caesar(rb.password, -Number(`${(new Date().getDate())}67${(new Date().getMonth())}`))
+        let { password, inviteCode, username } = JSON.parse(req.body)
 
-        if (!await valideateInviteCode(rb.inviteCode)) { return resolve(res.status(200).json(false)) }
+        if (!await valideateInviteCode(inviteCode)) { return resolve(res.status(200).json(false)) }
 
         const salt = randomBytes(16).toString('hex')
-        const hash = pbkdf2Sync(rb.password, salt, 1000, 64, `sha512`).toString(`hex`);
+        const hash = pbkdf2Sync(password, salt, 1000, 64, `sha512`).toString(`hex`);
 
-        executeQuery("INSERT INTO `users` (`username`, `password`, `salt`) VALUES (?, ?, ?);", [rb.username, hash, salt]).then(resp => {
-            executeQuery("UPDATE `ossia`.`invites` SET `user` = ? WHERE (`code` = ?);", [rb.username, rb.inviteCode])
+        executeQuery("INSERT INTO `users` (`username`, `password`, `salt`) VALUES (?, ?, ?);", [username, hash, salt]).then(resp => {
+            executeQuery("UPDATE `ossia`.`invites` SET `user` = ? WHERE (`code` = ?);", [username, inviteCode])
             resolve(res.status(200).json(true))
         })
     })

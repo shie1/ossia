@@ -11,16 +11,6 @@ import { localized } from "../components/localization";
 import { showNotification } from "@mantine/notifications";
 import { AlertCircle } from "tabler-icons-react";
 
-function caesar(str: string, num: number) {
-    var result = '';
-    var charcode = 0;
-    for (var i = 0; i < str.length; i++) {
-        charcode = ((str[i].charCodeAt(0)) + num) % 65535;
-        result += String.fromCharCode(charcode);
-    }
-    return result;
-}
-
 const Login: NextPage = () => {
     const router = useRouter()
     const form = useForm({
@@ -35,8 +25,7 @@ const Login: NextPage = () => {
     }, [router])
 
     const login = (values: any) => {
-        const salt = Number(`${(new Date().getDate())}67${(new Date().getMonth())}`)
-        let password = caesar(values["password"], salt)
+        let password = values["password"]
         apiCall("POST", "/api/user/login", { username: values.username, password: password }).then(resp => {
             if (resp) { router.replace("/library") } else { showNotification({ 'title': localized.invalidLogin, message: '', icon: <AlertCircle /> }) }
         })
