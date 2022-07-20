@@ -25,6 +25,7 @@
     "@types/md5": "^2.3.2",
     "@types/request": "^2.48.8",
     "@types/superagent": "^4.1.15",
+    "@types/ua-parser-js": "^0.7.36",
     "album-art": "^2.0.2",
     "autolinker": "^3.15.0",
     "cookies-next": "^2.1.1",
@@ -47,6 +48,7 @@
     "superagent-xml2jsparser": "^0.1.1",
     "swr": "^1.3.0",
     "tabler-icons-react": "^1.52.0",
+    "ua-parser-js": "^1.0.2",
     "ytdl-core": "^4.11.0"
   },
   "devDependencies": {

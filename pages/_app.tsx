@@ -29,6 +29,7 @@ import { useHotkeys, useLocalStorage, useMediaQuery } from '@mantine/hooks';
 import { useKonamiCode } from '../components/konami';
 import { usePlayer } from '../components/player';
 import { apiCall } from '../components/api';
+import { useUserAgent } from '../components/useragent';
 
 const NavLink = ({ link, icon, label }: { link: string, icon: ReactNode, label: ReactNode }) => {
   return (<Link href={link}>
@@ -100,6 +101,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   const [cookies, setCookies, removeCookies] = useCookies(["lang"])
   const bg = useRef<null | HTMLDivElement>(null)
   const gradient = "linear-gradient(90deg, rgba(158,93,185,1) 0%, rgba(129,67,156,1) 100%)"
+  const userAgent = useUserAgent()
 
   useEffect(() => {
     if (konami) {
@@ -135,14 +137,16 @@ function MyApp({ Component, pageProps }: AppProps) {
     playerRef.current!.volume = volume / 100
   }, [volume])
 
-  useHotkeys([["space", () => { (player.paused[1] as any)(!player.paused[0]) }], ["m", () => {
-    if (!volume) {
-      setVolume(prevVol)
-    } else {
-      setPrevVol(volume)
-      setVolume(0)
-    }
-  }]])
+  useHotkeys([
+    ["space", () => { (player.paused[1] as any)(!player.paused[0]) }],
+    ["m", () => {
+      if (!volume) {
+        setVolume(prevVol)
+      } else {
+        setPrevVol(volume)
+        setVolume(0)
+      }
+    }]])
 
   pageProps = {
     ...pageProps,
@@ -153,6 +157,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     volume: [volume, setVolume],
     player,
     touchScreen,
+    userAgent,
   }
 
   return (<div onContextMenu={(e) => { e.preventDefault() }}>
