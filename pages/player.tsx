@@ -41,7 +41,15 @@ const Player: NextPage = (props: any) => {
                 <Action onClick={() => { player.pop() }} label={localized.endPlayback}>
                     <X />
                 </Action>
-                <Action onClick={() => { player.paused[1](!player.paused[0]) }} label={player?.paused[0] ? localized.play : localized.pause}>
+                <Action onClick={() => {
+                    if (player.paused[0]) {
+                        player.playerRef.current.play()
+                        player.paused[1](false)
+                    } else {
+                        player.playerRef.current.pause()
+                        player.paused[1](true)
+                    }
+                }} label={player?.paused[0] ? localized.play : localized.pause}>
                     {player?.paused[0] ? <PlayerPlay /> : <PlayerPause />}
                 </Action>
                 <Action onClick={() => { customRouter.newTab(`https://youtube.com/watch?v=${player.streams.thumbnailUrl.split("/")[4]}`) }} label={localized.openInYt}>

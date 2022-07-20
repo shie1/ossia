@@ -113,6 +113,7 @@ export const usePlayer = (player: RefObject<null | HTMLAudioElement>) => {
         paused: [paused, setPaused],
         queue: [queue, setQueue],
         play,
+        playerRef: player,
         streams,
         playerDisp,
         addToQueue,
