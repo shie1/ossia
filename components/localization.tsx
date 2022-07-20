@@ -117,7 +117,10 @@ export const localized = new LocalizedStrings({
         volume: "Volume",
         queue: "Queue",
         playNext: "Play next",
-        playLast: "Play last"
+        playLast: "Play last",
+        addedToQueue: "Added to queue!",
+        addFirst: "Song added as first in queue!",
+        addLast: "Song added as last in queue!"
     },
     hu: {
         navSearch: "Keresés",

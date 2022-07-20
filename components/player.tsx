@@ -1,7 +1,10 @@
 import { useLocalStorage } from "@mantine/hooks";
+import { showNotification } from "@mantine/notifications";
 import { useRouter } from "next/router";
 import { RefObject, useCallback, useEffect, useState } from "react";
+import { SortAscending, SortDescending } from "tabler-icons-react";
 import { apiCall } from "./api";
+import { localized } from "./localization";
 
 const myShift = (list: Array<any>) => {
     list.shift()
@@ -60,21 +63,46 @@ export const usePlayer = (player: RefObject<null | HTMLAudioElement>) => {
         router.replace("/")
     }
 
+    const quickPlay = (id: string) => {
+        apiCall("GET", "/api/piped/streams", { v: id }).then(resp => { play(resp) })
+    }
+
+    const addToQueue = (id: string, place: "first" | "last" = "first") => {
+        showNotification({ title: localized.addedToQueue, message: localized.addFirst, icon: <SortAscending /> })
+        setQueue(old => (place === "first" ? [id, ...old] : [...old, id]))
+        apiCall("GET", "/api/piped/streams", { v: id }).then(resp => {
+            if (queue.find(item => item === id)) {
+                let arr = queue
+                const index = arr.indexOf(id)
+                arr[index] = resp
+                setQueue(arr)
+            }
+        })
+    }
+
     useEffect(() => {
         player.current!.onended = () => {
             if (!queue.length) {
-                apiCall("GET", "/api/piped/streams", { v: streams.relatedStreams[0].url.split("?v=")[1] }).then(resp => { play(resp) })
+                quickPlay(streams.relatedStreams[0].url.split("?v=")[1])
             } else {
-                play(queue[0])
+                if (typeof queue[0] === 'string') {
+                    quickPlay(queue[0])
+                } else {
+                    play(queue[0])
+                }
                 setQueue(myShift(queue))
             }
         }
-    }, [streams])
+    }, [streams, queue])
 
     useEffect(() => {
         if (queue.length) {
             if (player.current!.src.startsWith(document.location.origin) || !player.current!.src) {
-                play(queue[0])
+                if (typeof queue[0] === 'string') {
+                    quickPlay(queue[0])
+                } else {
+                    play(queue[0])
+                }
                 setQueue(myShift(queue))
             }
         }
@@ -86,6 +114,8 @@ export const usePlayer = (player: RefObject<null | HTMLAudioElement>) => {
         play,
         streams,
         playerDisp,
+        addToQueue,
+        quickPlay,
         pop,
     }
 }

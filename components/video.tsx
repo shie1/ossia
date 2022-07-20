@@ -1,13 +1,15 @@
-import { Card, Grid, Image, Text, Collapse, Menu, Group, Divider } from "@mantine/core";
+import { Card, Grid, Image, Text, Collapse, Menu, Group, Divider, UnstyledButton } from "@mantine/core";
 import { useRouter } from "next/router"
 import { useState } from "react";
-import { ArrowForwardUp, PlaylistAdd, SortAscending, SortDescending } from "tabler-icons-react";
+import { ArrowForwardUp, Dots, PlaylistAdd, SortAscending, SortDescending } from "tabler-icons-react";
+import { Action } from "./action";
 import { apiCall } from "./api"
 import { localized } from "./localization"
 import { interactive } from "./styles"
 
 export const Video = ({ video, player, touchScreen }: any) => {
     const router = useRouter()
+    video.id = (video.thumbnail || video.thumbnailUrl).split("/")[4]
     const [ctx, setCtx] = useState(false)
     if (!video) { return <></> }
     let type = ""
@@ -17,7 +19,7 @@ export const Video = ({ video, player, touchScreen }: any) => {
         type = "channel"
     }
     const play = () => {
-        apiCall("GET", "/api/piped/streams", { v: (video.thumbnail || video.thumbnailUrl).split("/")[4] }).then(resp => {
+        apiCall("GET", "/api/piped/streams", { v: video.id }).then(resp => {
             player.play(resp)
             router.push("/player")
         })
@@ -42,13 +44,13 @@ export const Video = ({ video, player, touchScreen }: any) => {
             </Group>
             <Collapse style={{ bottom: 0, right: 0, position: 'absolute' }} in={touchScreen || ctx}>
                 <Group p="sm" position={"right"}>
-                    <Menu position="bottom">
+                    <Menu control={<UnstyledButton><Action size="md"><Dots size={20} /></Action></UnstyledButton>} shadow="lg" withArrow position="bottom">
                         <Menu.Label>{video.title}</Menu.Label>
                         <Menu.Item icon={<PlaylistAdd size={14} />}>{localized.addToPlaylist}</Menu.Item>
                         <Divider />
                         <Menu.Label>{localized.queue}</Menu.Label>
-                        <Menu.Item icon={<SortAscending size={14} />}>{localized.playNext}</Menu.Item>
-                        <Menu.Item icon={<SortDescending size={14} />}>{localized.playLast}</Menu.Item>
+                        <Menu.Item onClick={() => { player.addToQueue(video.id, "first") }} icon={<SortAscending size={14} />}>{localized.playNext}</Menu.Item>
+                        <Menu.Item onClick={() => { player.addToQueue(video.id, "last") }} icon={<SortDescending size={14} />}>{localized.playLast}</Menu.Item>
                     </Menu>
                 </Group>
             </Collapse>
