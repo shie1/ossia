@@ -10,18 +10,14 @@ import { apiCall } from "../components/api";
 import { Icon } from "../components/icons";
 import { localized } from "../components/localization";
 
-const Playlist: NextPage = () => {
-    const [loading, setLoading] = useLocalStorage({ key: "loading", defaultValue: false })
+const Playlist: NextPage = (props: any) => {
+    const [loading, setLoading] = props.loading
     const router = useRouter()
     const [pl, setPl] = useState<any>(null)
-    useEffect(() => {
-        if (pl === null) {
-            setLoading(true)
-        }
-    }, [pl])
 
     useEffect(() => {
         if (typeof window !== undefined && typeof router.query['p'] !== 'undefined' && !pl) {
+            setLoading(true)
             apiCall("POST", "/api/playlist/get", { id: Number(Buffer.from(router.query['p'] as string, "base64")) - 45 }).then(resp => {
                 setPl(resp)
                 setLoading(false)

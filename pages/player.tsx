@@ -1,9 +1,9 @@
-import { Accordion, AccordionItem, Center, Container, Group, Image, SegmentedControl, Text } from "@mantine/core";
+import { Accordion, AccordionItem, Center, Container, Group, Image, InputWrapper, SegmentedControl, Slider, Text } from "@mantine/core";
 import Autolinker from "autolinker";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { X, PlayerPlay, PlayerPause, BrandYoutube, Notes, LayoutList, Router } from "tabler-icons-react";
 import { ActionGroup, Action } from "../components/action";
 import { localized } from "../components/localization";
@@ -48,21 +48,20 @@ const Player: NextPage = (props: any) => {
                     <BrandYoutube />
                 </Action>
             </ActionGroup>
-            <ActionGroup>
-                <SegmentedControl onChange={(e) => { setVolume(Number(e)) }} value={volume.toString()} sx={(theme) => ({ background: 'unset' })} radius="lg" data={[
-                    { label: localized.muted, value: '0' },
-                    { label: localized.low, value: '30' },
-                    { label: localized.medium, value: '60' },
-                    { label: localized.high, value: '90' }
-                ]} />
-            </ActionGroup>
+            <InputWrapper mb="sm" sx={{ width: '100%' }} label={localized.volume}>
+                <Slider label={(val) => `${val}%`} marks={[
+                    { 'value': 0, label: '0%' },
+                    { 'value': 50, label: '50%' },
+                    { 'value': 100, label: '100%' },
+                ]} onChange={setVolume} value={volume} />
+            </InputWrapper>
         </Group>
         <Accordion>
             <AccordionItem icon={<Notes />} label={localized.description}>
                 <Text sx={{ wordBreak: 'break-word', 'whiteSpace': 'pre-wrap' }} dangerouslySetInnerHTML={{ __html: Autolinker.link(player.streams.description, { email: true, className: "autolinker click" }) }} />
             </AccordionItem>
             <AccordionItem icon={<LayoutList />} label={localized.related}>
-                <VideoGrid player={player} videos={player.streams.relatedStreams} />
+                <VideoGrid touchScreen={props.touchScreen} player={player} videos={player.streams.relatedStreams} />
             </AccordionItem>
         </Accordion>
     </Container>)

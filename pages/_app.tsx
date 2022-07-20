@@ -25,7 +25,7 @@ import { interactive } from '../components/styles'
 import { localized } from '../components/localization'
 import { useCookies } from "react-cookie"
 import { useMe } from '../components/auth';
-import { useHotkeys, useLocalStorage } from '@mantine/hooks';
+import { useHotkeys, useLocalStorage, useMediaQuery } from '@mantine/hooks';
 import { useKonamiCode } from '../components/konami';
 import { usePlayer } from '../components/player';
 import { apiCall } from '../components/api';
@@ -94,6 +94,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   const manifest = useManifest()
   const playerRef = useRef<null | HTMLAudioElement>(null)
   const me = useMe()
+  const touchScreen = useMediaQuery("(pointer: coarse)")
   const [prevVol, setPrevVol] = useLocalStorage({ key: 'music-prev-volume', defaultValue: volume })
   const player = usePlayer(playerRef)
   const [cookies, setCookies, removeCookies] = useCookies(["lang"])
@@ -151,9 +152,10 @@ function MyApp({ Component, pageProps }: AppProps) {
     me,
     volume: [volume, setVolume],
     player,
+    touchScreen,
   }
 
-  return (<>
+  return (<div onContextMenu={(e) => { e.preventDefault() }}>
     <MantineProvider withGlobalStyles withNormalizeCSS theme={{
       focusRing: 'auto',
       defaultRadius: 'lg',
@@ -196,7 +198,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         </ModalsProvider>
       </AppShell>
     </MantineProvider>
-  </>)
+  </div>)
 }
 
 export default MyApp

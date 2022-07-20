@@ -1,10 +1,14 @@
-import { Card, Grid, Image, Text, AspectRatio } from "@mantine/core"
+import { Card, Grid, Image, Text, Collapse, Menu, Group, Divider } from "@mantine/core";
 import { useRouter } from "next/router"
+import { useState } from "react";
+import { ArrowForwardUp, PlaylistAdd, SortAscending, SortDescending } from "tabler-icons-react";
 import { apiCall } from "./api"
+import { localized } from "./localization"
 import { interactive } from "./styles"
 
-export const Video = ({ video, player }: any) => {
+export const Video = ({ video, player, touchScreen }: any) => {
     const router = useRouter()
+    const [ctx, setCtx] = useState(false)
     if (!video) { return <></> }
     let type = ""
     if (video.title) {
@@ -18,24 +22,41 @@ export const Video = ({ video, player }: any) => {
             router.push("/player")
         })
     }
+
     return <>
-        <Card radius="lg" sx={interactive} onClick={play}>
-            <Card.Section mb="sm">
-                <div style={{ display: 'inline-block', overflow: 'hidden', width: '100%' }} className="img-wrapper">
-                    <Image height={160} src={video.thumbnail || video.thumbnailUrl} alt={video.title} />
-                </div>
-            </Card.Section>
-            <Text mb={2} weight={500} size="lg">
-                {video.title ? video.title : video.name}
-            </Text>
-            {video.uploaderName || video.uploader && <Text size="sm">
-                {video.uploaderName || video.uploader}
-            </Text>}
+        <Card style={{ position: 'relative' }} onMouseEnter={() => { setCtx(true) }} onMouseLeave={() => { setCtx(false) }} p={0} radius="lg">
+            <Group mb="sm" grow direction="column" spacing={0} sx={interactive} onClick={play}>
+                <Card.Section mb="sm">
+                    <div style={{ display: 'inline-block', overflow: 'hidden', width: '100%' }} className="img-wrapper">
+                        <Image height={180} src={video.thumbnail || video.thumbnailUrl} alt={video.title} />
+                    </div>
+                </Card.Section>
+                <Group grow direction="column" spacing={2} px="sm">
+                    <Text weight={500} size="lg">
+                        {video.title ? video.title : video.name}
+                    </Text>
+                    {video.uploaderName || video.uploader && <Text size="sm">
+                        {video.uploaderName || video.uploader}
+                    </Text>}
+                </Group>
+            </Group>
+            <Collapse style={{ bottom: 0, right: 0, position: 'absolute' }} in={touchScreen || ctx}>
+                <Group p="sm" position={"right"}>
+                    <Menu position="bottom">
+                        <Menu.Label>{video.title}</Menu.Label>
+                        <Menu.Item icon={<PlaylistAdd size={14} />}>{localized.addToPlaylist}</Menu.Item>
+                        <Divider />
+                        <Menu.Label>{localized.queue}</Menu.Label>
+                        <Menu.Item icon={<SortAscending size={14} />}>{localized.playNext}</Menu.Item>
+                        <Menu.Item icon={<SortDescending size={14} />}>{localized.playLast}</Menu.Item>
+                    </Menu>
+                </Group>
+            </Collapse>
         </Card>
     </>
 }
 
-export const VideoGrid = ({ videos, player }: any) => {
+export const VideoGrid = ({ videos, player, touchScreen }: any) => {
     if (!videos) { return <></> }
     let i = 0
     return (<>
@@ -44,7 +65,7 @@ export const VideoGrid = ({ videos, player }: any) => {
                 i++
                 if (video.uploaded == -1) return <div key={i}></div>
                 return <Grid.Col md={4} span={12} key={i}>
-                    <Video player={player} video={video} />
+                    <Video touchScreen={touchScreen} player={player} video={video} />
                 </Grid.Col>
             })}
         </Grid>

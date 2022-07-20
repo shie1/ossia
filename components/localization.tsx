@@ -113,7 +113,11 @@ export const localized = new LocalizedStrings({
         change: "Change",
         cannotBeEmpty: "This field cannot be empty!",
         passwordChangeResp: "Password changed successfully!",
-        passwordChangeErr: "The password you entered is incorrect!"
+        passwordChangeErr: "The password you entered is incorrect!",
+        volume: "Volume",
+        queue: "Queue",
+        playNext: "Play next",
+        playLast: "Play last"
     },
     hu: {
         navSearch: "Keresés",
@@ -218,7 +222,10 @@ export const localized = new LocalizedStrings({
         privacyPolicy: "Adatvédelmi Irányelvek",
         invalidLogin: "Helytelen felhasználónév vagy jelszó",
         accountSettings: "Fiókbeállítások",
-        changePass: "Jelszó megváltoztatása"
+        changePass: "Jelszó megváltoztatása",
+        queue: "Várólista",
+        playNext: "Lejátszás következőként",
+        playLast: "Lejátszás utolsóként",
     },
     de: {
         navSearch: "Suche",
