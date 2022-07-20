@@ -1,14 +1,16 @@
-import { Accordion, AccordionItem, Chip, Chips, Container, Text } from "@mantine/core";
+import { Accordion, AccordionItem, Chip, Chips, Container, Group, Paper, Text } from "@mantine/core";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { Heart, World } from "tabler-icons-react";
-import { localized } from "../components/localization";
+import { Heart, Lock, User, World } from "tabler-icons-react";
+import { localized } from "../../components/localization";
 import { useCookies } from "react-cookie"
 import Head from "next/head";
 import { showNotification } from "@mantine/notifications";
+import { interactive } from "../../components/styles";
+import Link from "next/link";
 
-export const Settings: NextPage = () => {
+export const Settings: NextPage = (props: any) => {
     const router = useRouter()
     const langClick = useState(0)
     const [cookies, setCookies, removeCookies] = useCookies(["lang"])
@@ -47,13 +49,25 @@ export const Settings: NextPage = () => {
         <Head>
             <title>Settings | Ossia</title>
         </Head>
-        <Accordion>
+        <Accordion >
             <AccordionItem label={localized.lang} icon={<World />}>
                 <Text onClick={() => {
                     langClick[1](langClick[0] + 1)
                 }} my="sm">{localized.setLang}</Text>
                 <Languages />
             </AccordionItem>
+            {props.me && <AccordionItem label={localized.accountSettings} icon={<User />}>
+                <Group grow direction="column" spacing="sm">
+                    <Link href="/settings/changepass">
+                        <Paper sx={interactive} p="sm" withBorder>
+                            <Group direction="row">
+                                <Lock size={30} />
+                                <Text size="lg">{localized.changePass}</Text>
+                            </Group>
+                        </Paper>
+                    </Link>
+                </Group>
+            </AccordionItem>}
         </Accordion>
     </Container>)
 }

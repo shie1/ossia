@@ -104,7 +104,16 @@ export const localized = new LocalizedStrings({
         legalSectionTitle: "The \"Legal\" section",
         legalSectionText: "Reading these are necessary before registering an account.",
         privacyPolicy: "Privacy Policy",
-        invalidLogin: "Invalid username or password"
+        invalidLogin: "Invalid username or password",
+        accountSettings: "Account Settings",
+        changePass: "Change password",
+        currentPass: "Current password",
+        newPassword: "New password",
+        passwordConfirmError: "Passwords did not match!",
+        change: "Change",
+        cannotBeEmpty: "This field cannot be empty!",
+        passwordChangeResp: "Password changed successfully!",
+        passwordChangeErr: "The password you entered is incorrect!"
     },
     hu: {
         navSearch: "Keresés",
@@ -207,7 +216,9 @@ export const localized = new LocalizedStrings({
         legalSectionTitle: "A \"Jogi\" részleg",
         legalSectionText: "Ezeket szükséges elolvasni regisztráció előtt.",
         privacyPolicy: "Adatvédelmi Irányelvek",
-        invalidLogin: "Helytelen felhasználónév vagy jelszó"
+        invalidLogin: "Helytelen felhasználónév vagy jelszó",
+        accountSettings: "Fiókbeállítások",
+        changePass: "Jelszó megváltoztatása"
     },
     de: {
         navSearch: "Suche",

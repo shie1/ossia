@@ -27,7 +27,6 @@ export default function handler(
 
         const salt = randomBytes(16).toString('hex')
         const hash = pbkdf2Sync(rb.password, salt, 1000, 64, `sha512`).toString(`hex`);
-        console.log(rb.username, hash, salt)
 
         executeQuery("INSERT INTO `users` (`username`, `password`, `salt`) VALUES (?, ?, ?);", [rb.username, hash, salt]).then(resp => {
             executeQuery("UPDATE `ossia`.`invites` SET `user` = ? WHERE (`code` = ?);", [rb.username, rb.inviteCode])
