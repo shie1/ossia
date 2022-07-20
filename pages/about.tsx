@@ -70,6 +70,11 @@ const About: NextPage = (props: any) => {
                     <Table>
                         <tr>
                             <Group grow>
+                                <Contributor href="" name="dcs0" customRouter={customRouter}>
+                                    <ul>
+                                        <li>{localized.dcs0Contrib}</li>
+                                    </ul>
+                                </Contributor>
                                 <Contributor href="https://www.youtube.com/c/Weaver2822" avatar="https://media.discordapp.net/attachments/831841076062060634/998300647965343786/milan_-_lampalaz.png" name="Weaver" customRouter={customRouter}>
                                     <ul>
                                         <li>{localized.weaverContrib?.split("\n")[0]}</li>
@@ -117,7 +122,7 @@ function Contributor({ customRouter, name, avatar, children, href }: { customRou
         if (href) customRouter.newTab(href);
     }} sx={interactive} p="sm" pb={0} withBorder>
         <Group mb="sm" direction="row">
-            <Avatar imageProps={{draggable: false}} src={avatar} radius="xl" size="lg">{name.substring(0, 1).toUpperCase()}{name.substring(1, 2)}</Avatar>
+            <Avatar imageProps={{ draggable: false }} src={avatar} radius="xl" size="lg">{name.substring(0, 1).toUpperCase()}{name.substring(1, 2)}</Avatar>
             <Text size="lg">{name}</Text>
         </Group>
         <TypographyStylesProvider>

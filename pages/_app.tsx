@@ -16,10 +16,10 @@ import {
   Image,
 } from '@mantine/core';
 import { ModalsProvider } from '@mantine/modals'
-import { NotificationsProvider, showNotification } from '@mantine/notifications';
+import { NotificationsProvider } from '@mantine/notifications';
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import Link from 'next/link'
-import { AlertTriangle, Books, Login, PlayerPlay, Search, Settings } from "tabler-icons-react";
+import { Books, Login, PlayerPlay, Search, Settings } from "tabler-icons-react";
 import { useManifest } from '../components/manifest'
 import { interactive } from '../components/styles'
 import { localized } from '../components/localization'
