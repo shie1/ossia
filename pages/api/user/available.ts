@@ -6,6 +6,6 @@ export default function handler(
     res: NextApiResponse<any>
 ) {
     return new Promise(async (resolve, reject) => {
-        resolve(res.status(200).json(await usernameAvailable(JSON.parse(req.body)["username"])))
+        resolve(res.status(200).json(await usernameAvailable(req.query["username"] as string)))
     })
 }

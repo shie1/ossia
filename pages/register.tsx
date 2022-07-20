@@ -160,7 +160,7 @@ const Register: NextPage = (props: any) => {
 
     useEffect(() => {
         setAvailable(null)
-        apiCall("POST", "api/user/available", { username: form.values.username }).then(resp => {
+        apiCall("GET", "api/user/available", { username: form.values.username }).then(resp => {
             setAvailable(resp)
         })
     }, [form.values.username])
