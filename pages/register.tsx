@@ -1,6 +1,7 @@
 import {
     Box,
     Button,
+    Checkbox,
     Collapse,
     Container,
     Group,
@@ -8,6 +9,7 @@ import {
     PasswordInput,
     Text,
     TextInput,
+    TypographyStylesProvider,
 } from "@mantine/core";
 import type { NextPage } from "next";
 import { useForm } from "@mantine/form"
@@ -22,6 +24,7 @@ import { apiCall } from "../components/api";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { localized } from "../components/localization";
+import Link from "next/link";
 
 function caesar(str: string, num: number) {
     var result = '';
@@ -177,6 +180,7 @@ const Register: NextPage = (props: any) => {
                         <TextInput autoComplete="off" error={available === false && localized.usernameTaken} maxLength={20} description={localized.usernameDesc} required {...form.getInputProps("username")} label={localized.username} size="lg" />
                         <PasswordInput autoComplete="new-password" description={<ul style={{ margin: 0, padding: 0, paddingLeft: '1em' }}><li>{localized.passwordDesc!.split("\n")[0]}</li><li>{localized.passwordDesc!.split("\n")[1]}</li><li>{localized.passwordDesc!.split("\n")[2]}</li></ul>} required {...form.getInputProps("password")} label={localized.password} size="lg" />
                         <TextInput autoComplete="off" error={codeError && localized.inviteCodeInvalid} maxLength={8} description={localized.inviteCodeDesc} required {...form.getInputProps("inviteCode")} label={localized.inviteCode} size="lg" />
+                        <Checkbox label={<TypographyStylesProvider><Text size="sm">I am over 18 years old and I have read the <Link href="/legal">"Legal" section</Link>.</Text></TypographyStylesProvider>} />
                         <Button variant="light" size="lg" type="submit">{localized.register}</Button>
                         <Group onClick={() => { buy[1](!buy[0]) }} sx={interactive}><Text size="sm" >{buy[0] ? localized.buyInviteClose : localized.buyInviteClose}</Text></Group>
                     </Group>

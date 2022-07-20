@@ -4,7 +4,7 @@ import Head from "next/head";
 import { localized } from "../components/localization";
 
 const Page404: NextPage = () => {
-    return (<Container sx={{ height: '100%' }}>
+    return (<Container sx={{ height: '80vh' }}>
         <Head>
             <title>404: Page not found!</title>
         </Head>
