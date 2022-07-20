@@ -81,7 +81,7 @@ const BuyCode = ({ clientId, form }: { clientId: string, form: any }) => {
                                             value: "3.99",
                                         },
                                     },
-                                ],
+                                ]
                             });
                         }}
                             onApprove={async (data, actions) => {
@@ -197,7 +197,7 @@ const Register: NextPage = (props: any) => {
 
 export function getServerSideProps() {
     require('dotenv').config()
-    return { props: { PAYPAL_ID: process.env["PAYPAL_ID"] } }
+    return { props: { PAYPAL_ID: process.env["PAYPAL_ID"], NODE_ENV: process.env.NODE_ENV } }
 }
 
 export default Register
