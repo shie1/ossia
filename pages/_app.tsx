@@ -131,7 +131,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   }, [])
 
   useEffect(() => {
-    bg.current!.style.background = Object.keys(player.playerDisp).length ? `url("${player.playerDisp.ALBUMART}")` : gradient
+    bg.current!.style.background = player.playerDisp.ALBUMART ? `url("${player.playerDisp.ALBUMART}")` : gradient
   }, [player.playerDisp, bg])
 
   useEffect(() => {

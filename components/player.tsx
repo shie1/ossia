@@ -28,7 +28,7 @@ export const usePlayer = (player: RefObject<null | HTMLAudioElement>) => {
             "ALBUMART": streams.thumbnailUrl
         })
         apiCall("GET", "/api/youtube/recognize", { v: streams.thumbnailUrl.split("/")[4] }).then(resp => {
-            if (resp.length === 1) {
+            if (resp.length === 1 && Object.keys(streams).length) {
                 window.dispatchEvent(new Event("ossia-song-update"))
                 setPlayerDisp((old: any) => ({ ...old, ...resp[0] }))
             }
