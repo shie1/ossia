@@ -1,90 +1,88 @@
-import { Loader, Button, Container, Group, Space, Text, TextInput, Collapse, Divider, Paper, Grid } from "@mantine/core";
-import { useLocalStorage } from "@mantine/hooks";
-import { getCookie } from "cookies-next";
-import type { NextPage } from "next"
-import { useEffect, useState } from "react";
-import { Search } from "tabler-icons-react";
-import { LFMSong, VideoGrid } from "../components";
+import { Container, Group, TextInput, Center, Divider, ActionIcon, Affix, Button } from '@mantine/core';
+import { useWindowScroll } from '@mantine/hooks';
+import type { NextPage } from 'next'
+import Head from 'next/head'
+import { useCallback, useEffect, useState } from 'react';
+import { ArrowUp, Search } from 'tabler-icons-react';
+import { Action } from '../components/action'
+import { apiCall } from '../components/api';
+import { localized } from '../components/localization'
+import { VideoGrid } from '../components/video'
 
-const Index: NextPage = (props: any) => {
-  const SearchSection = () => {
-    const [searching, setSearching] = useState<boolean>(false)
-    const [query, setQuery] = useState<string>("")
-    const [results, setResults] = useState<Array<object>>([])
-    const [currentLQ, setCurrentLQ] = useLocalStorage<boolean>({ 'key': 'current-low-quality-mode', 'defaultValue': false })
+const Home: NextPage = (props: any) => {
+  const [searchInput, setSearchInput] = useState("")
+  const [results, setResults] = useState<any>({})
+  const [scroll, scrollTo] = useWindowScroll()
 
-    useEffect(() => {
-      const search = (sq: string) => {
-        if (!sq) { return }
-        setSearching(true)
-        const rb = JSON.stringify({ query: query })
-        fetch(`${document.location.origin}/api/youtube/search`, { 'method': 'POST', 'body': rb }).then(async response => {
-          let resp = await response.json()
-          let vids: any = []
-          resp.map((video: any) => {
-            if (!video["duration_raw"]) { return }
-            vids.push({ 'id': video.id.videoId, 'title': video.title, 'author': '', 'thumbnail': currentLQ ? video.snippet.thumbnails.default.url : video.snippet.thumbnails.high.url, 'length': video["duration_raw"] })
-          })
-          setResults(vids)
-          setSearching(false)
-        })
-      }
-      if (!query) { setResults([]); return }
-      const timeoutId = setTimeout(() => search(query), 1000);
-      return () => clearTimeout(timeoutId);
-    }, [query, currentLQ])
+  const search = (e: any) => {
+    e.preventDefault()
+    if (!searchInput) { return }
+    apiCall("GET", "/api/piped/search", { "filter": "videos", "q": searchInput }).then(resp => {
+      setResults(resp)
+    })
+  }
 
-    const Results = () => {
-      return (
-        <Collapse in={results.length !== 0}>
-          <Divider my='sm' />
-          <Space h={2} />
-          <VideoGrid videos={results} />
-        </Collapse>
-      )
+  const loadMore = useCallback(() => {
+    if (!searchInput) { return }
+    apiCall("GET", "/api/piped/search", { nextpage: results.nextpage, filter: "videos", q: searchInput }).then(resp => {
+      let newResults = resp
+      newResults.items = [...results.items, ...resp.items]
+      setResults(newResults)
+    })
+  }, [results, searchInput])
+
+  useEffect(() => {
+    if (results.items && (Math.round(scroll.y) + document.documentElement.clientHeight >= document.documentElement.offsetHeight)) {
+      loadMore()
     }
+  }, [scroll])
 
-    return (<>
-      <Text mb='sm' size="lg">Search</Text>
-      <TextInput
-        placeholder="Search"
-        icon={<Search />}
-        size='md'
-        variant="default"
-        rightSection={searching ? <Loader size='xs' mr='sm' /> : <></>}
-        value={query}
-        onChange={(e) => { setQuery(e.currentTarget.value) }}
-      />
-      <Results />
-      {!props.auth ? <>
-        <Divider my='md' size='xl' />
-        <Paper shadow='lg' className='about' withBorder p='sm' mt='sm'>
-          <Text mb='sm' size="xl" align="center">About Ossia</Text>
-          <Text>The Ossia Music Player is a free to use YouTube client designed for listening to music.</Text>
-          <Text>This indie project is being made and maintained by Shie1 since 2022-05-30.</Text>
-          <Text mt='md' sx={{ fontWeight: 600 }} size='lg'>Why you should use Ossia:</Text>
-          <ul>
-            <li>There are no ads on our site.</li>
-            <li>We don&apos;t collect user data on the server.</li>
-            <li>You can link our player to Last.fm.</li>
-            <li>Ossia is a PWA (Progressive Web App) which means you can download it to your phone as an app, from your browser.</li>
-          </ul>
-        </Paper></> : <>
-      </>}
-    </>)
+  const SearchResults = () => {
+    if (!results.items) return <></>
+    return (<div>
+      <Divider size="lg" my="md" />
+      <VideoGrid player={props.player} videos={results.items} />
+      <Center mt="sm">
+        <Button variant='light' onClick={loadMore}>Load more</Button>
+      </Center>
+    </div>)
+  }
+
+  if (typeof window !== 'undefined') {
+    window.addEventListener("ossia-title-click", () => {
+      setSearchInput("")
+      setResults([])
+    })
+    window.addEventListener("ossia-nav-click", () => {
+      setSearchInput("")
+      setResults([])
+    })
   }
 
   return (<>
+    <Head>
+      <title>Search | Ossia</title>
+    </Head>
     <Container>
-      <SearchSection />
+      <Center>
+        <form style={{ 'width': '100%' }} onSubmit={search}>
+          <TextInput placeholder={localized.navSearch + "..."} radius="lg" onClick={() => { setResults([]) }} size='lg' value={searchInput} onChange={(e) => { if (!e.currentTarget.value) { setResults([]) } setSearchInput(e.currentTarget.value) }} sx={{ width: '100%' }} variant='filled' rightSection={
+            <Group mr="md">
+              <Action label={localized.navSearch} onClick={() => { search(new Event("")) }} >
+                <Search />
+              </Action>
+            </Group>
+          } />
+        </form>
+      </Center>
+      <SearchResults />
     </Container>
+    {scroll.y > 500 && <Affix>
+      <ActionIcon radius="lg" onClick={() => { scrollTo({ x: 0, y: 0 }) }} size="xl" variant='outline' mb={70} m="sm">
+        <ArrowUp />
+      </ActionIcon>
+    </Affix>}
   </>)
 }
 
-export const getServerSideProps = ({ req, res }: any) => {
-  let auth = getCookie('auth', { req, res }) as any || false
-  if (auth) { auth = JSON.parse(auth) }
-  return { props: { 'auth': auth } };
-}
-
-export default Index;
+export default Home

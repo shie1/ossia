@@ -1,0 +1,69 @@
+@keyframes bg-glow-move {
+  0% {
+    transform: rotate(10deg) translateX(0vw) translateY(0vh);
+  }
+
+  50% {
+    transform: rotate(-10deg) translateX(0vw) translateY(5vh);
+  }
+
+  100% {
+    transform: rotate(10deg) translateX(0vw) translateY(10vh);
+  }
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+  user-select: none;
+}
+
+.click {
+  cursor: pointer;
+}
+
+.autolinker {
+  transition: .2s;
+  color: hsl(284, 39%, 65%)
+}
+
+.autolinker:hover {
+  color: #9E5DB9
+}
+
+.oneliner .mantine-Text-root {
+  max-height: 1.6em;
+  overflow: hidden;
+  display: -webkit-inline;
+  text-overflow: ellipsis;
+  transition: .5s;
+}
+
+.oneliner:hover .mantine-Text-root {
+  max-height: 8em;
+}
+
+.background-glow {
+  animation-name: bg-glow-move;
+  animation-timing-function: ease;
+  animation-iteration-count: infinite;
+  animation-play-state: running;
+  animation-direction: alternate;
+  animation-duration: 50s;
+}
+
+iframe {
+  z-index: 1 !important;
+}

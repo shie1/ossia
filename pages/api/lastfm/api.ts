@@ -1,30 +1,42 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { load } from 'ts-dotenv'
-import superagent from 'superagent'
-import { apiroot } from '../../../functions'
+import { genSig, apiroot } from '../../../components/lastfm'
+import superagent from "superagent"
 const parser = require('superagent-xml2jsparser')
-
-const env = load({
-    LASTFM_KEY: String,
-    LASTFM_SECRET: String,
-    NODE_ENV: [
-        'production' as const,
-        'development' as const,
-    ],
-})
+require("dotenv").config()
 
 export default async function handler(
-    req: any,
+    req: NextApiRequest,
     res: NextApiResponse<any>
 ) {
-    superagent.get(apiroot)
-        .query({
-            'api_key': env.LASTFM_KEY,
-            ...JSON.parse(req.body)
-        })
-        .parse(parser)
-        .end((err,resp) => {
-            res.status(200).json(resp.body)
-        })
+    return new Promise((resolve, reject) => {
+        if (!req.body) { resolve(res.status(200).json({})) }
+        let params = { ...(req.method === "POST" ? JSON.parse(req.body) : req.query), 'api_key': process.env.LASTFM_KEY }
+        delete params.method
+        params = { ...params, ...params.options }
+        delete params.options
+        params = genSig(params, true, process.env)
+        switch (req.method) {
+            case 'GET':
+                superagent.get(apiroot)
+                    .query(params)
+                    .buffer(true)
+                    .parse(parser)
+                    .end((err, resp) => {
+                        if (err) { console.log(err) }
+                        resolve(res.status(200).json(resp.body))
+                    })
+                break
+            case 'POST':
+                superagent.post(apiroot)
+                    .send((new URLSearchParams(params)).toString())
+                    .buffer(true)
+                    .parse(parser)
+                    .set('Content-Type', 'application/x-www-form-urlencoded')
+                    .end((err, resp) => {
+                        if (err) { console.log(err) }
+                        resolve(res.status(200).json(resp.body))
+                    })
+                break
+        }
+    })
 }

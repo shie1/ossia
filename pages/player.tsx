@@ -1,108 +1,71 @@
-import { useLocalStorage } from "@mantine/hooks";
-import type { NextPage } from "next";
-import { useEffect, useState } from "react";
-import { interactivePaper, Meta, VideoGrid } from "../components";
-import { Container, Text, ActionIcon, Group, Divider, Center, Image, InputWrapper, Slider, Space, Paper, Collapse } from "@mantine/core";
-import { PlayerPlay, PlayerPause, InfoCircle, ListDetails } from "tabler-icons-react";
+import { Accordion, AccordionItem, Center, Container, Group, Image, SegmentedControl, Text } from "@mantine/core";
 import Autolinker from "autolinker";
+import type { NextPage } from "next";
+import Head from "next/head";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { X, PlayerPlay, PlayerPause, BrandYoutube, Notes, LayoutList, Router } from "tabler-icons-react";
+import { ActionGroup, Action } from "../components/action";
+import { localized } from "../components/localization";
+import { useCustomRouter } from "../components/redirect";
+import { VideoGrid } from "../components/video";
 
-const Listen: NextPage = (props: any) => {
-    const [songDetails, setSongDetails] = useLocalStorage<any>({ 'key': 'song-details', 'defaultValue': {} })
-    const [volume, setVolume] = useLocalStorage<number>({ 'key': 'volume', 'defaultValue': 100 })
-    const [paused, setPaused] = useLocalStorage<boolean>({ 'key': 'paused', 'defaultValue': false })
-    const [currentLQ, setCurrentLQ] = useLocalStorage<boolean>({ 'key': 'current-low-quality-mode', 'defaultValue': false })
-    const [firstLoad, setFirstLoad] = useState<boolean>(true)
-    const [related, setRelated] = useState<Array<any>>([])
-    const [disp, setDisp] = useState(true)
-
-    var autolinker = new Autolinker({
-        newWindow: true,
-        sanitizeHtml: true,
-        className: 'link'
-    });
-
-    useEffect(() => {
-        if (related.length === 0) {
-            fetch(`${props.protocol}://${props.host}/api/youtube/related`, { 'method': 'POST', body: JSON.stringify(songDetails) }).then(async (resp) => {
-                const result = await resp.json()
-                let vids: any = []
-                result.map((video: any) => {
-                    if (video === false) { vids.push(video) }
-                    if (!video["duration_raw"]) { return }
-                    vids.push({ 'id': video.id.videoId, 'title': video.title, 'author': '', 'thumbnail': currentLQ ? video.snippet.thumbnails.default.url : video.snippet.thumbnails.high.url, 'length': video["duration_raw"] })
-                })
-                setRelated(vids)
-            })
-        }
-    }, [currentLQ, props.details, props.host, props.protocol, related, songDetails])
+const Player: NextPage = (props: any) => {
+    const player = props.player
+    const [volume, setVolume] = props.volume
+    const customRouter = useCustomRouter()
+    const router = useRouter()
+    const { playerDisp } = player
 
     useEffect(() => {
-        if (typeof window !== 'undefined' && firstLoad && props.id) {
-            if ((document.querySelector("audio#mainPlayer") as HTMLAudioElement).src == `${location.origin}/api/youtube/stream?v=${props.id}${currentLQ ? '&q=lowestaudio' : ''}`) { return }
-            (document.querySelector("audio#mainPlayer") as HTMLAudioElement).src = `${location.origin}/api/youtube/stream?v=${props.id}${currentLQ ? '&q=lowestaudio' : ''}`
-            setFirstLoad(true)
+        if (!Object.keys(player.playerDisp).length) {
+            router.replace("/")
         }
-    }, [currentLQ, firstLoad, props.id])
+    }, [player.playerDisp])
 
-    const Description = () => {
-        const [reveal, setReveal] = useState(false)
-        return (<>
-            <Text className="revealText" sx={(theme) => ({ transition: '3.5s', position: 'relative', whiteSpace: 'pre-wrap', wordWrap: 'break-word', maxHeight: (!reveal ? '10.6em' : '500em'), overflow: 'hidden', '::before': { background: (!reveal ? `linear-gradient(transparent 0, ${theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.light[2]})` : 'unset') } })} dangerouslySetInnerHTML={{ __html: autolinker.link(songDetails?.description) }} />
-            <Collapse in={!reveal}>
-                <Text onClick={() => { setReveal(true) }} className="link">Read more...</Text>
-            </Collapse>
-        </>)
-    }
-
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-            if (!(document.querySelector("audio#mainPlayer") as HTMLAudioElement).src) {
-                setDisp(false)
-            }
-        }
-    }, [])
-
-    if (!disp) { return <></> }
-    return (<>
-        <Meta pageTitle={songDetails?.title ? `${songDetails?.title} | Ossia` : 'Ossia'} />
-        <Container>
-            <Text mb='md' size='lg'>Player</Text>
-            <Center>
-                <Image className="rnd" alt={songDetails?.title} sx={{ maxWidth: '80vh' }} mb='md' src={songDetails?.thumbnails[currentLQ ? 0 : songDetails?.thumbnails.length - 1].url} />
-            </Center>
-            <Group mb='sm' direction="column" spacing={2}>
-                <Text size="xl">{songDetails?.title}</Text>
-                <Text size="md">{songDetails?.author.name}</Text>
+    return (<Container>
+        <Head>
+            <title>Player | Ossia</title>
+        </Head>
+        <Center>
+            <Image imageProps={{ draggable: false }} draggable={false} radius="lg" style={{ maxWidth: '30vh', minWidth: '40%' }} mb="sm" src={playerDisp.ALBUMART} alt={playerDisp.SONG} />
+        </Center>
+        <Group>
+            <Group direction="column" spacing={2}>
+                <Text size="xl" dangerouslySetInnerHTML={{ __html: playerDisp.SONG }} />
+                <Text dangerouslySetInnerHTML={{ __html: `${playerDisp.ALBUM ? `${playerDisp.ARTIST} - ${playerDisp.ALBUM}` : playerDisp.ARTIST}` }} />
             </Group>
-            <Group position="center">
-                <ActionIcon size='xl' onClick={() => { setPaused(!paused) }}>
-                    {paused ? <PlayerPlay /> : <PlayerPause />}
-                </ActionIcon>
-            </Group>
-            <InputWrapper label="Volume">
-                <Slider value={volume} onChange={setVolume} marks={[
-                    { value: 0, label: '0%' },
-                    { value: 50, label: '50%' },
-                    { value: 100, label: '100%' },
+        </Group>
+        <Group align="center" spacing="sm" direction="column" my="md">
+            <ActionGroup>
+                <Action onClick={() => { player.pop() }} label={localized.endPlayback}>
+                    <X />
+                </Action>
+                <Action onClick={() => { player.paused[1](!player.paused[0]) }} label={player?.paused[0] ? localized.play : localized.pause}>
+                    {player?.paused[0] ? <PlayerPlay /> : <PlayerPause />}
+                </Action>
+                <Action onClick={() => { customRouter.newTab(`https://youtube.com/watch?v=${player.streams.thumbnailUrl.split("/")[4]}`) }} label={localized.openInYt}>
+                    <BrandYoutube />
+                </Action>
+            </ActionGroup>
+            <ActionGroup>
+                <SegmentedControl onChange={(e) => { setVolume(Number(e)) }} value={volume.toString()} sx={(theme) => ({ background: 'unset' })} radius="lg" data={[
+                    { label: localized.muted, value: '0' },
+                    { label: localized.low, value: '30' },
+                    { label: localized.medium, value: '60' },
+                    { label: localized.high, value: '90' }
                 ]} />
-            </InputWrapper>
-            <Space h='xl' />
-            <Divider my='md' size='xl' />
-            <Description />
-            <Space h='md' />
-            <VideoGrid videos={related[0] === false ? [] : related} />
-        </Container>
-    </>)
+            </ActionGroup>
+        </Group>
+        <Accordion>
+            <AccordionItem icon={<Notes />} label={localized.description}>
+                <Text sx={{ wordBreak: 'break-word', 'whiteSpace': 'pre-wrap' }} dangerouslySetInnerHTML={{ __html: Autolinker.link(player.streams.description, { email: true, className: "autolinker click" }) }} />
+            </AccordionItem>
+            <AccordionItem icon={<LayoutList />} label={localized.related}>
+                <VideoGrid player={player} videos={player.streams.relatedStreams} />
+            </AccordionItem>
+        </Accordion>
+    </Container>)
 }
 
-export async function getServerSideProps(ctx: any) {
-    const protocol = (ctx.req.headers['x-forwarded-proto'] || ctx.req.headers.referer?.split('://')[0] || 'http')
-    return {
-        props: {
-            host: ctx.req.headers.host,
-            'protocol': protocol
-        }
-    }
-}
-
-export default Listen
+export default Player

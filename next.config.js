@@ -5,9 +5,6 @@ const runtimeCaching = require('next-pwa/cache')
 const nextConfig = {
   reactStrictMode: true,
   compress: true,
-  images: {
-    domains: ['i.ytimg.com']
-  },
   pwa: {
     dest: "public",
     register: true,
