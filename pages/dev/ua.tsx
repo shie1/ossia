@@ -1,13 +1,10 @@
+import { Textarea } from "@mantine/core";
 import type { NextPage } from "next";
-import { useEffect } from "react";
 
 const CopyUserAgent: NextPage = (props: any) => {
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-            window.navigator.clipboard.writeText(JSON.stringify(props.userAgent))
-        }
-    }, [props.userAgent])
-    return (<></>)
+    return (<>
+        <Textarea autosize value={JSON.stringify(props.userAgent,null,4)} />
+    </>)
 }
 
 export default CopyUserAgent
