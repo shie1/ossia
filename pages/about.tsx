@@ -70,7 +70,7 @@ const About: NextPage = (props: any) => {
                     <Table>
                         <tr>
                             <Group grow>
-                                <Contributor href="" name="dcs0" customRouter={customRouter}>
+                                <Contributor href="https://dcs0.hu" avatar="https://static.zerochan.net/Black.Rider.full.2053094.jpg" name="dcs0" customRouter={customRouter}>
                                     <ul>
                                         <li>{localized.dcs0Contrib}</li>
                                     </ul>
