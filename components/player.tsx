@@ -83,6 +83,7 @@ export const usePlayer = (player: RefObject<null | HTMLAudioElement>) => {
     useEffect(() => {
         player.current!.onended = () => {
             if (!queue.length) {
+                if (!streams.relatedStreams) { return }
                 quickPlay(streams.relatedStreams[0].url.split("?v=")[1])
             } else {
                 if (typeof queue[0] === 'string') {
