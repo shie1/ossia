@@ -71,19 +71,11 @@ export const usePlayer = (player: RefObject<null | HTMLAudioElement>) => {
     }
 
     const addToQueue = (id: string, place: "first" | "last" = "first", alert: boolean = true) => {
-        if (alert) { showNotification({ title: localized.addedToQueue, message: localized.addFirst, icon: <SortAscending /> }) }
-        setQueue(old => (place === "first" ? [id, ...old] : [...old, id]))
-        window.dispatchEvent(new Event("ossia-queue-update"))
         apiCall("GET", "/api/youtube/recognize", { v: id }).then(([recog]: any) => {
             apiCall("GET", "/api/piped/streams", { v: id }).then(resp => {
-                let arr = queue
-                const index = arr.indexOf(id)
-                if (index !== -1) {
-                    const index = arr.indexOf(id)
-                    arr[index] = { ...resp, ...recog }
-                    setQueue(arr)
-                    window.dispatchEvent(new Event("ossia-queue-update"))
-                }
+                setQueue(old => (place === "first" ? [{ ...resp, ...recog }, ...old] : [...old, { ...resp, ...recog }]))
+                if (alert) { showNotification({ title: localized.addedToQueue, message: localized.addFirst, icon: <SortAscending /> }) }
+                window.dispatchEvent(new Event("ossia-queue-update"))
             })
         })
     }
@@ -93,6 +85,7 @@ export const usePlayer = (player: RefObject<null | HTMLAudioElement>) => {
     }
 
     const removeFromQueue = (index: number) => {
+        console.log(index,queue)
         let newArr = queue
         newArr.splice(index, 1)
         setQueue(newArr)

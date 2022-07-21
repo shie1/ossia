@@ -2,6 +2,7 @@ import {
     Accordion,
     AccordionItem,
     Center,
+    Collapse,
     Container,
     Group,
     Image,
@@ -26,7 +27,7 @@ import { VideoGrid } from "../components/video";
 
 const Player: NextPage = (props: any) => {
     const [volume, setVolume] = props.volume
-    const [queue, setQueue] = useState([])
+    const [queue, setQueue] = props.player.queue
     const customRouter = useCustomRouter()
     const router = useRouter()
     let key = 0
@@ -90,21 +91,19 @@ const Player: NextPage = (props: any) => {
             </InputWrapper>
         </Group>
         <Accordion>
-            {<AccordionItem label={localized.queue} icon={<List />}>
-                {props.player.queue[0].length ? <Group spacing="sm">
-                    {props.player.queue[0].map((item: any) => {
+            <AccordionItem label={localized.queue} icon={<List />}>
+                <Group spacing={6} direction="column">
+                    {props.player.queue[0].map((song: any) => {
                         key++
-                        return (typeof item !== "string" ? <Song type="queue" index={key} artist={item.ARTIST} title={item.SONG} id={item.id} image={item.ALBUMART} player={props.player} key={key} /> : <Paper key={key} p="sm" style={{ width: '100%', position: 'relative' }}>
-                            <Center>
-                                <Group direction="row">
-                                    <Loader />
-                                    <Text size="lg">{item}</Text>
-                                </Group>
-                            </Center>
-                        </Paper>)
+                        let songkey = key
+                        return (<Song key={songkey} title={song.SONG} artist={song.ARTIST} id={song.id} image={song.ALBUMART} player={props.player} index={songkey - 1} type="queue">
+                            <Action onClick={() => { props.player.removeFromQueue(songkey - 1) }}>
+                                <X />
+                            </Action>
+                        </Song>)
                     })}
-                </Group> : <Center><Text>The queue is empty!</Text></Center>}
-            </AccordionItem>}
+                </Group>
+            </AccordionItem>
             <AccordionItem icon={<Notes />} label={localized.description}>
                 <Text sx={{ wordBreak: 'break-word', 'whiteSpace': 'pre-wrap' }} dangerouslySetInnerHTML={{ __html: Autolinker.link(props.player.streams.description, { email: true, className: "autolinker click" }) }} />
             </AccordionItem>

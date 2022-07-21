@@ -23,21 +23,18 @@ export const useIconSelector = (defaultIcon?: string) => {
     }, [filter])
     const IconsDisp = () => {
         let i = 0
-        const [pOpen, setPOpen] = useState(false)
         return (<>
             {filteredIcons.map((icon: string) => {
                 i++
                 if (page * itemsPerPage >= i && (page - 1) * itemsPerPage < i) {
-                    return (<>
-                        <Grid.Col xs={2} span={4}>
-                            <Paper className="oneliner" onClick={() => { setIcon(icon); setOpened(false) }} p="sm" withBorder sx={interactive}>
-                                <Center>
-                                    <Icon size={40} icon={icon} />
-                                </Center>
-                                <Text size="xs" align="center">{icon}</Text>
-                            </Paper>
-                        </Grid.Col>
-                    </>)
+                    return (<Grid.Col key={i} xs={2} span={4}>
+                        <Paper className="oneliner" onClick={() => { setIcon(icon); setOpened(false) }} p="sm" withBorder sx={interactive}>
+                            <Center>
+                                <Icon size={40} icon={icon} />
+                            </Center>
+                            <Text size="xs" align="center">{icon}</Text>
+                        </Paper>
+                    </Grid.Col>)
                 }
             })}
         </>)

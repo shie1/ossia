@@ -1,10 +1,11 @@
 import { Paper, Group, Image, Text, Center } from "@mantine/core";
 import { useRouter } from "next/router";
+import { ReactNode } from "react";
 import { X } from "tabler-icons-react";
 import { Action, ActionGroup } from "./action";
 import { interactive } from "./styles";
 
-export const Song = ({ index, artist, title, id, image, player, type }: { index?: number, artist: string, title: string, id: string, image: string, player: any, type?: "link" | "queue" }) => {
+export const Song = ({ index, artist, title, id, image, player, type, children }: { children?: ReactNode, index?: number, artist: string, title: string, id: string, image: string, player: any, type?: "link" | "queue" }) => {
     type = type || "link"
     const router = useRouter()
     return (<Paper sx={type === "link" ? interactive : {}} onClick={type === "link" ? () => { player.quickPlay(id).then(() => { router.push("/player") }) } : () => { }} p="sm" style={{ width: '100%' }} withBorder>
@@ -18,13 +19,7 @@ export const Song = ({ index, artist, title, id, image, player, type }: { index?
                     <Text>{artist}</Text>
                 </Group>
             </Group>
-            {type === "queue" && index && <Group position="right">
-                <ActionGroup>
-                    <Action onClick={() => { player.removeFromQueue(index - 1) }}>
-                        <X />
-                    </Action>
-                </ActionGroup>
-            </Group>}
+            {children}
         </Group>
     </Paper>)
 }
