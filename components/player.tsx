@@ -56,27 +56,33 @@ export const usePlayer = (player: RefObject<null | HTMLAudioElement>) => {
     }
 
     const pop = () => {
+        setQueue([])
         window.dispatchEvent(new Event("ossia-song-update"))
         player.current!.src = ""
         setStreams({})
         setPlayerDisp({})
-        router.replace("/")
+        if (router.pathname === "/player") { router.replace("/") }
     }
 
     const quickPlay = (id: string) => {
         apiCall("GET", "/api/piped/streams", { v: id }).then(resp => { play(resp) })
     }
 
-    const addToQueue = (id: string, place: "first" | "last" = "first") => {
-        showNotification({ title: localized.addedToQueue, message: localized.addFirst, icon: <SortAscending /> })
-        setQueue(old => (place === "first" ? [id, ...old] : [...old, id]))
-        apiCall("GET", "/api/piped/streams", { v: id }).then(resp => {
-            if (queue.find(item => item === id)) {
-                let arr = queue
+    const addToQueue = (id: string, place: "first" | "last" = "first", alert: boolean = true) => {
+        if (alert) { showNotification({ title: localized.addedToQueue, message: localized.addFirst, icon: <SortAscending /> }) }
+        let q = (place === "first" ? [id, ...queue] : [...queue, id])
+        setQueue(q)
+        apiCall("GET", "/api/youtube/recognize", { v: id }).then(([recog]: any) => {
+            apiCall("GET", "/api/piped/streams", { v: id }).then(resp => {
+                let arr = q
                 const index = arr.indexOf(id)
-                arr[index] = resp
-                setQueue(arr)
-            }
+                if (index !== -1) {
+                    let arr = q
+                    const index = arr.indexOf(id)
+                    arr[index] = { ...resp, ...recog }
+                    setQueue(arr)
+                }
+            })
         })
     }
 

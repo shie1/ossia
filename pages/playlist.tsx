@@ -1,4 +1,4 @@
-import { Avatar, Container, Group, Paper, Text } from "@mantine/core";
+import { Avatar, Container, Group, Image, Paper, Table, Text } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
 import type { NextPage } from "next";
@@ -9,11 +9,23 @@ import { Action, ActionGroup } from "../components/action";
 import { apiCall } from "../components/api";
 import { Icon } from "../components/icons";
 import { localized } from "../components/localization";
+import { Song } from "../components/song";
+import { interactive } from "../components/styles";
+
+const mySort = (list: Array<any>, backwards = false) => {
+    let f = list
+    f.sort((a: any, b: any) => {
+        if (a.index > b.index) { return 1 } else { return -1 }
+    })
+    if (backwards) { f.reverse() }
+    return f
+}
 
 const Playlist: NextPage = (props: any) => {
     const [loading, setLoading] = props.loading
     const router = useRouter()
     const [pl, setPl] = useState<any>(null)
+    let key = 0
 
     useEffect(() => {
         if (typeof window !== undefined && typeof router.query['p'] !== 'undefined' && !pl) {
@@ -38,7 +50,9 @@ const Playlist: NextPage = (props: any) => {
                     <ActionGroup>
                         {typeof router.query['p'] !== "undefined" && pl && <>
                             <Action label={localized.play} onClick={() => {
-                                console.log(pl.content)
+                                props.player.pop()
+                                props.player.queue[1]([])
+                                mySort(pl.content,true).map((item: any) => { console.log(item); props.player.addToQueue(item.id, "first", false) })
                             }}>
                                 <PlayerPlay />
                             </Action>
@@ -56,6 +70,12 @@ const Playlist: NextPage = (props: any) => {
                     </ActionGroup>
                 </Group>
             </Paper>
+            <Group mt="md">
+                {pl && mySort(pl.content).map((song: any) => {
+                    key++
+                    return (<Song artist={song.author} title={song.title} id={song.id} image={song.image} player={props.player} key={key} />)
+                })}
+            </Group>
         </Container>
     </>)
 }

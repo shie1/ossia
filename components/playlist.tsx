@@ -55,14 +55,14 @@ export const Playlists = ({ playlists }: { playlists: Array<any> }) => {
         {playlists.map((pl) => {
             key++
             const plid = encodeURIComponent(Buffer.from((pl["id"] + 45).toString()).toString('base64'))
-            return (<Paper key={key} sx={interactive} p="md" withBorder>
-                <Link href={`/playlist?p=${plid}`}>
+            return (<Link href={`/playlist?p=${plid}`}>
+                <Paper key={key} sx={interactive} p="md" withBorder>
                     <Group spacing="sm" direction="row">
                         <Icon size={30} icon={pl["icon_name"]} />
                         <Text>{pl["name"]}</Text>
                     </Group>
-                </Link>
-            </Paper>)
+                </Paper>
+            </Link>)
         })}
     </Group>)
 }

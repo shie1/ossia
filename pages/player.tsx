@@ -1,13 +1,27 @@
-import { Accordion, AccordionItem, Center, Container, Group, Image, InputWrapper, SegmentedControl, Slider, Text } from "@mantine/core";
+import {
+    Accordion,
+    AccordionItem,
+    Center,
+    Container,
+    Group,
+    Image,
+    InputWrapper,
+    Loader,
+    LoadingOverlay,
+    Paper,
+    Slider,
+    Text,
+} from "@mantine/core";
 import Autolinker from "autolinker";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import { X, PlayerPlay, PlayerPause, BrandYoutube, Notes, LayoutList, Router } from "tabler-icons-react";
+import { useEffect } from "react";
+import { X, PlayerPlay, PlayerPause, BrandYoutube, Notes, LayoutList, List } from "tabler-icons-react";
 import { ActionGroup, Action } from "../components/action";
 import { localized } from "../components/localization";
 import { useCustomRouter } from "../components/redirect";
+import { Song } from "../components/song";
 import { VideoGrid } from "../components/video";
 
 const Player: NextPage = (props: any) => {
@@ -15,6 +29,7 @@ const Player: NextPage = (props: any) => {
     const [volume, setVolume] = props.volume
     const customRouter = useCustomRouter()
     const router = useRouter()
+    let key = 0
     const { playerDisp } = player
 
     useEffect(() => {
@@ -65,6 +80,21 @@ const Player: NextPage = (props: any) => {
             </InputWrapper>
         </Group>
         <Accordion>
+            {player.queue[0].length && <AccordionItem label={localized.queue} icon={<List />}>
+                <Group spacing="sm">
+                    {player.queue[0].map((item: any) => {
+                        key++
+                        return (typeof item !== "string" ? <Song noInteraction artist={item.ARTIST} title={item.SONG} id={item.id} image={item.ALBUMART} player={props.player} key={key} /> : <Paper key={key} p="sm" style={{ width: '100%', position: 'relative' }}>
+                            <Center>
+                                <Group direction="row">
+                                    <Loader/>
+                                    <Text size="lg">{item}</Text>
+                                </Group>
+                            </Center>
+                        </Paper>)
+                    })}
+                </Group>
+            </AccordionItem>}
             <AccordionItem icon={<Notes />} label={localized.description}>
                 <Text sx={{ wordBreak: 'break-word', 'whiteSpace': 'pre-wrap' }} dangerouslySetInnerHTML={{ __html: Autolinker.link(player.streams.description, { email: true, className: "autolinker click" }) }} />
             </AccordionItem>

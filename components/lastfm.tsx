@@ -37,3 +37,20 @@ export const search = (params: any) => {
             })
     })
 }
+
+export const albumInfo = (params: any) => {
+    return new Promise((resolve, reject) => {
+        superagent.get(apiroot)
+            .query({
+                'method': 'album.getInfo',
+                'api_key': process.env.LASTFM_KEY,
+                ...params
+            })
+            .parse(parser)
+            .buffer(true)
+            .end((err, resp: any) => {
+                if (err) { console.log(err) }
+                return resolve(resp.body)
+            })
+    })
+}

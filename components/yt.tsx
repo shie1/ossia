@@ -1,5 +1,6 @@
 import { search } from "./lastfm"
 import ytdl from "ytdl-core"
+import { albumArt } from "./albumart"
 
 export const recognize = (id: string) => {
     return new Promise(async (resolve, reject) => {
@@ -49,7 +50,7 @@ export const recognize = (id: string) => {
                     }
                     let art: any = info.videoDetails.thumbnails[info.videoDetails.thumbnails.length - 1].url
                     let url: any
-                    url = await albumArt(inner["ARTIST"], { album: inner["ALBUM"] !== "undefined" ? inner["ALBUM"] : inner["SONG"], size: 'large' })
+                    url = await albumArt(inner["ARTIST"], typeof inner["ALBUM"] !== "undefined" ? inner["ALBUM"] : inner["SONG"])
                     if (typeof url === 'string') {
                         art = url
                     }
@@ -95,7 +96,7 @@ export const recognize = (id: string) => {
                 }
                 let art: any = info.videoDetails.thumbnails[info.videoDetails.thumbnails.length - 1].url
                 let url: any
-                url = await albumArt(inner["ARTIST"], { album: inner["ALBUM"] !== "undefined" ? inner["ALBUM"] : inner["SONG"], size: 'large' })
+                url = await albumArt(inner["ARTIST"], typeof inner["ALBUM"] !== "undefined" ? inner["ALBUM"] : inner["SONG"])
                 if (typeof url === 'string') {
                     art = url
                 }
