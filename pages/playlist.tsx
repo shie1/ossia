@@ -50,7 +50,7 @@ const Playlist: NextPage = (props: any) => {
                             <Action label={localized.play} onClick={() => {
                                 props.player.pop()
                                 props.player.queue[1]([])
-                                mySort(pl.content,true).map((item: any) => { console.log(item); props.player.addToQueue(item.id, "first", false) })
+                                mySort(pl.content, true).map((item: any) => { props.player.addToQueue(item.id, "first", false) })
                             }}>
                                 <PlayerPlay />
                             </Action>

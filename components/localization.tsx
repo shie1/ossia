@@ -127,7 +127,8 @@ export const localized = new LocalizedStrings({
         addingToPlaylist: "Adding to playlist...",
         addingInProgress: "{0} is being added to {1}.",
         addedToPlaylist: "{0} successfully added to {1}.",
-        addToPlaylistError: "{0} could not be added to {1}."
+        addToPlaylistError: "{0} could not be added to {1}.",
+        next: "Next"
     },
     hu: {
         navSearch: "Keresés",
@@ -250,7 +251,10 @@ export const localized = new LocalizedStrings({
         passwordConfirmError: "A jelszavak nem egyeznek!",
         volume: "Hangerő",
         addingToPlaylist: "Hozzáadás a lejátszási listához...",
-        addingInProgress: "{0} hozzáadása {1} listához folyamatban van."
+        addingInProgress: "{0} hozzáadása {1} listához folyamatban van.",
+        next: "Következő",
+        addedToPlaylist: "{0} sikeresen hozzáadva {1} listához.",
+        addToPlaylistError: "Nem lehetett hozzáadni {0} dalt {1} listához.",
     },
     de: {
         navSearch: "Suche",

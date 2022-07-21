@@ -16,7 +16,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { X, PlayerPlay, PlayerPause, BrandYoutube, Notes, LayoutList, List } from "tabler-icons-react";
+import { X, PlayerPlay, PlayerPause, BrandYoutube, Notes, LayoutList, List, PlayerSkipForward } from "tabler-icons-react";
 import { ActionGroup, Action } from "../components/action";
 import { localized } from "../components/localization";
 import { useForceUpdate } from "../components/react";
@@ -74,6 +74,9 @@ const Player: NextPage = (props: any) => {
                 }} label={props.player?.paused[0] ? localized.play : localized.pause}>
                     {props.player?.paused[0] ? <PlayerPlay /> : <PlayerPause />}
                 </Action>
+                <Action label={localized.next} onClick={() => { props.player.skip() }}>
+                    <PlayerSkipForward />
+                </Action>
                 <Action onClick={() => { customRouter.newTab(`https://youtube.com/watch?v=${props.player.streams.thumbnailUrl.split("/")[4]}`) }} label={localized.openInYt}>
                     <BrandYoutube />
                 </Action>
@@ -91,7 +94,7 @@ const Player: NextPage = (props: any) => {
                 {props.player.queue[0].length ? <Group spacing="sm">
                     {props.player.queue[0].map((item: any) => {
                         key++
-                        return (typeof item !== "string" ? <Song noInteraction artist={item.ARTIST} title={item.SONG} id={item.id} image={item.ALBUMART} player={props.player} key={key} /> : <Paper key={key} p="sm" style={{ width: '100%', position: 'relative' }}>
+                        return (typeof item !== "string" ? <Song type="queue" index={key} artist={item.ARTIST} title={item.SONG} id={item.id} image={item.ALBUMART} player={props.player} key={key} /> : <Paper key={key} p="sm" style={{ width: '100%', position: 'relative' }}>
                             <Center>
                                 <Group direction="row">
                                     <Loader />

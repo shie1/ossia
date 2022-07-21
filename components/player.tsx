@@ -65,20 +65,20 @@ export const usePlayer = (player: RefObject<null | HTMLAudioElement>) => {
     }
 
     const quickPlay = (id: string) => {
-        apiCall("GET", "/api/piped/streams", { v: id }).then(resp => { play(resp) })
+        return new Promise((resolve, reject) => {
+            apiCall("GET", "/api/piped/streams", { v: id }).then(resp => { resolve(play(resp)) })
+        })
     }
 
     const addToQueue = (id: string, place: "first" | "last" = "first", alert: boolean = true) => {
         if (alert) { showNotification({ title: localized.addedToQueue, message: localized.addFirst, icon: <SortAscending /> }) }
-        let q = (place === "first" ? [id, ...queue] : [...queue, id])
-        setQueue(q)
+        setQueue(old => (place === "first" ? [id, ...old] : [...old, id]))
         window.dispatchEvent(new Event("ossia-queue-update"))
         apiCall("GET", "/api/youtube/recognize", { v: id }).then(([recog]: any) => {
             apiCall("GET", "/api/piped/streams", { v: id }).then(resp => {
-                let arr = q
+                let arr = queue
                 const index = arr.indexOf(id)
                 if (index !== -1) {
-                    let arr = q
                     const index = arr.indexOf(id)
                     arr[index] = { ...resp, ...recog }
                     setQueue(arr)
@@ -86,6 +86,17 @@ export const usePlayer = (player: RefObject<null | HTMLAudioElement>) => {
                 }
             })
         })
+    }
+
+    const skip = () => {
+        player.current!.currentTime = player.current!.duration
+    }
+
+    const removeFromQueue = (index: number) => {
+        let newArr = queue
+        newArr.splice(index, 1)
+        setQueue(newArr)
+        window.dispatchEvent(new Event("ossia-queue-update"))
     }
 
     useEffect(() => {
@@ -124,8 +135,10 @@ export const usePlayer = (player: RefObject<null | HTMLAudioElement>) => {
         playerRef: player,
         streams,
         playerDisp,
+        skip,
         addToQueue,
         quickPlay,
+        removeFromQueue,
         pop,
     }
 }
