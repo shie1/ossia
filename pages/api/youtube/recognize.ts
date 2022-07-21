@@ -1,7 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import ytdl from "ytdl-core"
-import albumArt from "album-art"
-import { search } from '../../../components/lastfm'
 import { recognize } from '../../../components/yt'
 
 export default async function handler(
