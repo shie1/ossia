@@ -4,7 +4,7 @@ import { showNotification } from "@mantine/notifications";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { Trash } from "tabler-icons-react";
+import { PlayerPlay, Trash } from "tabler-icons-react";
 import { Action, ActionGroup } from "../components/action";
 import { apiCall } from "../components/api";
 import { Icon } from "../components/icons";
@@ -24,6 +24,7 @@ const Playlist: NextPage = (props: any) => {
             })
         }
     }, [pl, router])
+
     return (<>
         <Container>
             <Paper p="sm" withBorder>
@@ -36,6 +37,11 @@ const Playlist: NextPage = (props: any) => {
                     </Group>
                     <ActionGroup>
                         {typeof router.query['p'] !== "undefined" && pl && <>
+                            <Action label={localized.play} onClick={() => {
+                                console.log(pl.content)
+                            }}>
+                                <PlayerPlay />
+                            </Action>
                             <Action onClick={() => {
                                 apiCall("POST", "/api/playlist/delete", { id: Number(Buffer.from(router.query['p'] as string, "base64")) - 45 }).then(resp => {
                                     if (resp) {

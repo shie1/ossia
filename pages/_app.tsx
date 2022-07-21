@@ -31,6 +31,7 @@ import { usePlayer } from '../components/player';
 import { apiCall } from '../components/api';
 import { useUserAgent } from '../components/useragent';
 import { Alert } from '../components/alert';
+import { useRouter } from 'next/router';
 
 const NavLink = ({ link, icon, label }: { link: string, icon: ReactNode, label: ReactNode }) => {
   return (<Link href={link}>
@@ -96,6 +97,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   const manifest = useManifest()
   const playerRef = useRef<null | HTMLAudioElement>(null)
   const me = useMe()
+  const router = useRouter()
   const touchScreen = useMediaQuery("(pointer: coarse)")
   const [prevVol, setPrevVol] = useLocalStorage({ key: 'music-prev-volume', defaultValue: volume })
   const player = usePlayer(playerRef)
@@ -103,7 +105,23 @@ function MyApp({ Component, pageProps }: AppProps) {
   const bg = useRef<null | HTMLDivElement>(null)
   const gradient = "linear-gradient(90deg, rgba(158,93,185,1) 0%, rgba(129,67,156,1) 100%)"
   const userAgent = useUserAgent()
-  const appleAlert = useState(false)
+  const [playlists, setPlaylists] = useState<Array<any> | null>(null)
+
+  useEffect(() => {
+    apiCall("GET", "/api/user/playlists", {}).then(resp => {
+      setPlaylists(resp)
+    })
+  }, [router])
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.addEventListener("ossia-playlist-added", () => {
+        apiCall("GET", "/api/user/playlists", {}).then(resp => {
+          setPlaylists(resp)
+        })
+      })
+    }
+  }, [])
 
   useEffect(() => {
     if (konami) {
@@ -160,6 +178,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     player,
     touchScreen,
     userAgent,
+    playlists,
   }
 
   return (<div onContextMenu={(e) => { e.preventDefault() }}>

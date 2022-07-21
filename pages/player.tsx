@@ -69,7 +69,7 @@ const Player: NextPage = (props: any) => {
                 <Text sx={{ wordBreak: 'break-word', 'whiteSpace': 'pre-wrap' }} dangerouslySetInnerHTML={{ __html: Autolinker.link(player.streams.description, { email: true, className: "autolinker click" }) }} />
             </AccordionItem>
             <AccordionItem icon={<LayoutList />} label={localized.related}>
-                <VideoGrid touchScreen={props.touchScreen} player={player} videos={player.streams.relatedStreams} />
+                <VideoGrid playlists={props.playlists} touchScreen={props.touchScreen} player={player} videos={player.streams.relatedStreams} />
             </AccordionItem>
         </Accordion>
     </Container>)

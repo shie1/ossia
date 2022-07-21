@@ -1,14 +1,16 @@
 import { Card, Grid, Image, Text, Collapse, Menu, Group, Divider, UnstyledButton } from "@mantine/core";
 import { useRouter } from "next/router"
 import { useState } from "react";
-import { ArrowForwardUp, Dots, PlaylistAdd, SortAscending, SortDescending } from "tabler-icons-react";
+import { Dots, PlaylistAdd, SortAscending, SortDescending } from "tabler-icons-react";
 import { Action } from "./action";
 import { apiCall } from "./api"
 import { localized } from "./localization"
+import { AddToPlaylist } from "./playlist";
 import { interactive } from "./styles"
 
-export const Video = ({ video, player, touchScreen }: any) => {
+export const Video = ({ video, player, touchScreen, playlists }: any) => {
     const router = useRouter()
+    const add = useState(false)
     video.id = (video.thumbnail || video.thumbnailUrl).split("/")[4]
     const [ctx, setCtx] = useState(false)
     if (!video) { return <></> }
@@ -18,6 +20,7 @@ export const Video = ({ video, player, touchScreen }: any) => {
     } else {
         type = "channel"
     }
+
     const play = () => {
         apiCall("GET", "/api/piped/streams", { v: video.id }).then(resp => {
             player.play(resp)
@@ -26,6 +29,7 @@ export const Video = ({ video, player, touchScreen }: any) => {
     }
 
     return <>
+        {playlists.length && <AddToPlaylist songTitle={video.title} songId={video.id} playlists={playlists} open={add[0]} setOpen={add[1]} />}
         <Card style={{ position: 'relative' }} onMouseEnter={() => { setCtx(true) }} onMouseLeave={() => { setCtx(false) }} p={0} radius="lg">
             <Group mb="sm" grow direction="column" spacing={0} sx={interactive} onClick={play}>
                 <Card.Section mb="sm">
@@ -46,7 +50,7 @@ export const Video = ({ video, player, touchScreen }: any) => {
                 <Group p="sm" position={"right"}>
                     <Menu control={<UnstyledButton><Action size="md"><Dots size={20} /></Action></UnstyledButton>} shadow="lg" withArrow position="bottom">
                         <Menu.Label>{video.title}</Menu.Label>
-                        <Menu.Item icon={<PlaylistAdd size={14} />}>{localized.addToPlaylist}</Menu.Item>
+                        <Menu.Item onClick={() => { add[1](true) }} icon={<PlaylistAdd size={14} />}>{localized.addToPlaylist}</Menu.Item>
                         <Divider />
                         <Menu.Label>{localized.queue}</Menu.Label>
                         <Menu.Item onClick={() => { player.addToQueue(video.id, "first") }} icon={<SortAscending size={14} />}>{localized.playNext}</Menu.Item>
@@ -58,7 +62,7 @@ export const Video = ({ video, player, touchScreen }: any) => {
     </>
 }
 
-export const VideoGrid = ({ videos, player, touchScreen }: any) => {
+export const VideoGrid = ({ videos, player, touchScreen, playlists }: any) => {
     if (!videos) { return <></> }
     let i = 0
     return (<>
@@ -67,7 +71,7 @@ export const VideoGrid = ({ videos, player, touchScreen }: any) => {
                 i++
                 if (video.uploaded == -1) return <div key={i}></div>
                 return <Grid.Col md={4} span={12} key={i}>
-                    <Video touchScreen={touchScreen} player={player} video={video} />
+                    <Video playlists={playlists} touchScreen={touchScreen} player={player} video={video} />
                 </Grid.Col>
             })}
         </Grid>

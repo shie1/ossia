@@ -41,7 +41,7 @@ const Home: NextPage = (props: any) => {
     if (!results.items) return <></>
     return (<div>
       <Divider size="lg" my="md" />
-      <VideoGrid touchScreen={props.touchScreen} player={props.player} videos={results.items} />
+      <VideoGrid playlists={props.playlists} touchScreen={props.touchScreen} player={props.player} videos={results.items} />
       <Center mt="sm">
         <Button variant='light' onClick={loadMore}>Load more</Button>
       </Center>

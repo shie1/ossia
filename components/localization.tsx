@@ -124,6 +124,10 @@ export const localized = new LocalizedStrings({
         addLast: "Song added as last in queue!",
         iosTitle: "The website might not work properly in this browser",
         iosText: "You're viewing this page from an iOS device, audio playback may not function as intended.",
+        addingToPlaylist: "Adding to playlist...",
+        addingInProgress: "{0} is being added to {1}.",
+        addedToPlaylist: "{0} successfully added to {1}.",
+        addToPlaylistError: "{0} could not be added to {1}."
     },
     hu: {
         navSearch: "Keresés",
@@ -238,13 +242,15 @@ export const localized = new LocalizedStrings({
         cannotBeEmpty: "Ez a mező nem lehet üres!",
         change: "Megváltoztatás",
         currentPass: "Jelenlegi jelszó",
-        iosText: "Ezt az oldalt egy IOS eszközről nézed így előfordulhat, hogy a hanglejátszás nem a kívánt módon fog működni.",
+        iosText: "Ezt az oldalt egy iOS eszközről nézed így előfordulhat, hogy a hanglejátszás nem a kívánt módon fog működni.",
         iosTitle: "Előfordulhat, hogy a webhely nem működik megfelelően ebben a böngészőben",
         newPassword: "Új jelszó",
         passwordChangeResp: "A jelszó sikeresen megváltozott!",
         passwordChangeErr: "A megadott jelszó helytelen!",
         passwordConfirmError: "A jelszavak nem egyeznek!",
         volume: "Hangerő",
+        addingToPlaylist: "Hozzáadás a lejátszási listához...",
+        addingInProgress: "{0} hozzáadása {1} listához folyamatban van."
     },
     de: {
         navSearch: "Suche",

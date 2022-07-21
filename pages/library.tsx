@@ -13,27 +13,11 @@ const Library: NextPage = (props: any) => {
     const [loading, setLoading] = props.loading
     const router = useRouter()
     const createModal = useState<boolean>(false)
-    const [playlists, setPlaylists] = useState<Array<any> | null>(null)
+    const playlists = props.playlists
     const me = props.me
     useEffect(() => {
         if (!me && playlists === null) { setLoading(true) } else { setLoading(false) }
     }, [me, playlists])
-
-    useEffect(() => {
-        apiCall("GET", "/api/user/playlists", {}).then(resp => {
-            setPlaylists(resp)
-        })
-    }, [])
-
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-            window.addEventListener("ossia-playlist-added", () => {
-                apiCall("GET", "/api/user/playlists", {}).then(resp => {
-                    setPlaylists(resp)
-                })
-            })
-        }
-    }, [])
     return (<Container>
         <CreatePlaylist open={createModal} />
         <Head>
