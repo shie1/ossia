@@ -1,5 +1,4 @@
-import { Avatar, Container, Group, Image, Paper, Table, Text } from "@mantine/core";
-import { useLocalStorage } from "@mantine/hooks";
+import { Avatar, Container, Group, Paper, Text } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
@@ -10,7 +9,6 @@ import { apiCall } from "../components/api";
 import { Icon } from "../components/icons";
 import { localized } from "../components/localization";
 import { Song } from "../components/song";
-import { interactive } from "../components/styles";
 
 const mySort = (list: Array<any>, backwards = false) => {
     let f = list

@@ -1,11 +1,11 @@
-import { Box, Button, Container, Group, PasswordInput, Text, TextInput, Title } from "@mantine/core";
+import { Button, Container, Group, PasswordInput, Title } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { Check, X } from "tabler-icons-react";
+import { Check } from "tabler-icons-react";
 import { apiCall } from "../../components/api";
 import { localized } from "../../components/localization";
 

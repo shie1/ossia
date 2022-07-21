@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { resolve } from 'path'
 import { getJWT } from '../../../components/jwt'
 import executeQuery from '../../../components/mysql'
 

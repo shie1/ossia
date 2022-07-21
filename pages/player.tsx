@@ -7,7 +7,6 @@ import {
     Image,
     InputWrapper,
     Loader,
-    LoadingOverlay,
     Paper,
     Slider,
     Text,
