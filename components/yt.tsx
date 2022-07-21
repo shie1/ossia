@@ -8,7 +8,6 @@ export const recognize = (id: string) => {
         const info: any = (await ytdl.getInfo(id as any))
         let method = 0
         if (typeof info.response.engagementPanels[1].engagementPanelSectionListRenderer.content.structuredDescriptionContentRenderer === 'undefined') { method = 1 }
-        if (typeof info.response.engagementPanels[1].engagementPanelSectionListRenderer.content.structuredDescriptionContentRenderer.items[1] === 'undefined') { method = 1 }
         switch (method) {
             case 0:
                 const musicSection = info.response.engagementPanels[1].engagementPanelSectionListRenderer.content.structuredDescriptionContentRenderer.items[1].videoDescriptionMusicSectionRenderer
