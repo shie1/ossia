@@ -1,4 +1,3 @@
-import albumArt from "album-art"
 import { search } from "./lastfm"
 import ytdl from "ytdl-core"
 
@@ -48,7 +47,7 @@ export const recognize = (id: string) => {
                         }
                         if (input) { inner[title] = input }
                     }
-                    let art: any
+                    let art: any = info.videoDetails.thumbnails[info.videoDetails.thumbnails.length - 1].url
                     let url: any
                     url = await albumArt(inner["ARTIST"], { album: inner["ALBUM"] !== "undefined" ? inner["ALBUM"] : inner["SONG"], size: 'large' })
                     if (typeof url === 'string') {
@@ -94,7 +93,7 @@ export const recognize = (id: string) => {
                         inner = { "ARTIST": songData.artist[0], "SONG": songData.name[0] }
                     }
                 }
-                let art: any
+                let art: any = info.videoDetails.thumbnails[info.videoDetails.thumbnails.length - 1].url
                 let url: any
                 url = await albumArt(inner["ARTIST"], { album: inner["ALBUM"] !== "undefined" ? inner["ALBUM"] : inner["SONG"], size: 'large' })
                 if (typeof url === 'string') {
