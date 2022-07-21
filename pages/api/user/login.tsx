@@ -12,7 +12,6 @@ export default function handler(
     return new Promise((resolve, reject) => {
         let { username, password } = JSON.parse(req.body)
         executeQuery("SELECT `salt` FROM `users` WHERE (`username` = ?);", [username]).then(salt => {
-            console.log(salt)
             if (!salt[0]) { return resolve(res.status(200).json(false)) }
             salt = salt[0].salt
             const hash = pbkdf2Sync(password, salt, 1000, 64, `sha512`).toString(`hex`);
