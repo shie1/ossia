@@ -34,7 +34,9 @@ const Player: NextPage = (props: any) => {
     const forceUpdate = useForceUpdate()
 
     useEffect(() => {
-        setInterval(forceUpdate, 1500)
+        if (typeof window !== 'undefined') {
+            window.addEventListener("ossia-queue-update", forceUpdate)
+        }
     }, [])
 
     useEffect(() => {

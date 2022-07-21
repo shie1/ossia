@@ -145,7 +145,6 @@ function MyApp({ Component, pageProps }: AppProps) {
     setLoading(false)
     if (typeof window !== 'undefined') {
       window.addEventListener("ossia-nav-click", () => { sidebar[1](false) })
-      window.addEventListener('ossia-page-update', () => { router.replace(router.asPath) })
     }
   }, [])
 
