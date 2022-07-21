@@ -66,7 +66,7 @@ const Home: NextPage = (props: any) => {
     <Container>
       <Center>
         <form style={{ 'width': '100%' }} onSubmit={search}>
-          <TextInput placeholder={localized.navSearch + "..."} radius="lg" onClick={() => { setResults([]) }} size='lg' value={searchInput} onChange={(e) => { if (!e.currentTarget.value) { setResults([]) } setSearchInput(e.currentTarget.value) }} sx={{ width: '100%' }} variant='filled' rightSection={
+          <TextInput placeholder={localized.navSearch + "..."} radius="lg" onClick={() => { setResults([]) }} size='lg' value={searchInput} onChange={(e) => { setResults([]); setSearchInput(e.currentTarget.value) }} sx={{ width: '100%' }} variant='filled' rightSection={
             <Group mr="md">
               <Action label={localized.navSearch} onClick={() => { search(new Event("")) }} >
                 <Search />

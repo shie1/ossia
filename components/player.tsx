@@ -72,6 +72,7 @@ export const usePlayer = (player: RefObject<null | HTMLAudioElement>) => {
         if (alert) { showNotification({ title: localized.addedToQueue, message: localized.addFirst, icon: <SortAscending /> }) }
         let q = (place === "first" ? [id, ...queue] : [...queue, id])
         setQueue(q)
+        window.dispatchEvent(new Event("ossia-update-page"))
         apiCall("GET", "/api/youtube/recognize", { v: id }).then(([recog]: any) => {
             apiCall("GET", "/api/piped/streams", { v: id }).then(resp => {
                 let arr = q
@@ -81,6 +82,7 @@ export const usePlayer = (player: RefObject<null | HTMLAudioElement>) => {
                     const index = arr.indexOf(id)
                     arr[index] = { ...resp, ...recog }
                     setQueue(arr)
+                    window.dispatchEvent(new Event("ossia-update-page"))
                 }
             })
         })
