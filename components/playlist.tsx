@@ -55,8 +55,8 @@ export const Playlists = ({ playlists }: { playlists: Array<any> }) => {
         {playlists.map((pl) => {
             key++
             const plid = encodeURIComponent(Buffer.from((pl["id"] + 45).toString()).toString('base64'))
-            return (<Link href={`/playlist?p=${plid}`}>
-                <Paper key={key} sx={interactive} p="md" withBorder>
+            return (<Link key={key} href={`/playlist?p=${plid}`}>
+                <Paper sx={interactive} p="md" withBorder>
                     <Group spacing="sm" direction="row">
                         <Icon size={30} icon={pl["icon_name"]} />
                         <Text>{pl["name"]}</Text>
