@@ -64,11 +64,9 @@ export const Video = ({ video, player, touchScreen, playlists }: any) => {
 
 export const VideoGrid = ({ videos, player, touchScreen, playlists }: any) => {
     if (!videos) { return <></> }
-    let i = 0
     return (<>
         <Grid>
-            {videos.map((video: any) => {
-                i++
+            {videos.map((video: any, i: number) => {
                 if (video.uploaded == -1) return <div key={i}></div>
                 return <Grid.Col md={4} span={12} key={i}>
                     <Video playlists={playlists} touchScreen={touchScreen} player={player} video={video} />

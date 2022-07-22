@@ -93,11 +93,9 @@ const Player: NextPage = (props: any) => {
         <Accordion>
             <AccordionItem label={localized.queue} icon={<List />}>
                 <Group spacing={6} direction="column">
-                    {props.player.queue[0].map((song: any) => {
-                        key++
-                        let songkey = key
-                        return (<Song key={songkey} title={song.SONG} artist={song.ARTIST} id={song.id} image={song.ALBUMART} player={props.player} index={songkey - 1} type="queue">
-                            <Action onClick={() => { props.player.removeFromQueue(songkey - 1) }}>
+                    {props.player.queue[0].map((song: any, i: number) => {
+                        return (<Song key={i} title={song.SONG} artist={song.ARTIST} id={song.id} image={song.ALBUMART} player={props.player} index={i} type="queue">
+                            <Action onClick={() => { props.player.removeFromQueue(i) }}>
                                 <X />
                             </Action>
                         </Song>)

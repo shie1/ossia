@@ -22,10 +22,8 @@ export const useIconSelector = (defaultIcon?: string) => {
         setFilteredIcons(Array.from(new Set([...Object.keys(Icons).filter((item: string) => item.toLowerCase().search(filter.toLowerCase()) !== -1), ...Object.keys(Icons).filter((item: string) => comp.similarity(item, filter) >= .9)])))
     }, [filter])
     const IconsDisp = () => {
-        let i = 0
         return (<>
-            {filteredIcons.map((icon: string) => {
-                i++
+            {filteredIcons.map((icon: string, i: number) => {
                 if (page * itemsPerPage >= i && (page - 1) * itemsPerPage < i) {
                     return (<Grid.Col key={i} xs={2} span={4}>
                         <Paper className="oneliner" onClick={() => { setIcon(icon); setOpened(false) }} p="sm" withBorder sx={interactive}>
