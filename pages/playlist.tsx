@@ -74,19 +74,20 @@ const Playlist: NextPage = (props: any) => {
                 </Group>
             </Paper>
             <Group mt="md" grow>
-                <OrderGroup mode="between" style={{ width: '100%' }}>
+                <OrderGroup mode="over" style={{ width: '100%' }}>
                     {pl && mySort(pl.content).map((song: any, i: number) => {
                         return (<OrderItem
                             key={i}
                             index={i}
                             onMove={(to) => {
                                 let newPl = pl
-                                newPl.content[to].index = i
-                                newPl.content[i].index = to
+                                newPl.content[i].index = to + 1
+                                newPl.content[to].index = i + 1
                                 newPl.content = mySort(newPl.content)
+                                console.log(newPl)
                                 setPl(newPl)
                                 forceUpdate()
-                                apiCall("POST", "/api/playlist/reorder", { playlistid: Number(Buffer.from(router.query['p'] as string, "base64")) - 45, from: i + 1, to: to + 1 })
+                                //apiCall("POST", "/api/playlist/reorder", { playlistid: Number(Buffer.from(router.query['p'] as string, "base64")) - 45, from: i + 1, to: to + 1 })
                             }}
                         >
                             <Paper withBorder>
