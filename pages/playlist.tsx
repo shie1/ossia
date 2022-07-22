@@ -47,10 +47,13 @@ const Playlist: NextPage = (props: any) => {
                     </Group>
                     <ActionGroup>
                         {typeof router.query['p'] !== "undefined" && pl && <>
-                            <Action label={localized.play} onClick={() => {
+                            <Action label={localized.play} onClick={async () => {
                                 props.player.pop()
                                 props.player.queue[1]([])
-                                mySort(pl.content, true).map((item: any) => { props.player.addToQueue(item.id, "first", false) })
+                                const idlist = mySort(pl.content, false).map((item: any) => item.id)
+                                for await (let id of idlist) {
+                                    await props.player.addToQueue(id, "last", false)
+                                }
                             }}>
                                 <PlayerPlay />
                             </Action>

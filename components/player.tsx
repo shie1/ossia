@@ -71,13 +71,29 @@ export const usePlayer = (player: RefObject<null | HTMLAudioElement>) => {
     }
 
     const addToQueue = (id: string, place: "first" | "last" = "first", alert: boolean = true) => {
-        apiCall("GET", "/api/youtube/recognize", { v: id }).then(([recog]: any) => {
-            apiCall("GET", "/api/piped/streams", { v: id }).then(resp => {
-                setQueue(old => (place === "first" ? [{ ...resp, ...recog }, ...old] : [...old, { ...resp, ...recog }]))
-                if (alert) { showNotification({ title: localized.addedToQueue, message: localized.addFirst, icon: <SortAscending /> }) }
-                window.dispatchEvent(new Event("ossia-queue-update"))
+        return new Promise((resolve, reject) => {
+            apiCall("GET", "/api/youtube/recognize", { v: id }).then(([recog]: any) => {
+                apiCall("GET", "/api/piped/streams", { v: id }).then(resp => {
+                    setQueue(old => (place === "first" ? [{ ...resp, ...recog }, ...old] : [...old, { ...resp, ...recog }]))
+                    if (alert) { showNotification({ title: localized.addedToQueue, message: localized.addFirst, icon: <SortAscending /> }) }
+                    window.dispatchEvent(new Event("ossia-queue-update"))
+                    return resolve(true)
+                })
             })
         })
+    }
+
+    const queueArrInOrder = (idlist: Array<string>) => {
+        let q: Array<any> = []
+        for (let id of idlist) {
+            apiCall("GET", "/api/youtube/recognize", { v: id }).then(([recog]: any) => {
+                apiCall("GET", "/api/piped/streams", { v: id }).then(resp => {
+                    q.push({ ...resp, ...recog })
+                })
+            })
+        }
+        setQueue(q)
+        window.dispatchEvent(new Event("ossia-queue-update"))
     }
 
     const skip = () => {
@@ -85,7 +101,7 @@ export const usePlayer = (player: RefObject<null | HTMLAudioElement>) => {
     }
 
     const removeFromQueue = (index: number) => {
-        console.log(index,queue)
+        console.log(index, queue)
         let newArr = queue
         newArr.splice(index, 1)
         setQueue(newArr)
@@ -131,6 +147,7 @@ export const usePlayer = (player: RefObject<null | HTMLAudioElement>) => {
         skip,
         addToQueue,
         quickPlay,
+        queueArrInOrder,
         removeFromQueue,
         pop,
     }
