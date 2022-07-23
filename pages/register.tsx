@@ -2,10 +2,8 @@ import {
     Box,
     Button,
     Checkbox,
-    Collapse,
     Container,
     Group,
-    Paper,
     PasswordInput,
     Text,
     TextInput,
@@ -13,12 +11,8 @@ import {
 } from "@mantine/core";
 import type { NextPage } from "next";
 import { useForm } from "@mantine/form"
-import { interactive } from "../components/styles";
-import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js"
 import { useEffect, useState } from "react";
-import { useModals } from "@mantine/modals";
-import { Action } from "../components/action";
-import { ArrowBackUp, Check, Clipboard } from "tabler-icons-react";
+import { Check } from "tabler-icons-react";
 import { showNotification } from "@mantine/notifications";
 import { apiCall } from "../components/api";
 import { useRouter } from "next/router";
