@@ -11,6 +11,7 @@ export default function handler(
     return new Promise(async (resolve, reject) => {
         const rb = JSON.parse(req.body)
         if (!rb['details']) { return resolve(res.status(500).json(false)) }
+        if (!(new URL(JSON.parse(rb["details"]).links[0].href)).hostname.endsWith("paypal.com")) { return resolve(res.status(500).json(false)) }
         const resp = await (await fetch(JSON.parse(rb["details"]).links[0].href, {
             headers: {
                 "Authorization": `Basic ${Buffer.from(`${process.env["PAYPAL_ID"]}:${process.env["PAYPAL_SECRET"]}`).toString("base64")}`,
