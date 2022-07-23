@@ -80,6 +80,7 @@ export const usePlayer = (player: RefObject<null | HTMLAudioElement>) => {
         if (player.current === null) { return }
         player.current.src = p_streams.audioStreams[p_streams.audioStreams.length - 1].url
         if (player.current.paused) { player.current.play().then(() => { setPaused(player.current!.paused) }) }
+        navigator.mediaSession.playbackState = "playing"
     }
 
     const pop = () => {
