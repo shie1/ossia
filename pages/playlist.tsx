@@ -76,7 +76,7 @@ const Playlist: NextPage = (props: any) => {
             </Paper>
             <Group mt="md" grow direction="column">
                 {pl && mySort(pl.content).map((song: any, i: number) => {
-                    return (<Paper style={{ 'transition': '.2s', transform: moving === i ? 'translateX(5%)' : '' }} withBorder>
+                    return (<Paper key={i} style={{ 'transition': '.2s', transform: moving === i ? 'translateX(5%)' : '' }} withBorder>
                         <Group noWrap spacing={6} direction="row">
                             <Box onClick={() => {
                                 if ([-1, i].includes(moving)) {
