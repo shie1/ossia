@@ -98,7 +98,6 @@ const About: NextPage = (props: any) => {
                             <Dep name="Typescript" url="https://www.typescriptlang.org/" />
                             <Dep name="Mantine" url="https://mantine.dev" />
                             <Dep name="Piped" url="https://piped.kavin.rocks" />
-                            <Dep name="Paypal" url="https://paypal.com" />
                             <Dep name="MySQL" url="https://www.mysql.com/" />
                             <Dep name="Last.FM" url="https://last.fm" />
                         </Group>

@@ -19,7 +19,6 @@
     "@mantine/next": "^4.2.11",
     "@mantine/notifications": "^4.2.11",
     "@mantine/prism": "^4.2.12",
-    "@paypal/react-paypal-js": "^7.8.1",
     "autolinker": "^3.15.0",
     "cookies-next": "^2.1.1",
     "dotenv": "^16.0.1",

@@ -26,98 +26,6 @@ import Head from "next/head";
 import { localized } from "../components/localization";
 import Link from "next/link";
 
-const BuyCode = ({ clientId, form }: { clientId: string, form: any }) => {
-    const modals = useModals()
-    const [restore, setRestore] = useState(false)
-    const [orderId, setOrderId] = useState("")
-    const doneOrder = (details: any) => {
-        apiCall("POST", "/api/invite", { details: JSON.stringify(details) }).then(hash => {
-            if (hash) {
-                form.setFieldValue("inviteCode", hash[0])
-                const reply = modals.openModal({
-                    title: localized.inviteCode, children:
-                        <Group spacing="sm" grow direction="column">
-                            <Group spacing={2} grow direction="column">
-                                <Text>{localized.formatString(localized.orderResp!, hash[1])}</Text>
-                                <TextInput size="lg" rightSection={<Group mr="md"><Action onClick={() => {
-                                    window.navigator.clipboard.writeText(hash[0])
-                                    showNotification({ title: localized.copiedToClipboard, message: "", icon: <Clipboard /> })
-                                }} label={localized.copyToClipboard}><Clipboard /></Action></Group>} value={hash[0]} />
-                            </Group>
-                            <Group spacing={6} position="right">
-                                <Button onClick={() => {
-                                    modals.closeModal(reply)
-                                }} variant="light">{localized.close}</Button>
-                            </Group>
-                        </Group>
-                })
-            }
-        })
-    }
-    return (<PayPalScriptProvider options={{ "client-id": clientId }}>
-        <Container>
-            <Group position="center" direction="row" my="sm">
-                <Group sx={{ width: '100%' }} align="center" spacing={6}>
-                    <Text align="left" size="xl">$3.99 | {localized.inviteCode}</Text>
-                    <Text>{localized.inviteSalesPitch}</Text>
-                </Group>
-                <Group >
-                    <Paper p="sm" pb={0} withBorder sx={(theme) => ({ background: theme.colors.gray[0] })}>
-                        <PayPalButtons className="paypal-buttons-container" style={{ shape: "pill", color: "black" }} createOrder={(data, actions) => {
-                            return actions.order.create({
-                                purchase_units: [
-                                    {
-                                        amount: {
-                                            value: "3.99",
-                                        },
-                                    },
-                                ]
-                            });
-                        }}
-                            onApprove={async (data, actions) => {
-                                return actions.order?.capture().then((details) => {
-                                    doneOrder(details)
-                                });
-                            }} />
-                    </Paper>
-                </Group>
-                <Group sx={interactive} onClick={() => { setRestore(!restore) }}><Text mt={-6} size="sm" >{restore ? localized.backToOrder : localized.restorePurchase}</Text></Group>
-            </Group>
-            <Collapse in={restore}>
-                <form onSubmit={async (e) => {
-                    e.preventDefault()
-                    apiCall("POST", "/api/restoreinvite", { i: orderId }).then(resp => {
-                        if (resp) {
-                            form.setFieldValue("inviteCode", resp)
-                            const reply = modals.openModal({
-                                title: localized.inviteCode, children:
-                                    <Group spacing="sm" grow direction="column">
-                                        <Group spacing={2} grow direction="column">
-                                            <Text>{localized.yourCodeIs}</Text>
-                                            <TextInput size="lg" rightSection={<Group mr="md"><Action onClick={() => {
-                                                window.navigator.clipboard.writeText(resp)
-                                                showNotification({ title: localized.copiedToClipboard, message: "", icon: <Clipboard /> })
-                                            }} label={localized.copyToClipboard}><Clipboard /></Action></Group>} value={resp} />
-                                        </Group>
-                                        <Group spacing={6} position="right">
-                                            <Button onClick={() => {
-                                                modals.closeModal(reply)
-                                            }} variant="light">{localized.close}</Button>
-                                        </Group>
-                                    </Group>
-                            })
-                        }
-                    })
-                }}>
-                    <TextInput placeholder="8X183i26Jr596b63Y" size="sm" label={localized.orderId} value={orderId} onChange={(e) => setOrderId(e.currentTarget.value)} rightSection={
-                        <Action mr={2} size="md" label={localized.restore} type="submit"><ArrowBackUp /></Action>
-                    } />
-                </form>
-            </Collapse>
-        </Container>
-    </PayPalScriptProvider >)
-}
-
 const Register: NextPage = (props: any) => {
     const buy = useState(false)
     const [available, setAvailable] = useState<boolean | null>(null)
@@ -171,22 +79,11 @@ const Register: NextPage = (props: any) => {
                         <TextInput autoComplete="off" error={codeError && localized.inviteCodeInvalid} maxLength={8} description={localized.inviteCodeDesc} required {...form.getInputProps("inviteCode")} label={localized.inviteCode} size="lg" />
                         <Checkbox required label={<TypographyStylesProvider><Text size="sm">{localized.formatString(localized.registerCheckbox!, <Link href="/legal">{localized.legalSection}</Link>)}</Text></TypographyStylesProvider>} />
                         <Button variant="light" size="lg" type="submit">{localized.register}</Button>
-                        <Group onClick={() => { buy[1](!buy[0]) }} sx={interactive}><Text size="sm" >{buy[0] ? localized.buyInviteClose : localized.buyInviteClose}</Text></Group>
                     </Group>
                 </form>
             </Box>
-            <Collapse in={buy[0]}>
-                <Box sx={{ maxWidth: 300 }}>
-                    <BuyCode form={form} clientId={props["PAYPAL_ID"]} />
-                </Box>
-            </Collapse>
         </Group>
     </Container>)
-}
-
-export function getServerSideProps() {
-    require('dotenv').config()
-    return { props: { PAYPAL_ID: process.env["PAYPAL_ID"], NODE_ENV: process.env.NODE_ENV } }
 }
 
 export default Register
