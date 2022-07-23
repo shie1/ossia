@@ -76,7 +76,6 @@ const Playlist: NextPage = (props: any) => {
             </Paper>
             <Group mt="md" grow direction="column">
                 {pl && mySort(pl.content).map((song: any, i: number) => {
-                    //apiCall("POST", "/api/playlist/reorder", { playlistid: Number(Buffer.from(router.query['p'] as string, "base64")) - 45, from: i + 1, to: to + 1 })
                     return (<Paper style={{ 'transition': '.2s', transform: moving === i ? 'translateX(5%)' : '' }} withBorder>
                         <Group noWrap spacing={6} direction="row">
                             <Box onClick={() => {
@@ -90,6 +89,7 @@ const Playlist: NextPage = (props: any) => {
                                     setPl(newPl)
                                     setMoving(-1)
                                     forceUpdate()
+                                    apiCall("POST", "/api/playlist/reorder", { playlistid: Number(Buffer.from(router.query['p'] as string, "base64")) - 45, from: i + 1, to: moving + 1 })
                                 }
                             }} ml={6} sx={((theme) => ({ width: 25, height: '100%', background: theme.colors.dark[9], borderRadius: '40%' }))}>
                                 <Group sx={interactive} position="center" align="center" spacing={0} direction="column">

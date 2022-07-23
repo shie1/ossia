@@ -12,8 +12,8 @@ export default function handler(
         executeQuery("SELECT author FROM playlists WHERE (`id` = ?);", [playlistid]).then(async author => {
             if (author[0]) {
                 if (author[0].author === username) {
-                    executeQuery("UPDATE `playlist-14` SET `index` = ? WHERE (`index` = ?);UPDATE `playlist-14` SET `index` = ? WHERE (`index` = ?);", [to, from, from, to]).then(resp => {
-                        return resolve(res.status(200).json(resp))
+                    executeQuery("call PlSwapIndex(?,?,?)", [playlistid, from, to]).then(resp => {
+                        return resolve(res.status(200).json(true))
                     })
                 } else {
                     return resolve(res.status(200).json(false))
