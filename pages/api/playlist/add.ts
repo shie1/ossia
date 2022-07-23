@@ -14,7 +14,7 @@ export default function handler(
             if (resp[0]) {
                 if (resp[0].author === username) {
                     const [{ SONG, ARTIST, ALBUMART }] = await recognize(videoid) as any
-                    executeQuery("INSERT INTO `ossia`.`playlist-14` (`title`, `author`, `image`, `id`) VALUES (?,?,?,?);", [SONG, ARTIST, ALBUMART, videoid]).then((resp) => {
+                    executeQuery("INSERT INTO `ossia`.`playlist-" + playlistid + "` (`title`, `author`, `image`, `id`) VALUES (?,?,?,?);", [SONG, ARTIST, ALBUMART, videoid]).then((resp) => {
                         return resolve(res.status(200).json(true))
                     })
                 } else {
