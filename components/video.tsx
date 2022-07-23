@@ -50,8 +50,10 @@ export const Video = ({ video, player, touchScreen, playlists }: any) => {
                 <Group p="sm" position={"right"}>
                     <Menu control={<UnstyledButton><Action size="md"><Dots size={20} /></Action></UnstyledButton>} shadow="lg" withArrow position="bottom">
                         <Menu.Label>{video.title}</Menu.Label>
-                        <Menu.Item onClick={() => { add[1](true) }} icon={<PlaylistAdd size={14} />}>{localized.addToPlaylist}</Menu.Item>
-                        <Divider />
+                        {playlists.length && <>
+                            <Menu.Item onClick={() => { add[1](true) }} icon={<PlaylistAdd size={14} />}>{localized.addToPlaylist}</Menu.Item>
+                            <Divider />
+                        </>}
                         <Menu.Label>{localized.queue}</Menu.Label>
                         <Menu.Item onClick={() => { player.addToQueue(video.id, "first") }} icon={<SortAscending size={14} />}>{localized.playNext}</Menu.Item>
                         <Menu.Item onClick={() => { player.addToQueue(video.id, "last") }} icon={<SortDescending size={14} />}>{localized.playLast}</Menu.Item>

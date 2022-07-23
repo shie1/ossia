@@ -45,6 +45,7 @@ export const usePlayer = (player: RefObject<null | HTMLAudioElement>) => {
                     { src: playerDisp["ALBUMART"] }
                 ]
             })
+            window.dispatchEvent(new Event("ossia-song-metadata"))
         }
     }, [playerDisp])
 
@@ -62,10 +63,12 @@ export const usePlayer = (player: RefObject<null | HTMLAudioElement>) => {
         if (paused) {
             if (!player.current.paused) {
                 player.current.pause()
+                window.dispatchEvent(new Event("ossia-song-pause"))
             }
         } else {
             if (player.current.paused) {
                 player.current.play()
+                window.dispatchEvent(new Event("ossia-song-resume"))
             }
         }
     }, [paused])
@@ -80,6 +83,7 @@ export const usePlayer = (player: RefObject<null | HTMLAudioElement>) => {
     const pop = () => {
         setQueue([])
         window.dispatchEvent(new Event("ossia-song-update"))
+        window.dispatchEvent(new Event("ossia-pop-player"))
         player.current!.src = ""
         setStreams({})
         setPlayerDisp({})
