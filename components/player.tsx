@@ -64,11 +64,13 @@ export const usePlayer = (player: RefObject<null | HTMLAudioElement>) => {
             if (!player.current.paused) {
                 player.current.pause()
                 window.dispatchEvent(new Event("ossia-song-pause"))
+                navigator.mediaSession.playbackState = "paused"
             }
         } else {
             if (player.current.paused) {
                 player.current.play()
                 window.dispatchEvent(new Event("ossia-song-resume"))
+                navigator.mediaSession.playbackState = "playing"
             }
         }
     }, [paused])
@@ -84,6 +86,7 @@ export const usePlayer = (player: RefObject<null | HTMLAudioElement>) => {
         setQueue([])
         window.dispatchEvent(new Event("ossia-song-update"))
         window.dispatchEvent(new Event("ossia-pop-player"))
+        navigator.mediaSession.playbackState = "none"
         player.current!.src = ""
         setStreams({})
         setPlayerDisp({})
