@@ -45,7 +45,7 @@ export const localized = new LocalizedStrings({
         wip: "Under development...",
         about: "About",
         aboutTitle: "About Ossia",
-        aboutText: "The Ossia Music player is an open source project, made by Shie1.\nThe project has started {0}.",
+        aboutText: "The Ossia Music player is an open source project, made by Shie1bi.\nThe project has started {0}.",
         plays: "plays",
         nowPlaying: "Now playing",
         dependencies: "Dependencies",
@@ -95,7 +95,7 @@ export const localized = new LocalizedStrings({
         orderResp: "Order {0} has been successful, your code is:",
         playlistDeleted: "Playlist deleted!",
         pageNotFound: "Page not found!",
-        hungaryText: "Made with {0} from Hungary",
+        hungaryText: "Made with {0} in Hungary",
         registerCheckbox: "I am over 18 years old and I have read the {0}.",
         legalSection: "\"Legal\" section",
         sites: "Sites",
@@ -128,7 +128,9 @@ export const localized = new LocalizedStrings({
         addingInProgress: "{0} is being added to {1}.",
         addedToPlaylist: "{0} successfully added to {1}.",
         addToPlaylistError: "{0} could not be added to {1}.",
-        next: "Next"
+        next: "Next",
+        install: "Install",
+        installText: "Add the Ossia application to the home screen."
     },
     hu: {
         navSearch: "Keresés",
@@ -169,7 +171,7 @@ export const localized = new LocalizedStrings({
         wip: "Fejlesztés alatt...",
         about: "Részletek",
         aboutTitle: "Az Ossia-ról",
-        aboutText: "Az Ossia Zenelejátszó egy nyílt forráskódú projekt, amit Shie1 készít.\nA projekt {0} kezdődött.",
+        aboutText: "Az Ossia Zenelejátszó egy nyílt forráskódú projekt, amit Shie1bi készít.\nA projekt {0} kezdődött.",
         plays: "hallgatás",
         nowPlaying: "Lejátszás alatt",
         dependencies: "Függelékek",
@@ -255,6 +257,8 @@ export const localized = new LocalizedStrings({
         next: "Következő",
         addedToPlaylist: "{0} sikeresen hozzáadva {1} listához.",
         addToPlaylistError: "Nem lehetett hozzáadni {0} dalt {1} listához.",
+        install: "Telepítés",
+        installText: "Az Ossia alkalmazás hozzáadása a kezdőképernyőhöz."
     },
     de: {
         navSearch: "Suche",
@@ -295,7 +299,7 @@ export const localized = new LocalizedStrings({
         wip: "Wird noch entwickelt...",
         about: "Mehr",
         aboutTitle: "Mehr über Ossia",
-        aboutText: "Die Ossia Musikplayer ist ein open source projekt, entwickelt von Shie1.\nDas Projekt ist gestartet {0}.",
+        aboutText: "Die Ossia Musikplayer ist ein open source projekt, entwickelt von Shie1bi.\nDas Projekt ist gestartet {0}.",
         plays: "Spielt",
         nowPlaying: "Jetzt Spielt",
         dependencies: "Abhängigkeiten",

@@ -1,8 +1,8 @@
-import { Accordion, AccordionItem, Chip, Chips, Container, Group, Paper, Text } from "@mantine/core";
+import { Accordion, AccordionItem, Button, Chip, Chips, Container, Group, Paper, Text } from "@mantine/core";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { Heart, Lock, User, World } from "tabler-icons-react";
+import { Download, Heart, Lock, User, World } from "tabler-icons-react";
 import { localized } from "../../components/localization";
 import { useCookies } from "react-cookie"
 import Head from "next/head";
@@ -56,6 +56,10 @@ export const Settings: NextPage = (props: any) => {
                 }} my="sm">{localized.setLang}</Text>
                 <Languages />
             </AccordionItem>
+            {!props.installed && <AccordionItem label={localized.install} icon={<Download />} onClick={(e) => { e.preventDefault() }}>
+                <Text my="sm">{localized.installText}</Text>
+                <Button onClick={() => { props.install.prompt() }} variant="light" leftIcon={<Download />}>{localized.install}</Button>
+            </AccordionItem>}
             {props.me && <AccordionItem label={localized.accountSettings} icon={<User />}>
                 <Group grow direction="column" spacing="sm">
                     <Link href="/settings/changepass">

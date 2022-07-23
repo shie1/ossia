@@ -19,7 +19,7 @@ import { ModalsProvider } from '@mantine/modals'
 import { NotificationsProvider } from '@mantine/notifications';
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import Link from 'next/link'
-import { Books, Login, PlayerPlay, Search, Settings } from "tabler-icons-react";
+import { Books, Download, Login, PlayerPlay, Search, Settings } from "tabler-icons-react";
 import { useManifest } from '../components/manifest'
 import { interactive } from '../components/styles'
 import { localized } from '../components/localization'
@@ -33,9 +33,9 @@ import { useUserAgent } from '../components/useragent';
 import { Alert } from '../components/alert';
 import { useRouter } from 'next/router';
 
-const NavLink = ({ link, icon, label }: { link: string, icon: ReactNode, label: ReactNode }) => {
-  return (<Link href={link}>
-    <Paper component='button' style={{ background: 'rgba(0,0,0,.2)' }} tabIndex={0} radius="lg" onClick={() => { window.dispatchEvent(new Event("ossia-nav-click")) }} sx={interactive} p='md' withBorder>
+const NavLink = ({ link, icon, label, onClick }: { link?: string, icon: ReactNode, label: ReactNode, onClick?: Function }) => {
+  return (<Link href={link || "#"}>
+    <Paper component='button' style={{ background: 'rgba(0,0,0,.2)' }} tabIndex={0} radius="lg" onClick={() => { window.dispatchEvent(new Event("ossia-nav-click")); if (onClick) { onClick() } }} sx={interactive} p='md' withBorder>
       <Group direction='row'>
         {icon}
         <Text>{label}</Text>
@@ -78,7 +78,7 @@ const AppFooter = ({ manifest, sidebar }: { manifest: any, sidebar: any }) => {
   </Footer>)
 }
 
-const AppNavbar = ({ sidebar, me, player }: { sidebar: any, me: any, player: any }) => {
+const AppNavbar = ({ sidebar, me, player, install }: { sidebar: any, me: any, player: any, install: any }) => {
   return (<Navbar p="md" hiddenBreakpoint="sm" hidden={!sidebar[0]} width={{ sm: 200, lg: 300 }}>
     <Group grow direction='column' spacing='sm'>
       <NavLink icon={<Search />} label={localized.navSearch} link="/" />
@@ -97,6 +97,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   const manifest = useManifest()
   const playerRef = useRef<null | HTMLAudioElement>(null)
   const me = useMe()
+  const [install, setInstall] = useState<any>(null)
   const router = useRouter()
   const touchScreen = useMediaQuery("(pointer: coarse)")
   const [prevVol, setPrevVol] = useLocalStorage({ key: 'music-prev-volume', defaultValue: volume })
@@ -120,6 +121,14 @@ function MyApp({ Component, pageProps }: AppProps) {
           setPlaylists(resp)
         })
       })
+      window.addEventListener("beforeinstallprompt", async (e: any) => {
+        setInstall(e)
+        const { outcome } = await e.userChoice;
+        if (outcome === "accepted") {
+          setInstall(null)
+        }
+      })
+      window.addEventListener("ossia-nav-click", () => { sidebar[1](false) })
     }
   }, [])
 
@@ -140,13 +149,6 @@ function MyApp({ Component, pageProps }: AppProps) {
       localized.setLanguage(cookies.lang)
     }
   }, [cookies.lang, setCookies])
-
-  useEffect(() => {
-    setLoading(false)
-    if (typeof window !== 'undefined') {
-      window.addEventListener("ossia-nav-click", () => { sidebar[1](false) })
-    }
-  }, [])
 
   useEffect(() => {
     bg.current!.style.background = player.playerDisp.ALBUMART ? `url("${player.playerDisp.ALBUMART}")` : gradient
@@ -179,6 +181,8 @@ function MyApp({ Component, pageProps }: AppProps) {
     touchScreen,
     userAgent,
     playlists,
+    install,
+    installed: install === null,
   }
 
   return (<div onContextMenu={(e) => { e.preventDefault() }}>
@@ -203,7 +207,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         navbarOffsetBreakpoint="sm"
         asideOffsetBreakpoint="sm"
         fixed
-        navbar={<AppNavbar player={player} me={me} sidebar={sidebar} />}
+        navbar={<AppNavbar install={install} player={player} me={me} sidebar={sidebar} />}
         footer={<AppFooter sidebar={sidebar} manifest={manifest} />}
         header={<AppHeader sidebar={sidebar} />}
         styles={(theme) => ({
