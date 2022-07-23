@@ -36,6 +36,28 @@ export const usePlayer = (player: RefObject<null | HTMLAudioElement>) => {
     }, [streams, setPlayerDisp])
 
     useEffect(() => {
+        if (typeof window !== 'undefined' && Object.keys(playerDisp).length) {
+            navigator.mediaSession.metadata = new MediaMetadata({
+                title: playerDisp["SONG"],
+                artist: playerDisp["ARTIST"],
+                album: playerDisp["ALBUM"],
+                artwork: [
+                    { src: playerDisp["ALBUMART"] }
+                ]
+            })
+        }
+    }, [playerDisp])
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            navigator.mediaSession.setActionHandler("pause", () => { setPaused(true) })
+            navigator.mediaSession.setActionHandler("play", () => { setPaused(false) })
+            navigator.mediaSession.setActionHandler("stop", () => { pop() })
+            navigator.mediaSession.setActionHandler("nexttrack", () => { skip() })
+        }
+    }, [])
+
+    useEffect(() => {
         if (player.current === null) { return }
         if (paused) {
             if (!player.current.paused) {
