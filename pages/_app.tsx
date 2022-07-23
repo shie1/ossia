@@ -71,7 +71,7 @@ const AppFooter = ({ manifest, sidebar }: { manifest: any, sidebar: any }) => {
     <Center>
       <Link href="/about">
         <Group onClick={() => { window.dispatchEvent(new Event("ossia-nav-click")); sidebar[1](false) }} sx={interactive}>
-          <Text align='center'>{manifest?.short_name} {localized.appNameAppend}{manifest?.version ? ` v${manifest.version}` : ''}</Text>
+          <Text align='center'>{manifest?.short_name} {localized.appNameAppend}{manifest?.version ? ` v${manifest.version}` : ''} (BETA)</Text>
         </Group>
       </Link>
     </Center>
