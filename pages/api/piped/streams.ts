@@ -6,7 +6,8 @@ export default function handler(
     res: NextApiResponse<any>
 ) {
     return new Promise(async (resolve, reject) => {
-        const resp = await (await fetch(`${apiroot}/streams/${(req.query['v'] as string).replace(/\//g, '')}`)).json()
+        const url = `${apiroot}/streams/${(req.query['v'] as string).replace(/\//g, '')}`
+        const resp = await (await fetch(url.search(/\?/g) ? url.split("?")[0] : url)).json()
         resolve(res.status(200).json(resp))
     })
 }
