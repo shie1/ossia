@@ -11,6 +11,7 @@ import { localized } from "../components/localization";
 import { arrayMove, defaultTheme, OrderGroup, OrderItem, useOrder } from "react-draggable-order";
 import { interactive } from "../components/styles";
 import { useForceUpdate } from "../components/react";
+import Head from "next/head";
 
 const mySort = (list: Array<any>, backwards = false) => {
     let f = list
@@ -40,6 +41,9 @@ const Playlist: NextPage = (props: any) => {
 
     return (<>
         <Container>
+            <Head>
+                <title>{pl ? `${pl.name} | Ossia` : "Playlist | Ossia"}</title>
+            </Head>
             <Paper p="sm" withBorder>
                 <Group position="apart">
                     <Group direction="row" noWrap spacing="sm">
