@@ -2,13 +2,10 @@ import {
     Accordion,
     AccordionItem,
     Center,
-    Collapse,
     Container,
     Group,
     Image,
     InputWrapper,
-    Loader,
-    Paper,
     Slider,
     Text,
 } from "@mantine/core";
@@ -17,9 +14,20 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { X, PlayerPlay, PlayerPause, BrandYoutube, Notes, LayoutList, List, PlayerSkipForward } from "tabler-icons-react";
+import {
+    X,
+    PlayerPlay,
+    PlayerPause,
+    BrandYoutube,
+    Notes,
+    LayoutList,
+    List,
+    PlayerSkipForward,
+    Playlist,
+} from "tabler-icons-react";
 import { ActionGroup, Action } from "../components/action";
 import { localized } from "../components/localization";
+import { AddToPlaylist } from "../components/playlist";
 import { useForceUpdate } from "../components/react";
 import { useCustomRouter } from "../components/redirect";
 import { Song } from "../components/song";
@@ -30,6 +38,8 @@ const Player: NextPage = (props: any) => {
     const [queue, setQueue] = props.player.queue
     const customRouter = useCustomRouter()
     const router = useRouter()
+    const [ctx, setCtx] = useState(false)
+    const atp = useState(false)
     let key = 0
     const { playerDisp } = props.player
     const forceUpdate = useForceUpdate()
@@ -60,10 +70,16 @@ const Player: NextPage = (props: any) => {
             </Group>
         </Group>
         <Group align="center" spacing="sm" direction="column" my="md">
+            {props.playlists && Object.keys(playerDisp).length && <AddToPlaylist open={atp[0]} setOpen={atp[1]} songId={props.player.streams.thumbnailUrl.split("/")[4]} songTitle={playerDisp.SONG} playlists={props.playlists} />}
             <ActionGroup>
                 <Action onClick={() => { props.player.pop() }} label={localized.endPlayback}>
                     <X />
                 </Action>
+                {props.playlists && <>
+                    {props.playlists.length ? <Action label={localized.addToPlaylist} onClick={() => { atp[1](true) }}>
+                        <Playlist />
+                    </Action> : <></>}
+                </>}
                 <Action onClick={() => {
                     if (props.player.paused[0]) {
                         props.player.playerRef.current.play()

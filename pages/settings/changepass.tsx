@@ -69,7 +69,7 @@ const ChangePass: NextPage = (props: any) => {
                 <PasswordInput error={error} autoComplete="current-password" sx={{ width: '100%' }} size="lg" label={localized.currentPass} {...form.getInputProps("currPass")} />
                 <PasswordInput autoComplete="new-password" sx={{ width: '100%' }} size="lg" label={localized.newPassword} {...form.getInputProps("newPass1")} />
                 <PasswordInput autoComplete="new-password" sx={{ width: '100%' }} size="lg" label={localized.newPassword} {...form.getInputProps("newPass2")} />
-                <Button type="submit">{localized.change}</Button>
+                <Button variant="light" type="submit">{localized.change}</Button>
             </Group>
         </form>}
     </Container>)

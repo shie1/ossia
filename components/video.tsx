@@ -29,7 +29,7 @@ export const Video = ({ video, player, touchScreen, playlists }: any) => {
     }
 
     return <>
-        {playlists.length && <AddToPlaylist songTitle={video.title} songId={video.id} playlists={playlists} open={add[0]} setOpen={add[1]} />}
+        {playlists.length ? <AddToPlaylist songTitle={video.title} songId={video.id} playlists={playlists} open={add[0]} setOpen={add[1]} /> : <></>}
         <Card style={{ position: 'relative' }} onMouseEnter={() => { setCtx(true) }} onMouseLeave={() => { setCtx(false) }} p={0} radius="lg">
             <Group mb="sm" grow direction="column" spacing={0} sx={interactive} onClick={play}>
                 <Card.Section mb="sm">
