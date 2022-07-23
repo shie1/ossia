@@ -100,6 +100,7 @@ const About: NextPage = (props: any) => {
                             <Dep name="Piped" url="https://piped.kavin.rocks" />
                             <Dep name="Paypal" url="https://paypal.com" />
                             <Dep name="MySQL" url="https://www.mysql.com/" />
+                            <Dep name="Last.FM" url="https://last.fm" />
                         </Group>
                         {deps.data && Object.keys(deps.data).map((dep: string) => {
                             depKey++
