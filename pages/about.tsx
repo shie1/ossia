@@ -72,7 +72,8 @@ const About: NextPage = (props: any) => {
                             <Group grow>
                                 <Contributor href="https://dcs0.hu" avatar="https://static.zerochan.net/Black.Rider.full.2053094.jpg" name="dcs0" customRouter={customRouter}>
                                     <ul>
-                                        <li>{localized.dcs0Contrib}</li>
+                                        <li>{localized.dcs0Contrib.split("\n")[0]}</li>
+                                        <li>{localized.dcs0Contrib.split("\n")[1]}</li>
                                     </ul>
                                 </Contributor>
                                 <Contributor href="https://www.youtube.com/c/Weaver2822" avatar="https://media.discordapp.net/attachments/831841076062060634/998300647965343786/milan_-_lampalaz.png" name="Weaver" customRouter={customRouter}>
