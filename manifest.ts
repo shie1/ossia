@@ -16,8 +16,33 @@ const manifest = {
     "id": "/",
     "icons": [
         {
-            "src": "/ossia_circle.png",
-            "sizes": "3000x3000",
+            "src": "/api/img/ossia_circle.png?s=48",
+            "sizes": "48x48",
+            "type": "image/png"
+        },
+        {
+            "src": "/api/img/ossia_circle.png?s=72",
+            "sizes": "72x72",
+            "type": "image/png"
+        },
+        {
+            "src": "/api/img/ossia_circle.png?s=96",
+            "sizes": "96x96",
+            "type": "image/png"
+        },
+        {
+            "src": "/api/img/ossia_circle.png?s=144",
+            "sizes": "144x144",
+            "type": "image/png"
+        },
+        {
+            "src": "/api/img/ossia_circle.png?s=168",
+            "sizes": "168x168",
+            "type": "image/png"
+        },
+        {
+            "src": "/api/img/ossia_circle.png?s=192",
+            "sizes": "192x192",
             "type": "image/png"
         }
     ],

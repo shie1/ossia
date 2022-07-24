@@ -54,7 +54,7 @@ const About: NextPage = (props: any) => {
         </Group>
         <Paper p="sm" withBorder shadow="lg" radius="lg">
             <Group onClick={() => { customRouter.newTab("https://github.com/shie1/ossia") }} sx={interactive} direction="row">
-                <Avatar radius={100} size="xl" src="/ossia_circle.png">Ossia</Avatar>
+                <Avatar radius={100} size="xl" src="api/img/ossia_circle.png">Ossia</Avatar>
                 <Group spacing={2} direction="column">
                     <Text size="xl">{manifest?.short_name}</Text>
                     <Text size="sm">{manifest?.name}</Text>
