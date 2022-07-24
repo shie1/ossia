@@ -8,7 +8,7 @@ const Document: NextPage = () => {
         <Head>
             <meta charSet="utf-8" />
             <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-            <link rel='apple-touch-icon' href='/apple_touch_icon.png' />
+            <link rel='apple-touch-icon' href='/api/ossia_rect.png?s=192' />
             <link rel='icon' type="image/x-icon" href='/circle.ico' />
             <meta name="twitter:card" content="summary_large_image" />
             <link rel="preconnect" href="https://fonts.googleapis.com" />
