@@ -1,8 +1,9 @@
-FROM alpine:latest
+FROM node:18-alpine3.15
 EXPOSE 3000/tcp
-RUN apk add --no-cache yarn
 WORKDIR /app
-COPY . /app
+COPY package.json ./
+COPY yarn.lock ./
 RUN yarn
+COPY . ./
 RUN yarn build
-ENTRYPOINT ["yarn start"]
+ENTRYPOINT ["yarn", "start"]
