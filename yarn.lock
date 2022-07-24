@@ -915,6 +915,11 @@
     "@babel/helper-validator-identifier" "^7.18.6"
     to-fast-properties "^2.0.0"
 
+"@camwiegert/typical@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@camwiegert/typical/-/typical-0.1.1.tgz#c75d3b658e2f542d113c3e266389794c7dc45d6d"
+  integrity sha512-4xAtH3F3uJ8boe9IPahdYFCBELmyOBwHGAn0rDO6C1rx0TuZb5f4UqfuiOQF7YiMJGCOsUIW7LyucMNnVQYsRg==
+
 "@corex/deepmerge@^4.0.29":
   version "4.0.29"
   resolved "https://registry.yarnpkg.com/@corex/deepmerge/-/deepmerge-4.0.29.tgz#af9debf07d7f6b0d2a9d04a266abf2c1418ed2f6"
@@ -1528,6 +1533,13 @@
   version "18.0.5"
   resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-18.0.5.tgz#330b2d472c22f796e5531446939eacef8378444a"
   integrity sha512-OWPWTUrY/NIrjsAPkAk1wW9LZeIjSvkXRhclsFO8CZcZGCOg2G0YZy4ft+rOyYxy8B7ui5iZzi9OkDebZ7/QSA==
+  dependencies:
+    "@types/react" "*"
+
+"@types/react-type-animation@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@types/react-type-animation/-/react-type-animation-1.1.1.tgz#8e59028a81e62ab2ec098390a3264838a6cd64e6"
+  integrity sha512-YBUjbkOd9O0ZZFbL+DM75IeV7qSKa3P0Db01RhnXl1LVyOMmdmdijU6BDxf3RO/FKZadHNXkVNloNw7/hfjkQw==
   dependencies:
     "@types/react" "*"
 
@@ -3992,6 +4004,13 @@ react-transition-group@^4.4.2:
     dom-helpers "^5.0.1"
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
+
+react-type-animation@^1.1.3:
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/react-type-animation/-/react-type-animation-1.1.3.tgz#27c24af315dcbabce02daf30e364ba09b79114ef"
+  integrity sha512-/nbyYNr69H8hKU5W8TIakZ3LqQxMcBvVjfydjF5J6ix2Js6P9uEmB/KrVgc8FU8hLjkYx09TzsllxlihargFAw==
+  dependencies:
+    "@camwiegert/typical" "^0.1.1"
 
 react@18.2.0:
   version "18.2.0"
