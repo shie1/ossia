@@ -53,15 +53,13 @@ const About: NextPage = (props: any) => {
             </Group>
         </Group>
         <Paper p="sm" withBorder shadow="lg" radius="lg">
-            <a rel="noreferrer" target="_blank" href="https://github.com/shie1/ossia">
-                <Group sx={interactive} direction="row">
-                    <Avatar radius={100} size="xl" src="/ossia_circle.png">Ossia</Avatar>
-                    <Group spacing={2} direction="column">
-                        <Text size="xl">{manifest?.short_name}</Text>
-                        <Text size="sm">{manifest?.name}</Text>
-                    </Group>
+            <Group onClick={() => { customRouter.newTab("https://github.com/shie1/ossia") }} sx={interactive} direction="row">
+                <Avatar radius={100} size="xl" src="/ossia_circle.png">Ossia</Avatar>
+                <Group spacing={2} direction="column">
+                    <Text size="xl">{manifest?.short_name}</Text>
+                    <Text size="sm">{manifest?.name}</Text>
                 </Group>
-            </a>
+            </Group>
             <Accordion mt="sm">
                 <AccordionItem label="manifest.json" icon={<FileCode />}>
                     {manifest && <Prism noCopy language="json">{JSON.stringify(manifest, null, 4)}</Prism>}
