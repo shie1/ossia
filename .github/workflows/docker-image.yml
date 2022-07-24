@@ -12,9 +12,6 @@ env:
 
 jobs:
   build-and-push-image:
-    env:
-      DOCKER_TARGET_PLATFORM: linux/arm/v8
-
     runs-on: ubuntu-latest
     permissions:
       contents: read
