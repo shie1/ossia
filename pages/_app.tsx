@@ -229,7 +229,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             <LoadingOverlay visible={loading} sx={{ position: 'fixed' }} />
             <div style={{ zIndex: 2 }}>
               <noscript>
-                <img alt='Megamind' style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh' }} src='/img/nojs.jpg' />
+                <img alt='Megamind' style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh' }} src='/api/img/nojs.jpg' />
                 <div style={{ position: 'fixed', justifyContent: 'center', alignItems: 'center', top: 0, left: 0, padding: 0, margin: 0, display: 'flex', width: '100vw', height: '100vh', zIndex: '99 !important' }}>
                   <audio controlsList="nodownload noplaybackrate novolume" loop controls autoPlay src='/audio/mii_channel.mp3' />
                 </div>
