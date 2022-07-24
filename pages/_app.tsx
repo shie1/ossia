@@ -14,13 +14,12 @@ import {
   Navbar,
   Paper,
   Image,
-  Collapse,
 } from '@mantine/core';
 import { ModalsProvider } from '@mantine/modals'
 import { NotificationsProvider } from '@mantine/notifications';
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import Link from 'next/link'
-import { Books, Download, Login, PlayerPlay, Search, Settings } from "tabler-icons-react";
+import { Books, Login, PlayerPlay, Search, Settings } from "tabler-icons-react";
 import { useManifest } from '../components/manifest'
 import { interactive } from '../components/styles'
 import { localized } from '../components/localization'
@@ -188,7 +187,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (<div onContextMenu={(e) => { e.preventDefault() }}>
     {konami && <Center style={{ width: '100vw', height: '100vh', position: 'fixed', top: 0, left: 0, zIndex: '99 !important', background: 'black' }}>
       <audio autoPlay ref={mg} src='/audio/mind_games.mp3' />
-      <p style={{fontSize: '50vmin'}}>🏅</p>
+      <p style={{ fontSize: '50vmin' }}>🏅</p>
     </Center>}
     <MantineProvider withGlobalStyles withNormalizeCSS theme={{
       focusRing: 'auto',

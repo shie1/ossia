@@ -34,6 +34,7 @@
     "react-dom": "18.2.0",
     "react-draggable-order": "^1.2.4",
     "react-localization": "^1.0.19",
+    "sanitize-filename": "^1.6.3",
     "serverless-mysql": "^1.5.4",
     "sharp": "^0.30.7",
     "string-comparison": "^1.1.0",
