@@ -68,7 +68,7 @@ const About: NextPage = (props: any) => {
                     <Table>
                         <tr>
                             <Group grow>
-                                <Contributor href="https://dcs0.hu" avatar="https://static.zerochan.net/Black.Rider.full.2053094.jpg" name="dcs0" customRouter={customRouter}>
+                                <Contributor href="https://dcs0.hu" avatar="https://avatars.githubusercontent.com/u/57868425" name="dcs0" customRouter={customRouter}>
                                     <ul>
                                         <li>{localized.dcs0Contrib.split("\n")[0]}</li>
                                         <li>{localized.dcs0Contrib.split("\n")[1]}</li>
