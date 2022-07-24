@@ -14,6 +14,7 @@ import {
   Navbar,
   Paper,
   Image,
+  Collapse,
 } from '@mantine/core';
 import { ModalsProvider } from '@mantine/modals'
 import { NotificationsProvider } from '@mantine/notifications';
@@ -96,6 +97,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   const sidebar = useState(false);
   const manifest = useManifest()
   const playerRef = useRef<null | HTMLAudioElement>(null)
+  const mg = useRef<null | HTMLAudioElement>(null)
   const me = useMe()
   const [install, setInstall] = useState<any>(null)
   const router = useRouter()
@@ -134,11 +136,9 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   useEffect(() => {
     if (konami) {
-      setLoading(true)
-      apiCall("GET", "/api/piped/streams", { v: "dQw4w9WgXcQ" }).then(resp => {
-        setLoading(false)
-        player.play(resp)
-      })
+      if (playerRef.current?.paused) playerRef.current?.pause()
+      mg.current!.volume = volume / 100
+      mg.current?.play()
     }
   }, [konami])
 
@@ -186,6 +186,10 @@ function MyApp({ Component, pageProps }: AppProps) {
   }
 
   return (<div onContextMenu={(e) => { e.preventDefault() }}>
+    {konami && <Center style={{ width: '100vw', height: '100vh', position: 'fixed', top: 0, left: 0, zIndex: '99 !important', background: 'black' }}>
+      <audio autoPlay ref={mg} src='/audio/mind_games.mp3' />
+      <p style={{fontSize: '50vmin'}}>🏅</p>
+    </Center>}
     <MantineProvider withGlobalStyles withNormalizeCSS theme={{
       focusRing: 'auto',
       defaultRadius: 'lg',
@@ -207,6 +211,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         navbarOffsetBreakpoint="sm"
         asideOffsetBreakpoint="sm"
         fixed
+        style={{ display: konami ? 'none' : '' }}
         navbar={<AppNavbar install={install} player={player} me={me} sidebar={sidebar} />}
         footer={<AppFooter sidebar={sidebar} manifest={manifest} />}
         header={<AppHeader sidebar={sidebar} />}
