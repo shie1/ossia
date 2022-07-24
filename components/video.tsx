@@ -48,7 +48,7 @@ export const Video = ({ video, player, touchScreen, playlists }: any) => {
             </Group>
             <Collapse style={{ bottom: 0, right: 0, position: 'absolute' }} in={touchScreen || ctx}>
                 <Group p="sm" position={"right"}>
-                    <Menu control={<UnstyledButton><Action size="md"><Dots size={20} /></Action></UnstyledButton>} shadow="lg" withArrow position="bottom">
+                    <Menu closeOnScroll control={<UnstyledButton><Action size="md"><Dots size={20} /></Action></UnstyledButton>} shadow="lg" withArrow position="bottom">
                         <Menu.Label>{video.title}</Menu.Label>
                         {playlists.length ? <>
                             <Menu.Item onClick={() => { add[1](true) }} icon={<PlaylistAdd size={14} />}>{localized.addToPlaylist}</Menu.Item>
