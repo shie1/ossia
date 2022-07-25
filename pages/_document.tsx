@@ -17,6 +17,21 @@ const Document: NextPage = () => {
             <link href="https://fonts.googleapis.com/css2?family=Comfortaa&family=Inconsolata&family=Sora&display=swap" rel="stylesheet" />
             <link rel="manifest" href="/api/manifest.webmanifest" />
             <meta name="theme-color" content={theme.colors[theme.primaryColor][theme.primaryShade as any]} />
+
+            <meta name="title" content="Ossia Music Player" />
+            <meta name="description" content="The Ossia Music Player is a free, open source alternative to YouTube Music." />
+
+            <meta property="og:type" content="website" />
+            <meta property="og:url" content="https://ossia.rocks" />
+            <meta property="og:title" content="Ossia Music Player" />
+            <meta property="og:description" content="The Ossia Music Player is a free, open source alternative to YouTube Music." />
+            <meta property="og:image" content="/api/img/preview.png" />
+
+            <meta property="twitter:card" content="summary_large_image" />
+            <meta property="twitter:url" content="https://ossia.rocks" />
+            <meta property="twitter:title" content="Ossia Music Player" />
+            <meta property="twitter:description" content="The Ossia Music Player is a free, open source alternative to YouTube Music." />
+            <meta property="twitter:image" content="/api/img/preview.png" />
         </Head>
         <body>
             <Main />

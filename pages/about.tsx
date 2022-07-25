@@ -14,14 +14,17 @@ import {
 import type { NextPage } from "next";
 import useSWR from "swr";
 import moment from "moment/min/moment-with-locales";
-import { Affiliate, FileCode, Users } from "tabler-icons-react";
+import { Affiliate, BrandDocker, FileCode, Users } from "tabler-icons-react";
 import { interactive } from "../components/styles";
 import { Prism } from "@mantine/prism"
 import { localized } from "../components/localization";
 import { useCustomRouter } from "../components/redirect";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Head from "next/head";
 import { fetcher } from "../components/manifest";
+import { apiCall } from "../components/api";
+import { useHotkeys } from "@mantine/hooks";
+import { showNotification } from "@mantine/notifications";
 
 const About: NextPage = (props: any) => {
     const deps = useSWR("/api/deps", fetcher)
@@ -29,6 +32,7 @@ const About: NextPage = (props: any) => {
     const theme = useMantineTheme()
     const customRouter = useCustomRouter()
     const depsE = useRef<HTMLDivElement | null>(null)
+    const [buildDate, setBuildDate] = useState<null | Date>(null)
     let depKey = 0
 
     const Dep = ({ name, url }: { name: string, url: string }) => {
@@ -38,6 +42,16 @@ const About: NextPage = (props: any) => {
             </Paper>
         )
     }
+
+    useEffect(() => {
+        apiCall("GET", "/api/build", {}).then(resp => {
+            setBuildDate(resp !== 0 ? new Date(resp) : null)
+        })
+    }, [])
+
+    useHotkeys([["b", () => {
+        showNotification({ 'title': "Build timestamp", 'message': buildDate ? buildDate?.toLocaleString() : "Not found!", icon: <BrandDocker /> })
+    }],])
 
     moment.locale(localized.getLanguage())
 

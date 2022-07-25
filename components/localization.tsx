@@ -130,7 +130,7 @@ export const localized = new LocalizedStrings({
         addToPlaylistError: "{0} could not be added to {1}.",
         next: "Next",
         install: "Install",
-        installText: "Add the Ossia application to the home screen."
+        installText: "Add the Ossia application to the home screen.",
     },
     hu: {
         navSearch: "Keresés",
