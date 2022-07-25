@@ -41,16 +41,9 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
-      - id: args
-        uses: actions/github-script@v3
-        with:
-          result-encoding: string
-          script: return `BUILD_DATE=$(date +'%Y-%m-%d')`
-
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
-          args: $({ steps.args.outputs.result })
           context: .
           platforms: linux/amd64,linux/arm64
           push: true
