@@ -7,4 +7,6 @@ COPY yarn.lock ./
 RUN yarn
 COPY . ./
 RUN yarn build
+ARG BUILD_DATE
+ENV BUILD_DATE=${BUILD_DATE}
 ENTRYPOINT ["yarn", "start"]
