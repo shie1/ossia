@@ -25,13 +25,13 @@ const Document: NextPage = () => {
             <meta property="og:url" content="https://ossia.rocks" />
             <meta property="og:title" content="Ossia Music Player" />
             <meta property="og:description" content="The Ossia Music Player is a free, open source alternative to YouTube Music." />
-            <meta property="og:image" content="/api/img/preview.png" />
+            <meta property="og:image" content="/api/img/music_without_limits.png" />
 
             <meta property="twitter:card" content="summary_large_image" />
             <meta property="twitter:url" content="https://ossia.rocks" />
             <meta property="twitter:title" content="Ossia Music Player" />
             <meta property="twitter:description" content="The Ossia Music Player is a free, open source alternative to YouTube Music." />
-            <meta property="twitter:image" content="/api/img/preview.png" />
+            <meta property="twitter:image" content="/api/img/music_without_limits.png" />
         </Head>
         <body>
             <Main />
