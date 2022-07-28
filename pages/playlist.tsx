@@ -103,10 +103,8 @@ const Playlist: NextPage = (props: any) => {
                             </Box>
                             <Group {...defaultTheme.content} sx={interactive} style={{ width: '100%' }} py="sm" grow>
                                 <Group direction="row" position="apart">
-                                    <Group direction="row">
-                                        <div style={{ display: 'inline-block', overflow: 'hidden', width: 50 }} className="img-wrapper">
-                                            <Image width={50} alt={song.title} src={song.image} />
-                                        </div>
+                                    <Group noWrap direction="row">
+                                        <Image height={50} width={50} alt={song.title} src={song.image} />
                                         <Group direction="column" spacing={0}>
                                             <Text size="xl">{song.title}</Text>
                                             <Text>{song.author}</Text>

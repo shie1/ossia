@@ -10,10 +10,8 @@ export const Song = ({ index, artist, title, id, image, player, type, children }
     const router = useRouter()
     return (<Paper sx={type === "link" ? interactive : {}} onClick={type === "link" ? () => { player.quickPlay(id).then(() => { router.push("/player") }) } : () => { }} p="sm" style={{ width: '100%' }} withBorder>
         <Group direction="row" position="apart">
-            <Group direction="row">
-                <div style={{ display: 'inline-block', overflow: 'hidden', width: 50 }} className="img-wrapper">
-                    <Image width={50} alt={title} src={image} />
-                </div>
+            <Group noWrap direction="row">
+                <Image width={50} alt={title} src={image} />
                 <Group direction="column" spacing={0}>
                     <Text size="xl">{title}</Text>
                     <Text>{artist}</Text>
