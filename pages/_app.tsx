@@ -79,12 +79,34 @@ const AppFooter = ({ manifest, sidebar }: { manifest: any, sidebar: any }) => {
 }
 
 const AppNavbar = ({ sidebar, me, player, install }: { sidebar: any, me: any, player: any, install: any }) => {
+  const router = useRouter()
+
+  const links = [
+    [<Search />, localized.navSearch, "/"],
+    [<PlayerPlay />, localized.navPlayer, "/player"],
+    !me ? [<Login />, localized.login, "/login"] : [<Books />, localized.navLibrary, "/library"],
+    [<Settings />, localized.settings, "/settings"]
+  ]
+
+  if (!Object.keys(player.playerDisp).length) { links.splice(1,1) }
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.addEventListener("keypress", (e) => {
+        if ([1, 2, 3, 4, 5, 6, 7, 8, 9].find(item => item.toString() == e.key)) {
+          if (Number(e.key) <= links.length) {
+            router.push(links[Number(e.key) - 1][2] as string)
+          }
+        }
+      })
+    }
+  }, [])
+
   return (<Navbar p="md" hiddenBreakpoint="sm" hidden={!sidebar[0]} width={{ sm: 200, lg: 300 }}>
     <Group grow direction='column' spacing='sm'>
-      <NavLink icon={<Search />} label={localized.navSearch} link="/" />
-      {Object.keys(player.playerDisp).length && <NavLink label={localized.navPlayer} link="/player" icon={<PlayerPlay />} />}
-      {!me ? <NavLink icon={<Login />} label={localized.login} link='/login' /> : <NavLink icon={<Books />} label={localized.navLibrary} link="/library" />}
-      <NavLink icon={<Settings />} label={localized.settings} link="/settings" />
+      {links.map((link: any, i) => {
+        return <NavLink key={i} link={link[2]} icon={link[0]} label={link[1]} />
+      })}
     </Group>
   </Navbar>)
 }
