@@ -388,7 +388,9 @@ export const localized = new LocalizedStrings({
         yourCodeIs: "Dein Code ist:",
         legalSection: "\"Rechtliche\" Hinweise",
         legalSectionText: "Diese Informationen muss man vor der Registrierung eines Kontos lesen.",
-        legalSectionTitle: "Die \"Rechtliche\" Hinweise"
+        legalSectionTitle: "Die \"Rechtliche\" Hinweise",
+        toPublic: "Auf öffentlich setzen",
+        toPrivate: "Auf persönlich setzen"
     }
 });
 
