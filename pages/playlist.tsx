@@ -3,7 +3,7 @@ import { showNotification } from "@mantine/notifications";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { MutableRefObject, useEffect, useRef, useState } from "react";
-import { Adjustments, CaretDown, CaretUp, PlayerPlay, Trash, X } from "tabler-icons-react";
+import { Adjustments, CaretDown, CaretUp, Lock, PlayerPlay, Trash, World, X } from "tabler-icons-react";
 import { Action, ActionGroup } from "../components/action";
 import { apiCall } from "../components/api";
 import { Icon } from "../components/icons";
@@ -77,16 +77,28 @@ const Playlist: NextPage = (props: any) => {
                             }}>
                                 <PlayerPlay />
                             </Action>
-                            <Action onClick={() => {
-                                apiCall("POST", "/api/playlist/delete", { id: Number(Buffer.from(router.query['p'] as string, "base64")) - 45 }).then(resp => {
-                                    if (resp) {
-                                        router.replace("/library")
-                                        showNotification({ "title": localized.success, "icon": <Trash />, "message": localized.playlistDeleted })
-                                    }
-                                })
-                            }} label={localized.deletePlaylist}>
-                                <Trash />
-                            </Action>
+                            {pl.author === props.me.username ? <>
+                                <Action onClick={() => {
+                                    let newPl = pl
+                                    newPl.ispublic = !pl.ispublic
+                                    setPl(newPl)
+                                    forceUpdate()
+                                    console.log(newPl.ispublic)
+                                    apiCall("POST", "/api/playlist/visibility", { id: Number(Buffer.from(router.query['p'] as string, "base64")) - 45, plpublic: newPl.ispublic })
+                                }}>
+                                    {!pl.ispublic ? <Lock /> : <World />}
+                                </Action>
+                                <Action onClick={() => {
+                                    apiCall("POST", "/api/playlist/delete", { id: Number(Buffer.from(router.query['p'] as string, "base64")) - 45 }).then(resp => {
+                                        if (resp) {
+                                            router.replace("/library")
+                                            showNotification({ "title": localized.success, "icon": <Trash />, "message": localized.playlistDeleted })
+                                        }
+                                    })
+                                }} label={localized.deletePlaylist}>
+                                    <Trash />
+                                </Action>
+                            </> : <></>}
                         </>}
                     </ActionGroup>
                 </Group>
@@ -94,42 +106,46 @@ const Playlist: NextPage = (props: any) => {
             <Group mt="md" grow direction="column">
                 {pl && mySort(pl.content).map((song: any, i: number) => {
                     return (<Group direction="row" noWrap key={i}>
-                        <Collapse style={{ width: 50 }} in={moving === i}>
-                            <ActionGroup>
-                                <Action onClick={() => {
-                                    let newPl = pl
-                                    newPl.content = newPl.content.filter((item: any) => item.index !== i + 1)
-                                    newPl.content = mySort(newPl.content)
-                                    setPl(newPl)
-                                    setMoving(-1)
-                                    forceUpdate()
-                                    apiCall("POST", "/api/playlist/remove", { id: Number(Buffer.from(router.query['p'] as string, "base64")) - 45, index: i + 1 })
-                                }}>
-                                    <Trash />
-                                </Action>
-                            </ActionGroup>
-                        </Collapse>
-                        <Paper sx={{ width: '100%' }} withBorder>
-                            <Group noWrap spacing={6} direction="row">
-                                <Box onClick={() => {
-                                    if ([-1, i].includes(moving)) {
-                                        setMoving(moving === i ? -1 : i)
-                                    } else {
+                        {pl.author === props.me.username ?
+                            <Collapse style={{ width: 50 }} in={moving === i}>
+                                <ActionGroup>
+                                    <Action onClick={() => {
                                         let newPl = pl
-                                        newPl.content[i].index = moving + 1
-                                        newPl.content[moving].index = i + 1
+                                        newPl.content = newPl.content.filter((item: any) => item.index !== i + 1)
                                         newPl.content = mySort(newPl.content)
                                         setPl(newPl)
                                         setMoving(-1)
                                         forceUpdate()
-                                        apiCall("POST", "/api/playlist/reorder", { playlistid: Number(Buffer.from(router.query['p'] as string, "base64")) - 45, from: i + 1, to: moving + 1 })
-                                    }
-                                }} ml={6} sx={((theme) => ({ width: 25, height: '100%', background: theme.colors.dark[9], borderRadius: '40%' }))}>
-                                    <Group sx={interactive} position="center" align="center" spacing={0} direction="column">
-                                        <CaretUp />
-                                        <CaretDown />
-                                    </Group>
-                                </Box>
+                                        apiCall("POST", "/api/playlist/remove", { id: Number(Buffer.from(router.query['p'] as string, "base64")) - 45, index: i + 1 })
+                                    }}>
+                                        <Trash />
+                                    </Action>
+                                </ActionGroup>
+                            </Collapse>
+                            : <></>}
+                        <Paper sx={{ width: '100%' }} withBorder>
+                            <Group noWrap spacing={6} direction="row">
+                                {pl.author === props.me.username ?
+                                    <Box onClick={() => {
+                                        if ([-1, i].includes(moving)) {
+                                            setMoving(moving === i ? -1 : i)
+                                        } else {
+                                            let newPl = pl
+                                            newPl.content[i].index = moving + 1
+                                            newPl.content[moving].index = i + 1
+                                            newPl.content = mySort(newPl.content)
+                                            setPl(newPl)
+                                            setMoving(-1)
+                                            forceUpdate()
+                                            apiCall("POST", "/api/playlist/reorder", { playlistid: Number(Buffer.from(router.query['p'] as string, "base64")) - 45, from: i + 1, to: moving + 1 })
+                                        }
+                                    }} ml={6} sx={((theme) => ({ width: 25, height: '100%', background: theme.colors.dark[9], borderRadius: '40%' }))}>
+                                        <Group sx={interactive} position="center" align="center" spacing={0} direction="column">
+                                            <CaretUp />
+                                            <CaretDown />
+                                        </Group>
+                                    </Box>
+                                    : <Space w={5} />}
                                 <Group onClick={() => {
                                     props.player.quickPlay(song.id, true)
                                 }} {...defaultTheme.content} sx={interactive} style={{ width: '100%' }} py="sm" grow>
