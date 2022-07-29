@@ -78,7 +78,7 @@ const Playlist: NextPage = (props: any) => {
                                 <PlayerPlay />
                             </Action>
                             {pl.author === props.me.username ? <>
-                                <Action onClick={() => {
+                                <Action label={pl.ispublic ? localized.toPrivate : localized.toPublic} onClick={() => {
                                     let newPl = pl
                                     newPl.ispublic = !pl.ispublic
                                     setPl(newPl)
@@ -109,7 +109,7 @@ const Playlist: NextPage = (props: any) => {
                         {pl.author === props.me.username ?
                             <Collapse style={{ width: 50 }} in={moving === i}>
                                 <ActionGroup>
-                                    <Action onClick={() => {
+                                    <Action label={localized.delete} onClick={() => {
                                         let newPl = pl
                                         newPl.content = newPl.content.filter((item: any) => item.index !== i + 1)
                                         newPl.content = mySort(newPl.content)

@@ -131,6 +131,8 @@ export const localized = new LocalizedStrings({
         next: "Next",
         install: "Install",
         installText: "Add the Ossia application to the home screen.",
+        toPublic: "Set to public",
+        toPrivate: "Set to private"
     },
     hu: {
         navSearch: "Keresés",
