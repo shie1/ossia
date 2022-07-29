@@ -1,9 +1,9 @@
-import { Avatar, Box, Container, Group, Image, Paper, Space, Text } from "@mantine/core";
+import { Avatar, Box, Collapse, Container, Group, Image, Paper, Space, Text, Transition } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { MutableRefObject, useEffect, useRef, useState } from "react";
-import { CaretDown, CaretUp, PlayerPlay, Trash } from "tabler-icons-react";
+import { Adjustments, CaretDown, CaretUp, PlayerPlay, Trash, X } from "tabler-icons-react";
 import { Action, ActionGroup } from "../components/action";
 import { apiCall } from "../components/api";
 import { Icon } from "../components/icons";
@@ -80,40 +80,57 @@ const Playlist: NextPage = (props: any) => {
             </Paper>
             <Group mt="md" grow direction="column">
                 {pl && mySort(pl.content).map((song: any, i: number) => {
-                    return (<Paper key={i} style={{ 'transition': '.2s', transform: moving === i ? 'translateX(5%)' : '' }} withBorder>
-                        <Group noWrap spacing={6} direction="row">
-                            <Box onClick={() => {
-                                if ([-1, i].includes(moving)) {
-                                    setMoving(moving === i ? -1 : i)
-                                } else {
+                    return (<Group direction="row" noWrap key={i}>
+                        <Collapse style={{ width: 50 }} in={moving === i}>
+                            <ActionGroup>
+                                <Action onClick={() => {
                                     let newPl = pl
-                                    newPl.content[i].index = moving + 1
-                                    newPl.content[moving].index = i + 1
+                                    newPl.content = newPl.content.filter((item: any) => item.index !== i + 1)
                                     newPl.content = mySort(newPl.content)
                                     setPl(newPl)
                                     setMoving(-1)
                                     forceUpdate()
-                                    apiCall("POST", "/api/playlist/reorder", { playlistid: Number(Buffer.from(router.query['p'] as string, "base64")) - 45, from: i + 1, to: moving + 1 })
-                                }
-                            }} ml={6} sx={((theme) => ({ width: 25, height: '100%', background: theme.colors.dark[9], borderRadius: '40%' }))}>
-                                <Group sx={interactive} position="center" align="center" spacing={0} direction="column">
-                                    <CaretUp />
-                                    <CaretDown />
-                                </Group>
-                            </Box>
-                            <Group {...defaultTheme.content} sx={interactive} style={{ width: '100%' }} py="sm" grow>
-                                <Group direction="row" position="apart">
-                                    <Group noWrap direction="row">
-                                        <Image height={50} width={50} alt={song.title} src={song.image} />
-                                        <Group direction="column" spacing={0}>
-                                            <Text size="xl">{song.title}</Text>
-                                            <Text>{song.author}</Text>
+                                    apiCall("POST", "/api/playlist/remove", { id: Number(Buffer.from(router.query['p'] as string, "base64")) - 45, index: i + 1 })
+                                }}>
+                                    <Trash />
+                                </Action>
+                            </ActionGroup>
+                        </Collapse>
+                        <Paper sx={{ width: '100%' }} withBorder>
+                            <Group noWrap spacing={6} direction="row">
+                                <Box onClick={() => {
+                                    if ([-1, i].includes(moving)) {
+                                        setMoving(moving === i ? -1 : i)
+                                    } else {
+                                        let newPl = pl
+                                        newPl.content[i].index = moving + 1
+                                        newPl.content[moving].index = i + 1
+                                        newPl.content = mySort(newPl.content)
+                                        setPl(newPl)
+                                        setMoving(-1)
+                                        forceUpdate()
+                                        apiCall("POST", "/api/playlist/reorder", { playlistid: Number(Buffer.from(router.query['p'] as string, "base64")) - 45, from: i + 1, to: moving + 1 })
+                                    }
+                                }} ml={6} sx={((theme) => ({ width: 25, height: '100%', background: theme.colors.dark[9], borderRadius: '40%' }))}>
+                                    <Group sx={interactive} position="center" align="center" spacing={0} direction="column">
+                                        <CaretUp />
+                                        <CaretDown />
+                                    </Group>
+                                </Box>
+                                <Group {...defaultTheme.content} sx={interactive} style={{ width: '100%' }} py="sm" grow>
+                                    <Group direction="row" position="apart">
+                                        <Group noWrap direction="row">
+                                            <Image height={50} width={50} alt={song.title} src={song.image} />
+                                            <Group direction="column" spacing={0}>
+                                                <Text size="xl">{song.title}</Text>
+                                                <Text>{song.author}</Text>
+                                            </Group>
                                         </Group>
                                     </Group>
                                 </Group>
                             </Group>
-                        </Group>
-                    </Paper>)
+                        </Paper>
+                    </Group>)
                 })}
                 {/* {pl && mySort(pl.content).map((song: any, i: number) => {
                     return (<Song artist={song.author} title={song.title} id={song.id} image={song.image} player={props.player} key={i} />)
