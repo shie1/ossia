@@ -101,12 +101,18 @@ export const usePlayer = (player: RefObject<null | HTMLAudioElement>) => {
     }
 
     const addToQueue = (id: string, place: "first" | "last" = "first", alert: boolean = true) => {
+        let br = false
+        window.addEventListener("ossia-pop-player", () => {
+            br = true
+        })
         return new Promise((resolve, reject) => {
             apiCall("GET", "/api/youtube/recognize", { v: id }).then(([recog]: any) => {
                 apiCall("GET", "/api/piped/streams", { v: id }).then(resp => {
-                    setQueue(old => (place === "first" ? [{ ...resp, ...recog }, ...old] : [...old, { ...resp, ...recog }]))
-                    if (alert) { showNotification({ title: localized.addedToQueue, message: localized.addFirst, icon: <SortAscending /> }) }
-                    window.dispatchEvent(new Event("ossia-queue-update"))
+                    if (!br) {
+                        setQueue(old => (place === "first" ? [{ ...resp, ...recog }, ...old] : [...old, { ...resp, ...recog }]))
+                        if (alert) { showNotification({ title: localized.addedToQueue, message: localized.addFirst, icon: <SortAscending /> }) }
+                        window.dispatchEvent(new Event("ossia-queue-update"))
+                    }
                     return resolve(true)
                 })
             })

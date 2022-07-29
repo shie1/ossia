@@ -55,11 +55,24 @@ const Playlist: NextPage = (props: any) => {
                     <ActionGroup>
                         {typeof router.query['p'] !== "undefined" && pl && <>
                             <Action label={localized.play} onClick={async () => {
+                                setLoading(true)
                                 props.player.pop()
                                 props.player.queue[1]([])
                                 const idlist = mySort(pl.content).map((item: any) => item.id)
+                                let cycles = 0
+                                let brf = false
+                                window.addEventListener("ossia-pop-player", () => {
+                                    brf = true
+                                })
                                 for await (let id of idlist) {
-                                    await props.player.addToQueue(id, "last", false)
+                                    if (!brf) {
+                                        await props.player.addToQueue(id, "last", false)
+                                        if (cycles === 0) {
+                                            setLoading(false)
+                                            router.push("/player")
+                                        }
+                                        cycles++
+                                    }
                                 }
                             }}>
                                 <PlayerPlay />
