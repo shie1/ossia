@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react"
-
 export const apiCall = async (method: "GET" | "POST", url: string, body: any) => {
     switch (method) {
         case 'GET':
