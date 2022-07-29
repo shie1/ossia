@@ -9,6 +9,7 @@ import {
     Slider,
     Text,
 } from "@mantine/core";
+import { useHotkeys } from "@mantine/hooks";
 import Autolinker from "autolinker";
 import type { NextPage } from "next";
 import Head from "next/head";
@@ -43,12 +44,18 @@ const Player: NextPage = (props: any) => {
     let key = 0
     const { playerDisp } = props.player
     const forceUpdate = useForceUpdate()
+    const volumeSteps = 8
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
             window.addEventListener("ossia-queue-update", forceUpdate)
         }
     }, [])
+
+    useHotkeys([
+        ["ArrowUp", () => { setVolume(volume + volumeSteps > 100 ? 100 : volume + volumeSteps) }],
+        ["ArrowDown", () => { setVolume(volume - volumeSteps < 0 ? 0 : volume - volumeSteps) }],
+    ])
 
     useEffect(() => {
         if (!Object.keys(props.player.playerDisp).length) {
