@@ -32,6 +32,7 @@ import { apiCall } from '../components/api';
 import { useUserAgent } from '../components/useragent';
 import { Alert } from '../components/alert';
 import { useRouter } from 'next/router';
+import { Icon } from '../components/icons';
 
 const NavLink = ({ link, icon, label, onClick }: { link?: string, icon: ReactNode, label: ReactNode, onClick?: Function }) => {
   return (<Link href={link || "#"}>
@@ -82,10 +83,10 @@ const AppNavbar = ({ sidebar, me, player, install }: { sidebar: any, me: any, pl
   const router = useRouter()
 
   const links = [
-    [<Search />, localized.navSearch, "/"],
-    [<PlayerPlay />, localized.navPlayer, "/player"],
-    !me ? [<Login />, localized.login, "/login"] : [<Books />, localized.navLibrary, "/library"],
-    [<Settings />, localized.settings, "/settings"]
+    ["Search", localized.navSearch, "/"],
+    ["PlayerPlay", localized.navPlayer, "/player"],
+    !me ? ["Login", localized.login, "/login"] : ["Books", localized.navLibrary, "/library"],
+    ["Settings", localized.settings, "/settings"]
   ]
 
   if (!Object.keys(player.playerDisp).length) { links.splice(1, 1) }
@@ -105,7 +106,7 @@ const AppNavbar = ({ sidebar, me, player, install }: { sidebar: any, me: any, pl
   return (<Navbar p="md" hiddenBreakpoint="sm" hidden={!sidebar[0]} width={{ sm: 200, lg: 300 }}>
     <Group grow direction='column' spacing='sm'>
       {links.map((link: any, i) => {
-        return <NavLink key={i} link={link[2]} icon={link[0]} label={link[1]} />
+        return <NavLink key={i} link={link[2]} icon={<Icon icon={link[0]} />} label={link[1]} />
       })}
     </Group>
   </Navbar>)
