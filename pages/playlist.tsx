@@ -131,7 +131,7 @@ const Playlist: NextPage = (props: any) => {
                                     </Group>
                                 </Box>
                                 <Group onClick={() => {
-                                    props.player.quickPlay(song.id,true)
+                                    props.player.quickPlay(song.id, true)
                                 }} {...defaultTheme.content} sx={interactive} style={{ width: '100%' }} py="sm" grow>
                                     <Group direction="row" position="apart">
                                         <Group noWrap direction="row">
