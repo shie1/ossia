@@ -1,7 +1,7 @@
 // INSERT INTO `invites` (`code`) VALUES ('value');
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { md5 } from '../../components/lastfm'
 import excuteQuery from '../../components/mysql'
+import { randomBytes } from "crypto"
 require("dotenv").config()
 
 export default function handler(
@@ -18,8 +18,7 @@ export default function handler(
             }
         })).json()
         if (resp.status === 'COMPLETED') {
-            const plain = `ossia-invite-code:${(new Date()).getTime()}`
-            const hash = md5(plain).substring(0, 8)
+            const hash = randomBytes(4).toString('hex')
             excuteQuery("INSERT INTO `invites` (`code`,`order`) VALUES " + `('${hash}','${resp.links[0].href}');`).then(result => {
                 console.log(result)
                 resolve(res.status(200).json([hash, resp.id]))
