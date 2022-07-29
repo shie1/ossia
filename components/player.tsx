@@ -75,12 +75,13 @@ export const usePlayer = (player: RefObject<null | HTMLAudioElement>) => {
         }
     }, [paused])
 
-    const play = (p_streams: any) => {
+    const play = (p_streams: any, openPlayer: boolean = false) => {
         setStreams(p_streams)
         if (player.current === null) { return }
         player.current.src = p_streams.audioStreams[p_streams.audioStreams.length - 1].url
         if (player.current.paused) { player.current.play().then(() => { setPaused(player.current!.paused) }) }
         navigator.mediaSession.playbackState = "playing"
+        if (openPlayer) { router.push("/player") }
     }
 
     const pop = () => {
@@ -94,9 +95,9 @@ export const usePlayer = (player: RefObject<null | HTMLAudioElement>) => {
         if (router.pathname === "/player") { router.replace("/") }
     }
 
-    const quickPlay = (id: string) => {
+    const quickPlay = (id: string, openPlayer: boolean = false) => {
         return new Promise((resolve, reject) => {
-            apiCall("GET", "/api/piped/streams", { v: id }).then(resp => { resolve(play(resp)) })
+            apiCall("GET", "/api/piped/streams", { v: id }).then(resp => { resolve(play(resp, openPlayer)) })
         })
     }
 

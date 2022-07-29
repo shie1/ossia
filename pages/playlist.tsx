@@ -130,7 +130,9 @@ const Playlist: NextPage = (props: any) => {
                                         <CaretDown />
                                     </Group>
                                 </Box>
-                                <Group {...defaultTheme.content} sx={interactive} style={{ width: '100%' }} py="sm" grow>
+                                <Group onClick={() => {
+                                    props.player.quickPlay(song.id,true)
+                                }} {...defaultTheme.content} sx={interactive} style={{ width: '100%' }} py="sm" grow>
                                     <Group direction="row" position="apart">
                                         <Group noWrap direction="row">
                                             <Image height={50} width={50} alt={song.title} src={song.image} />
