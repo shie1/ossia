@@ -88,7 +88,7 @@ const AppNavbar = ({ sidebar, me, player, install }: { sidebar: any, me: any, pl
     [<Settings />, localized.settings, "/settings"]
   ]
 
-  if (!Object.keys(player.playerDisp).length) { links.splice(1,1) }
+  if (!Object.keys(player.playerDisp).length) { links.splice(1, 1) }
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
