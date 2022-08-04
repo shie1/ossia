@@ -247,7 +247,9 @@ function MyApp({ Component, pageProps }: AppProps) {
               <div ref={bg} className='bglow-1' style={{ background: gradient, transition: '4s', objectFit: 'fill', height: 600, width: '90vw' }} draggable={false} />
             </Center>
             <audio
-              src='data:audio/mpeg;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADY29tbWVudABCaWdTb3VuZEJhbmsuY29tIC8gTGFTb25vdGhlcXVlLm9yZwBURU5DAAAAHQAAA1N3aXRjaCBQbHVzIMKpIE5DSCBTb2Z0d2FyZQBUSVQyAAAABgAAAzIyMzUAVFNTRQAAAA8AAANMYXZmNTcuODMuMTAwAAAAAAAAAAAAAAD/80DEAAAAA0gAAAAATEFNRTMuMTAwVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQsRbAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQMSkAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV'
+              onLoadStart={(e) => { if (!e.currentTarget.src.startsWith(document.location.origin)) setLoading(true) }} onLoad={() => { setLoading(false) }}
+              onWaiting={() => { setLoading(true) }}
+              onCanPlay={() => { setLoading(false) }}
               autoPlay ref={playerRef} id='ossia-main-player' style={{ display: 'none' }} />
             <LoadingOverlay visible={loading} sx={{ position: 'fixed' }} />
             <div style={{ zIndex: 2 }}>
