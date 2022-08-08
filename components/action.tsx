@@ -12,10 +12,11 @@ export const ActionGroup = ({ children, sx }: any) => {
     </Center>)
 }
 
-export const Action = ({ children, onClick, type, label, position, size, mr }: { mr?: MantineNumberSize, children?: ReactNode, onClick?: any, type?: "button" | "submit" | "reset" | undefined, label?: ReactNode, position?: "top" | "left" | "bottom" | "right", size?: MantineNumberSize }) => {
+export const Action = ({ children, onClick, type, label, position, size, mr, disabled }: { mr?: MantineNumberSize, children?: ReactNode, onClick?: any, type?: "button" | "submit" | "reset" | undefined, label?: ReactNode, position?: "top" | "left" | "bottom" | "right", size?: MantineNumberSize, disabled?: boolean }) => {
     const [opened, setOpened] = useState<boolean>(false)
     if (label) {
         return (<Popover
+            disabled={disabled}
             radius="lg"
             opened={opened}
             onClose={() => { setOpened(false) }}

@@ -7,6 +7,7 @@ export default function handler(
     res: NextApiResponse<any>
 ) {
     return new Promise((resolve, reject) => {
+        return resolve(false) // W.I.P.
         const { username } = getJWT(req, res)
         const { id, index } = JSON.parse(req.body)
         executeQuery("SELECT author FROM playlists WHERE (`id` = ?);", [id]).then(async resp => {

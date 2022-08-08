@@ -3,7 +3,7 @@ import { showNotification } from "@mantine/notifications";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { MutableRefObject, useEffect, useRef, useState } from "react";
-import { Adjustments, CaretDown, CaretUp, Lock, PlayerPlay, Trash, World, X } from "tabler-icons-react";
+import { Adjustments, CaretDown, CaretUp, Hourglass, Lock, PlayerPlay, Trash, World, X } from "tabler-icons-react";
 import { Action, ActionGroup } from "../components/action";
 import { apiCall } from "../components/api";
 import { Icon } from "../components/icons";
@@ -110,6 +110,8 @@ const Playlist: NextPage = (props: any) => {
                             <Collapse style={{ width: 50 }} in={moving === i}>
                                 <ActionGroup>
                                     <Action label={localized.delete} onClick={() => {
+                                        showNotification({ 'title': '...', 'icon': <Hourglass />, 'message': '' })
+                                        return
                                         let newPl = pl
                                         newPl.content = newPl.content.filter((item: any) => item.index !== i + 1)
                                         newPl.content = mySort(newPl.content)
