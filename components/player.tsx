@@ -1,8 +1,7 @@
-import { useLocalStorage } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
 import { useRouter } from "next/router";
-import { RefObject, useCallback, useEffect, useState } from "react";
-import { SortAscending, SortDescending } from "tabler-icons-react";
+import { RefObject, useEffect, useState } from "react";
+import { SortAscending } from "tabler-icons-react";
 import { apiCall } from "./api";
 import { localized } from "./localization";
 
