@@ -132,7 +132,17 @@ export const localized = new LocalizedStrings({
         install: "Install",
         installText: "Add the Ossia application to the home screen.",
         toPublic: "Set to public",
-        toPrivate: "Set to private"
+        toPrivate: "Set to private",
+        import: "Import",
+        importPlaylist: "Import playlist",
+        stepX: "Step {0}",
+        importPlatfromText: "Please select a platfrom!",
+        importURLText: "Please enter the URL to import!",
+        invalidUrl: "Invalid URL!",
+        importInProgress: "Import in progress...",
+        importingPlaylist: "Importing playlist \"{0}\"",
+        successfulImport: "Playlist imported successfully!",
+        somethingWentWrong: "Something went wrong."
     },
     hu: {
         navSearch: "Keresés",
@@ -305,7 +315,7 @@ export const localized = new LocalizedStrings({
         plays: "Spielt",
         nowPlaying: "Jetzt Spielt",
         dependencies: "Abhängigkeiten",
-		next: "Nächster",
+        next: "Nächster",
         englishOnlyTitle: "Nicht lokalisierte Seite",
         englishOnlyText: "Diese Seite ist nur auf Englisch verfügbar, bitte entschuldigung für die Unannehmlichkeiten.",
         accountSettings: "Account-Einstellungen",

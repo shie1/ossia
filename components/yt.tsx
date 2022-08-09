@@ -21,7 +21,10 @@ export const recognize = (id: string) => {
                     let inner: any = {}
                     const renderer = lockup.carouselLockupRenderer
                     if (typeof renderer.videoLockup !== 'undefined') {
-                        inner["SONG"] = renderer.videoLockup.compactVideoRenderer.title.runs[0].text
+                        const runs = renderer.videoLockup.compactVideoRenderer.title.runs
+                        if (typeof runs !== 'undefined') {
+                            inner["SONG"] = runs[0].text
+                        }
                     }
                     for (const infoRow of renderer.infoRows) {
                         const title = infoRow.infoRowRenderer.title.simpleText
@@ -48,6 +51,7 @@ export const recognize = (id: string) => {
                         }
                         if (input) { inner[title] = input }
                     }
+                    if (!inner["SONG"]) { inner["SONG"] = renderer.videoLockup.compactVideoRenderer.title.simpleText }
                     let art: any = info.videoDetails.thumbnails[info.videoDetails.thumbnails.length - 1].url
                     let url: any
                     url = await albumArt(inner["ARTIST"], typeof inner["ALBUM"] !== "undefined" ? inner["ALBUM"] : inner["SONG"])

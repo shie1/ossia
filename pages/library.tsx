@@ -3,16 +3,17 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { Plus, User, UserOff } from "tabler-icons-react";
+import { CloudDownload, Plus, User, UserOff } from "tabler-icons-react";
 import { Action, ActionGroup } from "../components/action";
 import { apiCall } from "../components/api";
 import { localized } from "../components/localization";
-import { CreatePlaylist, Playlists } from "../components/playlist";
+import { CreatePlaylist, ImportPlaylist, Playlists } from "../components/playlist";
 
 const Library: NextPage = (props: any) => {
     const [loading, setLoading] = props.loading
     const router = useRouter()
-    const createModal = useState<boolean>(false)
+    const createModal = useState(false)
+    const importModal = useState(false)
     const playlists = props.playlists
     const me = props.me
     useEffect(() => {
@@ -20,6 +21,7 @@ const Library: NextPage = (props: any) => {
     }, [me, playlists])
     return (<Container>
         <CreatePlaylist open={createModal} />
+        <ImportPlaylist open={importModal} />
         <Head>
             <title>Library | Ossia</title>
         </Head>
@@ -30,6 +32,9 @@ const Library: NextPage = (props: any) => {
                     <Text>{localized.formatString(localized.loggedInAs!, me.username || "")}</Text>
                 </Group>
                 <ActionGroup>
+                    <Action onClick={() => { importModal[1](true) }} label={localized.import}>
+                        <CloudDownload />
+                    </Action>
                     <Action onClick={() => { createModal[1](true) }} label={localized.createPlaylist}>
                         <Plus />
                     </Action>
