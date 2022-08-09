@@ -15,6 +15,7 @@ export const usePlayer = (player: RefObject<null | HTMLAudioElement>) => {
     const [paused, setPaused] = useState<boolean>(true)
     const [queue, setQueue] = useState<Array<any>>([])
     const [streams, setStreams] = useState<any>({})
+    const [sessionHistory, setSessionHistory] = useState<Array<any>>([])
     const [playerDisp, setPlayerDisp] = useState<any>({})
     const router = useRouter()
 
@@ -75,6 +76,7 @@ export const usePlayer = (player: RefObject<null | HTMLAudioElement>) => {
     }, [paused])
 
     const play = (p_streams: any, openPlayer: boolean = false) => {
+        setSessionHistory(old => [...old, p_streams.thumbnailUrl.split("/")[4]])
         setStreams(p_streams)
         if (player.current === null) { return }
         player.current.src = p_streams.audioStreams[p_streams.audioStreams.length - 1].url
@@ -148,7 +150,8 @@ export const usePlayer = (player: RefObject<null | HTMLAudioElement>) => {
         player.current!.onended = () => {
             if (!queue.length) {
                 if (!streams.relatedStreams) { return }
-                quickPlay(streams.relatedStreams[0].url.split("?v=")[1])
+                let availableStreams = streams.relatedStreams.filter((item: any) => !sessionHistory.includes(item.url.split("?v=")[1]))
+                quickPlay(availableStreams[0].url.split("?v=")[1])
             } else {
                 if (typeof queue[0] === 'string') {
                     quickPlay(queue[0])
@@ -186,5 +189,6 @@ export const usePlayer = (player: RefObject<null | HTMLAudioElement>) => {
         queueArrInOrder,
         removeFromQueue,
         pop,
+        sessionHistory,
     }
 }
